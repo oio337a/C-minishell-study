@@ -6,7 +6,7 @@
 #    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/17 19:56:17 by yongmipa          #+#    #+#              #
-#    Updated: 2022/07/18 17:26:49 by yongmipa         ###   ########seoul.kr   #
+#    Updated: 2023/03/02 17:35:50 by yongmipa         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRCS = ft_memcmp.c ft_memmove.c ft_bzero.c ft_memchr.c ft_memcpy.c \
        ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_toupper.c \
        ft_tolower.c ft_calloc.c ft_strdup.c ft_substr.c ft_strjoin.c \
        ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_striteri.c \
-       ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c
+       ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c  ft_safe_malloc.c \
+       ft_free.c
 OBJS = $(SRCS:%.c=%.o)
 BOBJS = $(BSRCS:%.c=%.o)
 ifdef WITH_BONUS

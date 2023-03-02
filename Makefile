@@ -6,7 +6,7 @@
 #    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/02 14:44:15 by yongmipa         ###   ########seoul.kr   #
+#    Updated: 2023/03/02 16:34:41 by yongmipa         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,8 @@ LIB_NAME	= ./libft/libft.a
 
 INCS		= -I includes
 
-SRC			=	tree_utils.c main.c path_utils.c heredoc.c
+SRC			=	list_utils.c main.c path_utils.c heredoc.c builtin_1.c builtin_2.c \
+				signal.c
 
 SRC_BN		=	
 

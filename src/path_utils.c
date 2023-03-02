@@ -6,11 +6,22 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:50 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 14:31:43 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 18:14:48 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	is_whitespace(char *line)
+{
+	while (*line)
+	{
+		if (*line != 32 && !(*line >= 9 && *line <= 13))
+			return (0);
+		line++;
+	}
+	return (1);
+}
 
 char	**set_envp(char **envp) // 환경변수를 ':' 기준으로 잘라서 path로 생성합니다.
 {

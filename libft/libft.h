@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/04 19:29:34 by yongmipa          #+#    #+#             */
-/*   Updated: 2022/07/17 17:06:48 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 17:35:43 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	*ft_memmove(void *dest, const void *src, size_t len);
 void	*ft_memset(void *b, int c, size_t len);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
+void	*ft_safe_malloc(size_t	size);
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 void	ft_putnbr_fd(int n, int fd);
@@ -62,6 +63,7 @@ char	**ft_split(char const *s, char c);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+void	ft_free(char **p);
 
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
