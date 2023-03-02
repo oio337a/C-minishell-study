@@ -6,13 +6,15 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:56 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 18:32:01 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 21:11:35 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 	envp 에서 pwd 찾고 출력
 */
+#include "../../includes/minishell.h"
+
 char	*ft_pwd(char **envp)
 {
 	int		i;

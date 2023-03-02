@@ -6,11 +6,11 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 18:31:41 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 21:09:00 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "../../includes/minishell.h"
 /*
 	cd, cd ~ 일때
 	-> HOME 경로 찾아서 path에 저장 후 이동

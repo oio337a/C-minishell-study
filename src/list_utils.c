@@ -1,11 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/02 22:03:34 by yongmipa          #+#    #+#             */
+/*   Updated: 2023/03/02 22:44:42 by yongmipa         ###   ########seoul.kr  */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-void	init_list(t_info *info)
+t_info	*init_list()
 {
-	if (info == NULL)
-		info = (t_info *)ft_safe_malloc(sizeof(t_info));
+	t_info	*info;
+	
+	info = (t_info *)ft_safe_malloc(sizeof(t_info));
 	info->next = NULL;
 	info->cmd = NULL;
+	return (info);
 }
 
 void	insert_list(t_info *info, char *cmd)
@@ -15,7 +29,6 @@ void	insert_list(t_info *info, char *cmd)
 	head = info;
 	if (head->cmd == NULL)
 	{
-		head->next = NULL;
 		head->cmd = ft_strdup(cmd);
 	}
 	else

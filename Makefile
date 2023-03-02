@@ -6,20 +6,25 @@
 #    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/02 16:34:41 by yongmipa         ###   ########seoul.kr   #
+#    Updated: 2023/03/02 22:12:55 by yongmipa         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 
 CC			= cc
-FLAGS		= -Wall -Wextra -Wextra
-AR			= ar rcs
+CFLAGS		= -Wall -Wextra -Wextra
+RFLAGS		= -lreadline
+LFLAGS		= -L${HOME}.brew/opt/readline/lib
+IFLAGS		= -I${HOME}/.brew/opt/readline/include
+
+AR			= ar
+ARFLAGS		= -rcs
 RM			= rm -f
 
 INCS_DIR	= ./includes/
 SRCS_DIR	= ./src/
-BONUS_DIR	= ./bonus/
+BUILTINS_DIR= ./src/builtin/
 
 LIB_DIR		= ./libft
 
@@ -27,40 +32,27 @@ LIB_NAME	= ./libft/libft.a
 
 INCS		= -I includes
 
-SRC			=	list_utils.c main.c path_utils.c heredoc.c builtin_1.c builtin_2.c \
-				signal.c
-
-SRC_BN		=	
+SRC			=	list_utils.c main.c parser.c init_shell.c path_utils.c 
+# BUILTIN		=	ft_cd.c ft_echo.c ft_env.c ft_exit.c ft_export.c ft_pwd.c ft_unset.c
 
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRC))
-SRCS_BONUS	=	$(addprefix $(BONUS_DIR), $(SRC_BN))
 LIBS		=	$(addprefix $(LIB_DIR), $(LIB_NAME))
-OBJS		=	$(SRCS:.c=.o)
-OBJS_BONUS	=	$(SRCS_BONUS:.c=.o)
-
-ifdef MINISHELL_WITH_BONUS
-    INC_DIR = ./includes/
-    OBJ_FILES = $(OBJS_BONUS)
-else
-    INC_DIR = ./includes/
-    OBJ_FILES = $(OBJS)
-endif
+# BUILTINS	=	$(addprefix $(BUILTINS_DIR), $(BUILTIN))
+OBJS		=	$(SRCS:.c=.o) 
+# $(BUILTINS:.c=.o)
 
 %.o : %.c
-	$(CC) $(FLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(RFLAGS) $(LFLAGS) $(IFLAGS) -c $< -o $@
 
 all : $(NAME)
 
-bonus :
-	make MINISHELL_WITH_BONUS=1 all
-
-$(NAME) : $(OBJ_FILES)
+$(NAME) : $(OBJS)
 	make -C $(LIB_DIR)
-	$(CC) -o $(NAME) $(OBJ_FILES) $(LIB_NAME)
+	$(CC) $(CFLAGS) $(RFLAGS) $(LFLAGS) $(IFLAGS) -o $(NAME) $(OBJS) $(LIB_NAME)
 
 clean :
 	make -C $(LIB_DIR) clean
-	$(RM) $(OBJS) $(OBJS_BONUS)
+	$(RM) $(OBJS)
 
 fclean : clean
 	make -C $(LIB_DIR) fclean
@@ -69,9 +61,5 @@ fclean : clean
 re : 
 	make fclean 
 	make all
-
-bonus_re:
-	make fclean
-	make bonus
 
 PHONY	: all bonus clean fclean re

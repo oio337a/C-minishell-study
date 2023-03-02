@@ -6,11 +6,11 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 18:32:13 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 21:09:08 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "../../includes/minishell.h"
 /*
 	exit 만 입력 받았다면 exit 출력 후 EXIT_SUCCESS 넘기며 종료
 

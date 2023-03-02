@@ -6,41 +6,39 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 18:39:17 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 22:44:54 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// 프롬프트 열어서 하나의 완전한 커맨드를 readline으로 받아야됨
-
 int	main(int ac, char **av, char **envp)
 {
-	char	*str;
-	t_info	*env;
-
-	env = env2(envp);
-	while (env != NULL)
-	{
-		printf("%s\n", env->cmd);
-		env = env->next;
-	}
-	exit(1);
+	char			*str;
+	static t_info	*env;
+	t_info			*info;
+	t_info			*tmp;
+	
+	info=NULL;
+	// env = ft_env(envp); // 환경변수 세팅 + 시그널 처리 한번에 하는거 어떰?
+	info = init_list();
 	while (1)
 	{
 		str = readline("Nakishell$: ");
-		if (!str)
-		{
-			//D
-		}
 		if (str != NULL)
 		{
-			if (*str != '\0' && is_whitespace(str))
+			if (*str != '\0')
 			{
 				add_history(str);
+				pipe_parser(str, info);
+				tmp = info;
+				while (tmp != NULL)
+				{
+					printf("%s\n", tmp->cmd);
+					tmp = tmp->next;
+				}
 				/*작동*/
-				// rl_on_new_line();
-				
+				//parse_command()
 			}
 			free(str);
 		}

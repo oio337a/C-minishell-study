@@ -6,13 +6,13 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:50 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 18:14:48 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 21:10:42 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_whitespace(char *line)
+int	is_whitespace(char *line) // 빈 프롬프트만 들어왔는지 검수.
 {
 	while (*line)
 	{

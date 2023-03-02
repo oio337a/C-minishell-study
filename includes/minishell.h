@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 18:15:50 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 22:43:53 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@ typedef struct s_info
 	struct s_info	*next;
 }	t_info;
 
-void	init_list(t_info *info);
+t_info	*init_list();
 char	**set_envp(char **envp);
 char	*get_cmd(char **path, char *cmd);
 // void	here_doc(t_arg *arg); // 이전 과제 가져온거라 인자 바꿔야대여
 int		is_whitespace(char *line);
 void	insert_list(t_info *info, char *cmd);
 void	list_delete(t_info **info);
-t_info	*env(char **envp);
+t_info	*ft_env(char **envp);
+void	handler(int signum);
+void	pipe_parser(char *line, t_info *info);
+void	init_list2(t_info **info);
 #endif

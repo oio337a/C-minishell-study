@@ -6,11 +6,11 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 18:31:58 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/02 21:50:28 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "../../includes/minishell.h"
 /*
 	# 예시
 	export <변수명>=<값> : export JAVA_HOME=/user/lib/java-7-openjdk-amd64/
@@ -41,7 +41,34 @@
 	value에는 숫자가 들어가도 됨.
 	작은, 큰 따옴표 제거하고 환경변수 목록에 추가되어야 함.
 */
-void	ft_export(char **arg)
+static int	get_argv_count(char **argv)
 {
-	
+	int	i;
+
+	i = 0;
+	while (argv[i])
+		i++;
+	return (i);
+}
+
+t_info	*ft_export(char **argv, char **envp, t_info *ept_line)
+{
+	int		i;
+
+	i = 0;
+	if (ept_line == NULL)
+	{
+		init_list(ept_line);
+		while(envp[i])
+			insert_list(ept_line, ft_strjoin("declare -x ", envp[i++]));
+	}
+	else
+	{
+		if (get_argv_count(argv) == 1) // export만 출력하거나 fd로 보냄
+			return (ept_line);
+		else
+		{
+			
+		}
+	}
 }

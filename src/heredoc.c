@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
+/*   Updated: 2023/03/02 22:03:41 by yongmipa         ###   ########seoul.kr  */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	is_heredoc(char *str)
@@ -26,7 +38,7 @@ void	here_doc(t_arg *arg)
 	{
 		ft_printf("heredoc> ");
 		line = get_next_line(STDIN_FILENO);
-		if (line == NULL || !ft_strncmp(arg->limiter, line, ft_strlen2(line)))
+		if (line == NULL || !ft_strncmp(arg->limiter, line, ft_strlen(line)))
 		{
 			free(line);
 			break ;
