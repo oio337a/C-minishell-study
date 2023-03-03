@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 17:45:54 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 18:34:11 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ t_info	*ft_env(char **envp);
 void	handler(int signum);
 void	pipe_parser(char *line, t_info *info);
 int		*count_q(char *munja);
+char	*validate_readline(char *line, int *count);
 
 #endif
