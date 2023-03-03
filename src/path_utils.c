@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:50 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 21:10:42 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 20:22:34 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_whitespace(char *line) // 빈 프롬프트만 들어왔는지 검수.
 	return (1);
 }
 
-char	**set_envp(char **envp) // 환경변수를 ':' 기준으로 잘라서 path로 생성합니다.
+char	**set_path(char **envp) // 환경변수를 ':' 기준으로 잘라서 path로 생성합니다.
 {
 	int		i;
 	char	*path;

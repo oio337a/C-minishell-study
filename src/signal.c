@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 16:02:51 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 20:07:18 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	handler(int signum)
 	if (signum == SIGINT) //ctrl + c
 	{
 		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 1);
-		rl_redisplay();
+		rl_on_new_line(); //개행문자 출력 시 newline으로 이동한 것을 업데이트 해주는 함수
+		rl_replace_line("", 1); //내부 버퍼를 ""로 바꾸는 함수
+		rl_redisplay(); //버퍼와 프롬포트 재출력
 	}
 }
 

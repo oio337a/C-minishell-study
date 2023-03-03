@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 18:34:22 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 19:43:46 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 20:21:37 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ static char	*delete_quote(char *line, int *quote)
 	int		last;
 	int		i;
 	int		j;
-	int		k;
 
 	v_line = (char *)malloc(ft_strlen(line) - (quote[0] + quote[1]) + 1);
 	i = 0;
 	j = 0;
-	k
 	while (line[i])
 	{
 		if (line[i] == '\"')
@@ -71,8 +69,8 @@ static char	*delete_quote(char *line, int *quote)
 				}
 			}
 		}
-		// i = last;
-		i++;
+		else
+			i++;
 	}
 	v_line[j] = '\0';
 	return (v_line);
@@ -85,7 +83,7 @@ char	*validate_readline(char *line)
 	char	*v_line;
 	int		*quote;
 
-	quote = count_q(quote);
+	quote = count_q(line);
 	i = -1;
 	while (line[++i])
 	{
@@ -114,7 +112,8 @@ char	*validate_readline(char *line)
 				i++;
 			}
 		}
-		i = last;
+		else
+			i++;
 	}
 	//쿼터 지우기
 	// if (count[0]/2 != 0 || count[1]/2 != 0)

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:54 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 19:18:55 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 20:13:12 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,4 @@ t_info	*ft_env(char **envp)
 }
 */
 
-i
+int	ft_env()
