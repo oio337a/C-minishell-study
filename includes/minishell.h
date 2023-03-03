@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 22:43:53 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 17:45:54 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@
 # include <stdlib.h>
 # include <termios.h>
 # include <signal.h>
+# include <errno.h>
+# include <string.h>
+# define DLIMITER -77
 
 typedef struct s_info
 {
@@ -30,7 +33,7 @@ typedef struct s_info
 	struct s_info	*next;
 }	t_info;
 
-t_info	*init_list();
+t_info	*init_list(void);
 char	**set_envp(char **envp);
 char	*get_cmd(char **path, char *cmd);
 // void	here_doc(t_arg *arg); // 이전 과제 가져온거라 인자 바꿔야대여
@@ -40,5 +43,6 @@ void	list_delete(t_info **info);
 t_info	*ft_env(char **envp);
 void	handler(int signum);
 void	pipe_parser(char *line, t_info *info);
-void	init_list2(t_info **info);
+int		*count_q(char *munja);
+
 #endif

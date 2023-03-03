@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   parser_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 17:29:56 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 17:37:37 by yongmipa         ###   ########seoul.kr  */
+/*   Created: 2023/03/03 15:37:57 by yongmipa          #+#    #+#             */
+/*   Updated: 2023/03/03 17:36:58 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-	envp 에서 pwd 찾고 출력
-*/
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-char	*ft_pwd(char **envp)
+int	*count_q(char *munja)
 {
-	int		i;
-	char	*pwd;
+	int	*q;
+	int	i;
 
-	i = 0;
-	while (ft_strncmp("PWD=", envp[i], 4)) //getcwd(NULL, 0); 현재 프로그램의 절대경로 리턴. 사용 후 프리해야함
-		i++;
-	pwd = envp[i] + 4;
-	return (pwd);
+	q = malloc(8);
+	i = -1;
+	q[0] = 0;
+	q[1] = 0;
+	while (munja[++i])
+	{
+		if (munja[i] == '\"')
+			q[1]++;
+		else if (munja[i] == '\'')
+			q[0]++;
+	}
+	return (q);
 }

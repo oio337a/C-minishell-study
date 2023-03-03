@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 22:44:54 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 14:32:17 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@ int	main(int ac, char **av, char **envp)
 	
 	info=NULL;
 	// env = ft_env(envp); // 환경변수 세팅 + 시그널 처리 한번에 하는거 어떰?
-	info = init_list();
+	
 	while (1)
 	{
+		info = init_list();
 		str = readline("Nakishell$: ");
 		if (str != NULL)
 		{
@@ -42,6 +43,7 @@ int	main(int ac, char **av, char **envp)
 			}
 			free(str);
 		}
+		list_delete(&info);
 	}
 	return (0);
 }

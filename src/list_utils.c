@@ -6,16 +6,16 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:34 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 22:44:42 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 17:45:22 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_info	*init_list()
+t_info	*init_list(void)
 {
 	t_info	*info;
-	
+
 	info = (t_info *)ft_safe_malloc(sizeof(t_info));
 	info->next = NULL;
 	info->cmd = NULL;

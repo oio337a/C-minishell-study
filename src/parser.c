@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:25 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 22:41:15 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 15:47:45 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	pipe_parser(char *line, t_info *info)
 		j = 0;
 		while (cmd[j])
 		{
-			printf("!!!!!!!!!!!!\n");
 			insert_list(info, cmd[j]);
 			j++;
 		}
