@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 20:26:43 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/04 17:57:18 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef struct s_info
 
 typedef struct s_envp
 {
-	char			*envp;
+	char			*key;
+	char			*value;
 	struct s_envp	*next;
 }	t_envp;
 
@@ -54,9 +55,22 @@ char	*validate_readline(char *line, int *count);
 void	handler(int signum);
 
 /*shell_utils*/
-t_envp	*init_envp(char **envp);
+void	print_error(char *errmsg, int errnum);
+int		ft_arrlen(char **arr);
+
+/*envp_utils*/
+t_envp	*init_envp(char *key, char *value);
+void	insert_envp(t_envp *head, t_envp *new);
+void	delete_envp(t_envp *head, t_envp *del);
+void	delete_envp_all(t_envp **envp);
+t_envp	*set_envp(char **envp);
+t_envp	*dup_envp(t_envp *head);
+t_envp	*sort_envp(t_envp *head);
+void	add_envp(t_envp *head, char *argv);
 
 /*builtin*/
 int		ft_pwd(void);
+int		ft_env(t_envp *head);
+int		ft_export(t_envp *head, char *argv);
 
 #endif

@@ -3,29 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 21:50:28 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/04 17:57:17 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 /*
 	# 예시
-	export <변수명>=<값> : export JAVA_HOME=/user/lib/java-7-openjdk-amd64/
+	export <변수명>=<값> : export abc=123
 	-------------------------------
 	# 짜증나는 예시
 	export a                            #key값만 생성
 	export b=                           #value에 아무 값 없음
-	export c=hello          
+	export c=hello
 	export c+=world                     #환경변수 뒤에 덧붙이기
 	export d="oh      my          god"  #echo출력과 export출력 다름
 	export e=elephant f=flower
+	export a=b=c                        #a="b=c"
+	export a=====b                      #a="====b"
+	export a=b c d                      #a=b, c, d
 	-------------------------------
-	명령어가 export 하나면 print_export(g_envp)
+	명령어가 export 하나면 (인자 X) -> 환경변수 오름차 순 출력 (형식 : declare -x [KEY=”VALUE”])
 
 	명령어가 export z 와 같은 식으로 인자가 하나면 환경변수에 저장되지 않음.
+	=> 저장 됩니다! env로 출력시 안 나오고, export로 출력시 나옴
 
 	명령어가 export key=value 일 때
 
@@ -38,37 +42,99 @@
 
 	key가 숫자만 있으면 안 됨.
 
-	value에는 숫자가 들어가도 됨.
+	스페이스, 특수문자 등은 key, value 모두 안되는데, .랑 -랑 /는 왜 됨 ;;
+
 	작은, 큰 따옴표 제거하고 환경변수 목록에 추가되어야 함.
 */
-static int	get_argv_count(char **argv)
-{
-	int	i;
 
-	i = 0;
-	while (argv[i])
-		i++;
-	return (i);
+// t_info	*ft_export(char **argv, char **envp, t_info *ept_line)
+// {
+// 	int		i;
+
+// 	i = 0;
+// 	if (ept_line == NULL)
+// 	{
+// 		init_list(ept_line);
+// 		while(envp[i])
+// 			insert_list(ept_line, ft_strjoin("declare -x ", envp[i++]));
+// 	}
+// 	else
+// 	{
+// 		if (get_argv_count(argv) == 1) // export만 출력하거나 fd로 보냄
+// 			return (ept_line);
+// 		else
+// 		{
+
+// 		}
+// 	}
+// }
+
+t_envp	*dup_envp(t_envp *head) //정렬하기 위한 리스트 만들기
+{
+	t_envp	*tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+
+	}
 }
 
-t_info	*ft_export(char **argv, char **envp, t_info *ept_line)
+t_envp	*sort_envp(t_envp *head) //strcmp 사용해서 문자열 정렬 ! 리스트 정렬 vs 내부 인자만 직접 바꾸기
 {
-	int		i;
+	t_envp	*tmp;
 
-	i = 0;
-	if (ept_line == NULL)
+	tmp = head->next;
+	while (tmp)
 	{
-		init_list(ept_line);
-		while(envp[i])
-			insert_list(ept_line, ft_strjoin("declare -x ", envp[i++]));
+		tmp = tmp->next;
+
+	}
+	return(tmp);
+}
+
+void	add_envp(t_envp *head, char *argv) // =로 나눠진다는 보장 없음, 스페이스 및 숫자 예외 처리
+{
+	t_envp	*new;
+	char	**arr;
+
+	arr = ft_split(argv, '=');
+	if (!arr)
+		error();
+	if (!check_argv(argv))
+	{
+		print_error("minishell: export: '%s' : not a valid identifier\n", argv);
+		return ;
+	}
+	new = init_envp(arr[0], arr[1]);
+	insert_envp(head, new);
+	free(arr);
+}
+
+int	ft_export(t_envp *head, char *argv)
+{
+	t_envp	*sorted;
+	t_envp	*tmp;
+	char	**arr;
+
+	if (!argv)
+	{
+		sorted = dup_envp(head);
+		// if (!sorted)
+		// 	error();
+		sort_envp(sorted);
+		tmp = sorted;
+		while (tmp)
+		{
+			if (tmp->value == NULL)
+				printf("%s\n", tmp->key);
+			else
+				printf("%s=%s\n", tmp->key, tmp->value);
+			tmp = tmp->next;
+		}
+		delete_envp_all(&sorted);
 	}
 	else
-	{
-		if (get_argv_count(argv) == 1) // export만 출력하거나 fd로 보냄
-			return (ept_line);
-		else
-		{
-			
-		}
-	}
+		add_envp(head, argv);
+	return (1);
 }
