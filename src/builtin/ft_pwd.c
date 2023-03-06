@@ -6,13 +6,13 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:56 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 20:14:52 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/06 15:28:33 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 /*
-char	*ft_pwd(char **envp) // envp에서 pwd찾고 출력
+char	*ft_pwd(char **envp) // envp에서 pwd찾고 출력 : unset PWD 시 세그폴트뜸
 {
 	int		i;
 	char	*pwd;

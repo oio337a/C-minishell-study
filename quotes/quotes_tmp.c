@@ -3,7 +3,10 @@
 // "ls$-a"'l$|$' "c"at '-e$|' cat -e
 // ls$-al$|$ cat -e$| cat -e
 // ls$-al$ /$ cat -e$/ cat -e -> 에러 O
-//
+// "ls" -al '|'cat -e | "wc '-'l"
+// "ls" -al '|'cat -e | "wc$'-'l"
+// ls -al | cat -e | wc$'-'l
+// ls -al / cat -e / wc$'-'l -> 에러인데 에러로 못골라줘여 파이프 우짬?
 
 static int	find_next_quotes(char *line, char *quote, int quote_idx)
 {
@@ -19,10 +22,6 @@ static int	find_next_quotes(char *line, char *quote, int quote_idx)
 	return (-1); // 맞는 쿼터를 찾지 못했음
 }
 
-// "ls" -al '|'cat -e | "wc '-'l"
-// "ls" -al '|'cat -e | "wc$'-'l"
-// ls -al | cat -e | wc$'-'l
-// ls -al / cat -e / wc$'-'l -> 에러인데 에러로 못골라줘여 파이프 우짬?
 static char	*delete_q(char *line, int *quote)
 {
 	char	*removed_quotes;
