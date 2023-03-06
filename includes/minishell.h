@@ -6,7 +6,7 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/04 17:57:18 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/06 19:06:28 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,17 @@
 # include <string.h>
 # define DLIMITER -77
 
+typedef enum s_type
+{
+	REDIR,
+	PIPE,
+	WORD
+} 	t_type;
+
 typedef struct s_info
 {
 	char			*cmd;
+	int				type;
 	struct s_info	*next;
 }	t_info;
 
@@ -45,12 +53,12 @@ char	**set_path(char **envp);
 char	*get_cmd(char **path, char *cmd);
 // void	here_doc(t_arg *arg); // 이전 과제 가져온거라 인자 바꿔야대여
 int		is_whitespace(char *line);
-void	insert_list(t_info *info, char *cmd);
+void	insert_list(t_info *info, char *cmd, int tpye);
 void	list_delete(t_info **info);
 void	pipe_parser(char *line, t_info *info);
 int		*count_q(char *munja);
 char	*validate_readline(char *line, int *count);
-
+void	str_tokenize(t_info *info, char *line);
 /*signal*/
 void	handler(int signum);
 
@@ -72,5 +80,11 @@ void	add_envp(t_envp *head, char *argv);
 int		ft_pwd(void);
 int		ft_env(t_envp *head);
 int		ft_export(t_envp *head, char *argv);
+
+/*quotes*/
+char	*ft_strjoin_free(char *s1, char const *s2);
+char	*parse_dollar(char *dollar, t_envp *envp);
+char	*ft_strappend(char *str, char append);
+char	*quotes(char *c, t_envp *head);
 
 #endif

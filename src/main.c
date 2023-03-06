@@ -6,7 +6,7 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/04 17:08:49 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/06 19:41:35 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	main(int ac, char **av, char **envp)
 {
 	char			*str;
-	static t_info	*env;
 	t_info			*info;
 	t_info			*tmp;
+	t_envp			*envp_head;
 
-	info=NULL;
-	// env = ft_env(envp); // 환경변수 세팅 + 시그널 처리 한번에 하는거 어떰?
-
+	envp_head = set_envp(envp); // 환경변수 세팅
+	info = NULL;
+	// 시그널 처리도 위에서 !
 	while (1)
 	{
 		info = init_list();
@@ -35,9 +35,10 @@ int	main(int ac, char **av, char **envp)
 		{
 			if (*str != '\0')
 			{
-				add_history(str);
-				v_str = validate_readline(str); // valid한 라인으로 나와 -> pipe 기준 잘라 -> cmd_path에 넣어
+				// add_history(str);
+				// v_str = validate_readline(str); // valid한 라인으로 나와 -> pipe 기준 잘라 -> cmd_path에 넣어
 				// pipe_parser(str, info);
+				str_tokenize(info, str);
 				tmp = info;
 				while (tmp != NULL)
 				{

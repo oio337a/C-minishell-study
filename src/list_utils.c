@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:34 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 17:45:22 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/06 20:23:04 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ t_info	*init_list(void)
 	info = (t_info *)ft_safe_malloc(sizeof(t_info));
 	info->next = NULL;
 	info->cmd = NULL;
+	info->type = 0;
 	return (info);
 }
 
-void	insert_list(t_info *info, char *cmd)
+void	insert_list(t_info *info, char *cmd, int type)
 {
 	t_info	*head;
 
@@ -30,6 +31,7 @@ void	insert_list(t_info *info, char *cmd)
 	if (head->cmd == NULL)
 	{
 		head->cmd = ft_strdup(cmd);
+		head->type = type;
 	}
 	else
 	{
@@ -37,6 +39,7 @@ void	insert_list(t_info *info, char *cmd)
 			head = head->next;
 		head->next = (t_info *)ft_safe_malloc(sizeof(t_info));
 		head->next->cmd = ft_strdup(cmd);
+		head->next->type = type;
 		head->next->next = NULL;
 	}
 }
