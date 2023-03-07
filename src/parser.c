@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 18:34:22 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/06 21:58:28 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/07 16:45:02 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,24 @@ static int	find_last_quote(char *line, char quote);
 static char	*delete_quote(char *line, int *quote);
 char	*validate_readline(char *line);
 
-int	*count_q(char *munja)
-{
-	int	*q;
-	int	i;
+// int	*count_q(char *munja)
+// {
+// 	int	*q;
+// 	int	i;
 
-	q = malloc(8);
-	i = -1;
-	q[0] = 0;
-	q[1] = 0;
-	while (munja[++i])
-	{
-		if (munja[i] == '\"')
-			q[1]++;
-		else if (munja[i] == '\'')
-			q[0]++;
-	}
-	return (q);
-}
+// 	q = malloc(8);
+// 	i = -1;
+// 	q[0] = 0;
+// 	q[1] = 0;
+// 	while (munja[++i])
+// 	{
+// 		if (munja[i] == '\"')
+// 			q[1]++;
+// 		else if (munja[i] == '\'')
+// 			q[0]++;
+// 	}
+// 	return (q);
+// }
 
 void	pipe_parser(char *line, t_info *info)
 {

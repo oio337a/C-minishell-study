@@ -8,6 +8,12 @@
 // ls -al | cat -e | wc$'-'l
 // ls -al / cat -e / wc$'-'l -> 에러인데 에러로 못골라줘여 파이프 우짬?
 
+char	*quotes(char *c, t_envp *head);
+static int	find_next_quotes(char *line, char *quote, int quote_idx);
+static char	*delete_q(char *line, int *quote);
+char	*space_change(char *str);
+char	*ft_strappend(char *str, char append);
+
 static int	find_next_quotes(char *line, char *quote, int quote_idx)
 {
 	int	next_idx;
@@ -121,4 +127,64 @@ char	*space_change(char *str)
 	}
 	str = delete_q(str, quote);
 	return (str);
+}
+
+char	*ft_strappend(char *str, char append)
+{
+	char	*ret;
+	int		len;
+
+	len = ft_strlen(str);
+	ret = ft_safe_malloc(len + 2);
+	// if (!ret)
+	// 	error();
+	while(*str) //dup쓰면 말록 두번하게 되니까 그냥 한글자씩 넘김
+	{
+		*ret = *str;
+		str++;
+		ret++;
+	}
+	ret[len] = append;
+	ret[len + 1] = '\0';
+	free(str);
+	return (ret);
+}
+
+char	*quotes(char *c, t_envp *head)
+{
+	char	*dol;
+	char	*ret;
+	t_envp	*tmp;
+
+	tmp = head;
+	ret = ft_strdup("");
+	if (!ret)
+		return (NULL);
+	if (*c == '\"')
+	{
+		c++;
+		while (*c != '\"')
+		{
+			if (*c == '$')
+			{
+				dol = parse_dollar(c, head);
+				ret = ft_strjoin_free(ret, dol);
+			}
+			else
+				ret = ft_strappend(ret, *c);
+			c++;
+		}
+	}
+	else if (*c == '\'')
+	{
+		c++;
+		while (*c != '\'')
+		{
+			ret = ft_strappend(ret, *c);
+			c++;
+		}
+	}
+	else //잘못된 인자일 경우
+		return (NULL);
+	return (ret);
 }

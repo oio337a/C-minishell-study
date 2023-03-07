@@ -1,11 +1,11 @@
-#include "../../minishell.h"
+#include "../includes/minishell.h"
 
 t_envp	*init_envp(char *key, char *value)
 {
 	t_envp	*envp;
 
-	envp = (t_envp *)ft_safe_malloc(sizeof(t_envp)); //걍 칼록 쓰면 안되는지 물어보기 ㅋㅋ
-	envp->key = key; //safe_malloc이랑 ft_free 함수 어디있는지
+	envp = (t_envp *)ft_safe_malloc(sizeof(t_envp));
+	envp->key = key;
 	envp->value = value; // strdup 안 쓰고 그냥 할당해도 됨 ?
 	envp->next = NULL;
 	return (envp);
@@ -50,27 +50,34 @@ void	delete_envp_all(t_envp **envp)
 	}
 }
 
-t_envp	*set_envp(char **envp)
+t_envp	*set_envp(char **envp) // 일단 export 기준으로 다 넣기 ! env에서 특정 값만 출력하면 됨
 {
 	t_envp	*head;
 	t_envp	*new;
 	char	**arr;
 	int		i;
+	int		j;
 
 	i = 0;
-	head = init_envp(NULL, NULL);
-//	if (!head)
-//		error();
+	head = init_envp(NULL, NULL); //더미노드 생성
 	while (envp[i])
 	{
-		arr = ft_split(envp[i], '=');
-//		if (!arr)
-//			error();
-		new = init_envp(arr[0], arr[1]);
-//		if (!new)
-//			error();
+		j = 0;
+		while (envp[i][j]) //'='인덱스 찾기
+		{
+			if (envp[i][j] == '=')
+				break ;
+		}
+		if (envp[i][j] == '\0') // '='없이 끝까지 와버린경우 -> 전부 key
+			init_envp(envp[i], NULL);
+		else
+		{
+			arr = (char *)ft_safe_malloc(sizeof(char))
+			init_envp(key, value);
+		}
 		insert_envp(head, new);
-		free(arr);
+		if (arr)
+			free(arr);
 		i++;
 	}
 	return (head);
