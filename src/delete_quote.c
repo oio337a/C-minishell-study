@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/07 17:57:05 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:33:13 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 */
 // 리스트 순회 -> syntax 확인
 // 리스트 순회 -> 쿼터 갯수 확인 후 쿼터 제거 및 환경변수 처리 ' '-> 없애버려 " "-> 알맞은거 찾아서 넣어주기
-
-int	*count_q(char *munja)
+// <<< 들어오면 신신택택스  에에러러
+static int	*count_q(char *munja)
 {
 	int	*q;
 	int	i;
@@ -41,11 +41,9 @@ int	*count_q(char *munja)
 static int	find_next_quotes(char *line, char quote, int quote_idx)
 {
 	int	next_idx;
-	int	len;
 
 	next_idx = quote_idx + 1;
-	len = ft_strlen(line);
-	while (line[len])
+	while (line[next_idx])
 	{
 		if (line[next_idx] == quote)
 			return (next_idx);
@@ -54,45 +52,7 @@ static int	find_next_quotes(char *line, char quote, int quote_idx)
 	return (-1);
 }
 
-void	delete_quote(t_info *token->cmd)
-{
-	int		i;
-	char	*clear_token;
-	int		next_idx;
-	t_info	*cmd;
-
-	i = 0;
-	cmd = init_list();
-	while (token->cmd[i])
-	{
-		if (token->cmd[i] == '\'')
-		{
-			next_idx = find_next_quotes(token->cmd, '\'', i);
-			clear_token = ft_substr(line, i + 1, next_idx - 1);
-			insert_list(cmd, clear_token, WORD);
-			free(clear_token);
-			i = next_idx;
-		}
-		else if (token->cmd[i] == '\"')
-		{
-			next_idx = find_next_quotes(token->cmd, '\"', i);
-			clear_token = ft_substr(line, i + 1, next_idx - 1);
-			insert_list(cmd, clear_token, WORD);
-			free(clear_token);
-			i = next_idx;
-		}
-		else
-		{
-			clear_token = ft_substr(line, i, here_quote(line, i));
-			insert_list(cmd, clear_token, WORD);
-			free(clear_token);
-			i += here_quote(line, i) - 1;
-		}
-		i++;
-	}
-}
-
-int	here_quote(char *line, int i)
+static int	here_quote(char *line, int i)
 {
 	int	len;
 
@@ -101,10 +61,72 @@ int	here_quote(char *line, int i)
 	{
 		if (line[i + len] == '\''
 			|| line[i + len] == '\"' || line[i + len] != '\0')
-			break ;
+			return (len);
 		len++;
 	}
-	return (len);
+	return (-1); // -1 이면 오류 처리 해보자
+}
+
+static char	*get_full_token(t_info *cmd)
+{
+	t_info	*head;
+	char	*tmp;
+	char	*full_token;
+
+	head = cmd;
+	full_token = ft_strjoin("", head->cmd);
+	head = head->next;
+	while (head != NULL)
+	{
+		tmp = full_token;
+		full_token = ft_strjoin(full_token, head->cmd);
+		free(tmp);
+		head = head->next;
+	}
+	list_delete(&cmd);
+	return (full_token);
+}
+
+static void	delete_quote(t_info *token)
+{
+	int		i;
+	char	*clear_token;
+	int		next_idx;
+	t_info	*cmd;
+	char	*tmp;
+
+	i = 0;
+	cmd = init_list();
+	while (token->cmd[i])
+	{
+		if (token->cmd[i] == '\'')
+		{
+			next_idx = find_next_quotes(token->cmd, '\'', i);
+			clear_token = ft_substr(token->cmd, i + 1, next_idx - 1);
+			insert_list(cmd, clear_token, WORD);
+			free(clear_token);
+			i += next_idx;
+		}
+		else if (token->cmd[i] == '\"')
+		{
+			next_idx = find_next_quotes(token->cmd, '\"', i);
+			clear_token = ft_substr(token->cmd, i + 1, next_idx - 1);
+			insert_list(cmd, clear_token, WORD);
+			free(clear_token);
+			i += next_idx;
+		}
+		else
+		{
+			clear_token = ft_substr(token->cmd, i, here_quote(token->cmd, i));
+			insert_list(cmd, clear_token, WORD);
+			free(clear_token);
+			i += here_quote(token->cmd, i) - 1;
+		}
+		i++;
+	}
+	tmp = token->cmd;
+	token->cmd = get_full_token(cmd);
+	free(tmp);
 }
 
 static int	is_qoute(char *s)
@@ -116,8 +138,9 @@ static int	is_qoute(char *s)
 	{
 		if (s[i] == '\"' || s[i] == '\'')
 			return (i);
+		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 void	clear_qoute_in_token(t_info *token)
@@ -128,12 +151,12 @@ void	clear_qoute_in_token(t_info *token)
 	head = token;
 	while (head != NULL)
 	{
-		if (is_qoute(head->cmd))
+		if (is_qoute(head->cmd) >= 0)
 		{
-			tmp = haed->cmd;
-			delete_quote(head->cmd);
-			free(tmp);
+			// tmp = head->cmd;
+			delete_quote(head);
+			// free(tmp);
 		}
-		head = haed->next;
+		head = head->next;
 	}
 }

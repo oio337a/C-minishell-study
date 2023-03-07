@@ -6,13 +6,13 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 18:34:22 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/07 16:45:02 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:11:57 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	*count_q(char *munja);
+// int	*count_q(char *munja);
 void	pipe_parser(char *line, t_info *info);
 static int	find_last_quote(char *line, char quote);
 static char	*delete_quote(char *line, int *quote);

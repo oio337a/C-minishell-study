@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/07 17:57:08 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:33:13 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*parse_dollar(char *dollar, t_envp *envp)
 	{
 		if (ft_strncmp(key, head->key, len) == 0) // 있는 환경변수면 replace
 			return (head->value); // 뒤에 이상한 문자 이어지는 경우 판별할 수 있는지 테스트 필요
-		head = head->next;
+		head = head->next; // ex. $aaa로 들어와서 aaa환경변수 찾았는데, 알고보니 aaab인 경우 ?
 	}
 	return (NULL); // 없는 환경변수면 안 나옴
 }

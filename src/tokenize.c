@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/07 17:57:06 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:31:53 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,15 +127,26 @@ void	str_tokenize(t_info *info, char *line)
 int main()
 {
 	t_info *test;
-	char *str = "<<< \"a ls | ca't' > \"b\" ";
+	t_info *head1;
+	t_info *head2;
+
+	char *str = "<<< \"a ls\" | \'cat\' > \"b\" ";
 
 	printf("line : %s\n", str);
 	test = init_list();
 	str_tokenize(test, str);
-	while (test != NULL)
+	head1 = test;
+	while(head1 != NULL)
 	{
-		printf("cmd : %s, type : %d\n", test->cmd, test->type);
-		test = test->next;
+		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
+		head1 = head1->next;
+	}
+	clear_qoute_in_token(test);
+	head2 = test;
+	while (head2 != NULL)
+	{
+		printf("cmd : %s, type : %d\n", head2->cmd, head2->type);
+		head2 = head2->next;
 	}
 	// system("leaks a.out");
 }

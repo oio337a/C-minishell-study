@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/06 19:06:28 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/07 20:12:06 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		is_whitespace(char *line);
 void	insert_list(t_info *info, char *cmd, int tpye);
 void	list_delete(t_info **info);
 void	pipe_parser(char *line, t_info *info);
-int		*count_q(char *munja);
+// int		*count_q(char *munja);
 char	*validate_readline(char *line, int *count);
 void	str_tokenize(t_info *info, char *line);
 /*signal*/
@@ -65,6 +65,7 @@ void	handler(int signum);
 /*shell_utils*/
 void	print_error(char *errmsg, int errnum);
 int		ft_arrlen(char **arr);
+int	ft_strchr_int(const char *s, char c);
 
 /*envp_utils*/
 t_envp	*init_envp(char *key, char *value);
@@ -84,7 +85,6 @@ int		ft_export(t_envp *head, char *argv);
 /*quotes*/
 char	*ft_strjoin_free(char *s1, char const *s2);
 char	*parse_dollar(char *dollar, t_envp *envp);
-char	*ft_strappend(char *str, char append);
-char	*quotes(char *c, t_envp *head);
+void	clear_qoute_in_token(t_info *token);
 
 #endif
