@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/07 20:31:53 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/07 22:41:19 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int main()
 	t_info *head1;
 	t_info *head2;
 
-	char *str = "<<< \"a ls\" | \'cat\' > \"b\" ";
+	char *str = "\"\'\'\"\"\"\'\'-al\"\"\'\'\"\'\'\"";
 
 	printf("line : %s\n", str);
 	test = init_list();
@@ -145,7 +145,7 @@ int main()
 	head2 = test;
 	while (head2 != NULL)
 	{
-		printf("cmd : %s, type : %d\n", head2->cmd, head2->type);
+		printf("a-fter cmd : %s, type : %d\n", head2->cmd, head2->type);
 		head2 = head2->next;
 	}
 	// system("leaks a.out");

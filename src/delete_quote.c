@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/07 20:33:13 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/07 22:41:17 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,18 @@ static int	find_next_quotes(char *line, char quote, int quote_idx)
 	return (-1);
 }
 
-static int	here_quote(char *line, int i)
+static int	here_quote(char *line)
 {
 	int	len;
 
 	len = 0;
-	while (line[i + len])
+	while (line[len])
 	{
-		if (line[i + len] == '\''
-			|| line[i + len] == '\"' || line[i + len] != '\0')
-			return (len);
+		if (line[len] == '\'' || line[len] == '\"')
+			break ;
 		len++;
 	}
-	return (-1); // -1 이면 오류 처리 해보자
+	return (len); // -1 이면 오류 처리 해보자
 }
 
 static char	*get_full_token(t_info *cmd)
@@ -97,30 +96,51 @@ static void	delete_quote(t_info *token)
 
 	i = 0;
 	cmd = init_list();
+	if (ft_strlen(token->cmd) == 2)
+	{
+		if ((token->cmd[0] == '\"' && token->cmd[1] == '\"')
+			|| (token->cmd[0] == '\'' && token->cmd[1] == '\''))
+		{
+			tmp = token->cmd;
+			token->cmd = ft_strdup("");
+			free(tmp);
+			return ;
+		}
+	}
 	while (token->cmd[i])
 	{
 		if (token->cmd[i] == '\'')
 		{
 			next_idx = find_next_quotes(token->cmd, '\'', i);
-			clear_token = ft_substr(token->cmd, i + 1, next_idx - 1);
-			insert_list(cmd, clear_token, WORD);
-			free(clear_token);
-			i += next_idx;
+			if (next_idx == i + 1)
+				i++;
+			else
+			{
+				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
+				insert_list(cmd, clear_token, WORD);
+				free(clear_token);
+				i += next_idx;
+			}
 		}
-		else if (token->cmd[i] == '\"')
+		else if (token->cmd[i] == '\"') //환경변수로 들어온 인자면 env에서 바꿔서 리스트에 추가
 		{
 			next_idx = find_next_quotes(token->cmd, '\"', i);
-			clear_token = ft_substr(token->cmd, i + 1, next_idx - 1);
-			insert_list(cmd, clear_token, WORD);
-			free(clear_token);
-			i += next_idx;
+			if (next_idx == i + 1)
+				i++;
+			else
+			{
+				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
+				insert_list(cmd, clear_token, WORD);
+				free(clear_token);
+				i += next_idx;
+			}
 		}
 		else
 		{
-			clear_token = ft_substr(token->cmd, i, here_quote(token->cmd, i));
+			clear_token = ft_substr(token->cmd, i, here_quote(token->cmd + i));
 			insert_list(cmd, clear_token, WORD);
 			free(clear_token);
-			i += here_quote(token->cmd, i) - 1;
+			i += here_quote(token->cmd + i) - 1;
 		}
 		i++;
 	}

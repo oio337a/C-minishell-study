@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/07 20:12:06 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/07 20:47:34 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ int		ft_arrlen(char **arr);
 int	ft_strchr_int(const char *s, char c);
 
 /*envp_utils*/
-t_envp	*init_envp(char *key, char *value);
-void	insert_envp(t_envp *head, t_envp *new);
+t_envp	*init_envp(void);
+void	insert_envp(t_envp *envp, char *key, char *value);
 void	delete_envp(t_envp *head, t_envp *del);
 void	delete_envp_all(t_envp **envp);
 t_envp	*set_envp(char **envp);
