@@ -111,6 +111,7 @@ void	str_tokenize(t_info *info, char *line)
 			if (*line == '\0')
 				break ;
 		}
+		
 		if (*line == '\'')
 		{
 			bulk = quote_bulk(line, '\'');
