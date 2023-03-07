@@ -68,33 +68,11 @@ void	str_tokenize(t_info *info, char *line)
 	int		i;
 	char	*tmp;
 	char	*bulk;
+	char	*tmp2;
 
 	i = 0;
-	printf("line : %s\n", line);
-	while (*line != '\0')
+	while (*line)
 	{
-		if (*line == '\"')
-		{
-			bulk = quote_bulk(line, '\"');
-			tmp = bulk; //왜 ?
-			line = line + ft_strlen(bulk) + 1;
-			if (*line != ' ')
-				bulk = get_after_quote(line, bulk);
-			free(tmp);
-			line = line + ft_strlen(bulk) - 1;
-			insert_list(info, bulk, WORD);
-		}
-		if (*line == '\'')
-		{
-			bulk = quote_bulk(line, '\'');
-			tmp = bulk;
-			line = line + ft_strlen(bulk);
-			if (*line != ' ')
-				bulk = get_after_quote(line, bulk);
-			free(tmp);
-			line = line + ft_strlen(bulk) - 1;
-			insert_list(info, bulk, WORD);
-		}
 		if (*line == '>')
 		{
 			if (*(line + 1) == '>')
@@ -117,56 +95,58 @@ void	str_tokenize(t_info *info, char *line)
 		}
 		if (*line == '|')
 			insert_list(info, "|", PIPE);
+		if (*line == '\"')
+		{
+			bulk = quote_bulk(line, '\"');
+			tmp = bulk;
+			line += ft_strlen(bulk);
+			if (*line != ' ')
+			{
+				bulk = get_after_quote(line, tmp);
+				line += (ft_strlen(bulk) - ft_strlen(tmp));
+			}
+			insert_list(info, bulk, WORD);
+			free(tmp);
+			free(bulk);
+			if (*line == '\0')
+				break ;
+		}
+		if (*line == '\'')
+		{
+			bulk = quote_bulk(line, '\'');
+			tmp = bulk;
+			line += ft_strlen(bulk);
+			if (*line != ' ')
+				bulk = get_after_quote(line, tmp);
+			line += (ft_strlen(bulk) - ft_strlen(tmp));
+			insert_list(info, bulk, WORD);
+			free(tmp);
+			free(bulk);
+			if (*line == '\0')
+				break ;
+		}
 		if (*line != '>' && *line != '<' && *line != '|' && *line != ' ')
 		{
 			i = 0;
 			while (line[i] && is_whitespace2(line[i]))
 				i++;
-			// if (i == 0)
-			// 	break ;
 			tmp = ft_substr(line, 0, i);
 			insert_list(info, tmp, WORD);
-			// line = line + ft_strlen(tmp);
-			line = line + i - 1;
+			line += ft_strlen(tmp);
 			free(tmp);
-			// printf("line : %s\n", line);
+			if (*line == '\0')
+				break ;
 		}
-		// if (*line == '\0')
-		// 	break ;
 		line++;
-	} //	char *str = "  echo qkjwke xnfnwl";
+	}
 }
-
-// void	delete_quote(t_info *info)
-// {
-// 	t_info *head;
-// 	int	i;
-// 	int	count;
-// 	int	next_q_idx;
-
-// 	i = 0;
-// 	head = info;
-// 	count = 0;
-// 	next_q_idx = 0;
-// 	while (head != NULL)
-// 	{
-// 		count = list_quotes(head->cmd);
-// 		head->cmd = (char *)malloc(ft_strlen(head->cmd) - count + 1);
-// 		while (head->cmd[i])
-// 		{
-// 			if (head->cmd[i] == '\'')
-// 				i++;
-// 			head->cmd[i] =
-
-// 		}
-// 	}
-// }
 
 int main()
 {
 	t_info *test;
-	char *str = "echo \"aaa\"bb\"$CCC\" ";
+	char *str = "<<< a ls | cat > \"b\"";
 
+	printf("line : %s\n", str);
 	test = init_list();
 	str_tokenize(test, str);
 	while (test != NULL)
@@ -174,5 +154,5 @@ int main()
 		printf("cmd : %s, type : %d\n", test->cmd, test->type);
 		test = test->next;
 	}
-//	system("leaks a.out");
+	system("leaks a.out");
 }
