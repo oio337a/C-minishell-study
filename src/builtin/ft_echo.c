@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 21:09:04 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/08 16:48:01 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,50 +50,106 @@
 	-> syntax error near unexpected token ;'` (258)
 */
 
-static int	find_option(char **arg)
+static int	find_option(t_info *arg)
 {
-	int	i;
+	// echo 다음에 -n 이 있으면 -n 으로 시작해야함.
+	// echo -nn 블라블라 
+	// echo aaaa -n daaa => aaaa -n daaa
+	int		i;
+	int		option_idx;
+	t_info	*temp;
 
-	if (ft_strncmp("-n", arg[1], 2))
+	option_idx = 0;
+	temp = arg->next; // echo 명령어 건너기
+	// 1. -n 으로 시작해야 하고 다음은 n만 올 수 있다.
+	while (temp && temp->cmd[0] == '-' && temp->cmd[1] == 'n')
 	{
 		i = 1;
-		while (arg[++i])
+		while (temp->cmd[++i])
 		{
-			if (!ft_strncmp("-n", arg[i], 2))
-				return (i);
+			if (temp->cmd[i] != 'n')
+				return (option_idx);
 		}
+		option_idx++;
+		temp = temp->next;
 	}
-	return (0);
+	free(temp);
+	return (option_idx);
 }
 
-void	ft_echo(char **arg)
+static void	ft_pcmd(t_info *temp)
 {
-	int	option;
-	int	i;
+	while (temp)
+	{
+		if (temp->type == "WORD")
+		{
+			write(1, temp->cmd, ft_strlen(temp->cmd));
+			if (!temp->next)
+				break ;
+			temp = temp->next;
+			write(1, " ", 1);
+		}
+		else
+		{
+			if (!temp->next)
+				break ;
+			temp = temp->next;
+		}
+	}
+}
+
+void	ft_echo(t_info *arg)
+{
+	int		option;
+	int		i;
+	t_info	*temp;
 
 	option = find_option(arg);
+	temp = malloc(sizeof(t_info));
+	temp = arg->next;
 	i = 1;
-	if (option) // -n 이 있을때
+	if (option)
 	{
-		while (arg[option])
-		{
-			write(1, arg[option], ft_strlen(arg[option]));
-			option++;
-			if (arg[option])
-				write(1, " ", 1);
-			option++;
-		}
+		while (temp && option--)
+			temp = temp->next;
+		ft_pcmd(temp);
 	}
-	else // -n 이 없을때
+	else
 	{
-		while (arg[i])
-		{
-			write(1, arg[i], ft_strlen(arg[i]));
-			i++;
-			if (arg[i])
-				write(1, " ", 1);
-			i++;
-		}
+		ft_pcmd(temp);
 		write(1, "\n", 1);
 	}
+	free(temp);
 }
+
+// int main()
+// {
+// 	t_info	*arg;
+
+// 	arg = malloc(sizeof(t_info));
+// 	arg->next = NULL;
+
+// 	t_info	*node1 = malloc(sizeof(t_info));
+// 	node1->next = arg->next;
+// 	node1->cmd = "echo";
+// 	arg->next = node1;
+
+// 	t_info	*node2 = malloc(sizeof(t_info));
+// 	node2->next = node1->next;
+// 	node2->cmd = "-naa";
+// 	node1->next = node2;
+
+// 	t_info	*node3 = malloc(sizeof(t_info));
+// 	node3->next = node2->next;
+// 	node3->cmd = "hello";
+// 	node2->next = node3;
+
+// 	t_info	*node4 = malloc(sizeof(t_info));
+// 	node4->next = node3->next;
+// 	node4->cmd = "-n";
+// 	node3->next = node4;
+
+// 	t_info *curr = arg->next;
+// 	ft_echo(curr);
+// 	return (0);
+// }
