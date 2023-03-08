@@ -8,3 +8,13 @@ void	errno_print(char *cmd, int errnum, char *string)
 	if (cmd != NULL && char == NULL)
 		printf("%s: %s", cmd, strerror(errno));
 }
+
+// void	errno_toomany(char *cmd)
+// {
+// 	printf("%s: too many arguments\n", cmd);
+// }
+
+// void	errno_numeric(char *cmd, char *string)
+// {
+// 	printf("%s: %s: numeric argument required", cmd, string);
+// }

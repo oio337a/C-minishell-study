@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/07 20:47:34 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/08 21:06:05 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_envp
 	struct s_envp	*next;
 }	t_envp;
 
+
+
 t_info	*init_list(void);
 char	**set_path(char **envp);
 char	*get_cmd(char **path, char *cmd);
@@ -59,6 +61,7 @@ void	pipe_parser(char *line, t_info *info);
 // int		*count_q(char *munja);
 char	*validate_readline(char *line, int *count);
 void	str_tokenize(t_info *info, char *line);
+int		is_dollar(char *token);
 /*signal*/
 void	handler(int signum);
 
@@ -86,5 +89,10 @@ int		ft_export(t_envp *head, char *argv);
 char	*ft_strjoin_free(char *s1, char const *s2);
 char	*parse_dollar(char *dollar, t_envp *envp);
 void	clear_qoute_in_token(t_info *token);
+
+/*err*/
+void	errno_print(char *cmd, int errnum, char *string);
+void	errno_numeric(char *cmd, char *string);
+void	errno_toomany(char *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/08 18:31:05 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/08 21:18:03 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ int	is_dollar(char *token)
 {
 	int	i;
 
-	i = -1;
-	while(token[++i])
+	i = 0;
+	while(token[i])
 	{
-		if (token[i] == '$')
-			return (i);
+		if (token[i] == '$' || token[i] == '\0')
+			break ;
+		i++;
 	}
-	return (-1);
+	return (i);
 }
 
 char	*ft_strjoin_free(char *s1, char const *s2)
@@ -49,20 +50,12 @@ char	*find_key(char *dollar)
 	int		len; //말록하기 위해 key 길이 구함
 	
 	i = 1;
-	// if (dollar[i++] == '?')
-	// 	return (exit_code); //$? 처리
-	// if (dollar[i++] == '$')
-	// {
-	// 	if (dollar[i++] == '$')
-	// 		printf("%d", pid);
-	// 	else
-	// 		printf("\$");
-	// }
 	if (ft_isdigit(dollar[i])) // $ 넘기기
 		return (ft_strdup(""));
 	while (dollar[i] && (ft_isalnum(dollar[i]) || dollar[i] == '_'))	//1. key 찾기. key 이름은 알파벳 + 숫자 + 언더바만 고려.
 		i++;
 	key = ft_substr(dollar, 1, i - 1); //2. key에 duplicate . .
+	printf("key = %s\n", key);
 	return (key);
 }
 
@@ -71,14 +64,18 @@ char	*find_value(char *key, t_envp *envp)
 	t_envp	*head;
 
 	head = envp;
+	if (ft_strncmp(key, "", 1) == 0)
+		return (ft_strdup(""));
 	while (head != NULL)	//3. 환경변수 리스트 돌면서 key값 일치하는 것 있는지 찾음
 	{
-		if (ft_strncmp(key, head->key, ft_strlen(key)) == 0) // 있는 환경변수면 replace
+		if (!ft_strncmp(key, head->key, ft_strlen(key)) && (ft_strlen(key) == ft_strlen(head->key))) // 있는 환경변수면 replace
 			return (ft_strdup(head->value));
 		head = head->next;
 	}
 	return (ft_strdup("")); // 없는 환경변수면 안 나옴
 }
+
+
 
 char	*parse_dollar(char *str, t_envp *head)
 {
@@ -86,6 +83,8 @@ char	*parse_dollar(char *str, t_envp *head)
 	char	*ret;
 	char	*key;
 	char	*value;
+	char	*pid;
+	char	*sub;
 	int 	len;
 	int		i;
 
@@ -96,21 +95,41 @@ char	*parse_dollar(char *str, t_envp *head)
 	{
 		if (str[i] == '$')
 		{
-			// ret = ft_strjoin_free(ret, ft_substr(str, 0, len)); // 달러 전까지 문자열 잘라서 저장
+			if (ft_isdigit(str[i + 1]))
+			{
+				i += 2;
+				continue ;
+			}
+			if (str[i + 1] == '$')
+			{
+				pid = ft_itoa(getpid());
+				ret = ft_strjoin_free(ret, pid);
+				i += 2;
+				free(pid);
+				continue ;
+			}
+			if ((!ft_isalnum(str[i + 1]) && str[i + 1] != '_') || str[i + 1] == '\0')
+			{
+				ret = ft_strjoin_free(ret, "$");
+				i += 1;
+				continue ;
+			}
 			key = find_key(str + i);
 			value = find_value(key, tmp);
 			ret = ft_strjoin_free(ret, value);
-			i += ft_strlen(key); //달러까지 넘기기 ..
+			i += ft_strlen(key);
 			free(key);
 			free(value);
 		}
 		else
 		{
 			len = is_dollar((str + i));
-			ret = ft_strjoin_free(ret, ft_substr((str + i), 0, len));
+			sub = ft_substr((str + i), 0, len);
+			ret = ft_strjoin_free(ret, sub);
 			i += (len - 1);
+			free(sub);
 		}
-		i++; // $USER R 위치로 바꿔야지 된다 
+		i++; // $USER R 위치로 바꿔야지 된다
 	}
 	return (ret);
 }
@@ -130,14 +149,14 @@ int	main(int ac, char **av, char **envp) //test 메인문
 	int i = 0;
 	t_envp	*head;
 	t_envp	*tmp;
-	char	*str = "I am $1 $USER";
+	char	*str = "$! $123...$USER$";
 	char	*ret;
 
 	head = set_envp(envp);
 	tmp = head;
 	ret = parse_dollar(str, tmp);
 	printf("input : %s\noutput : %s\n", str, ret);
-	return 0;
+	return (0);
 }
 
 /*

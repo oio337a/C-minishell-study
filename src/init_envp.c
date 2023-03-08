@@ -32,18 +32,21 @@ void	insert_envp(t_envp *envp, char *key, char *value)
 	}
 }
 
-void	delete_envp(t_envp *head, t_envp *del)
-{
-	t_envp	*tmp;
+// void	delete_envp(t_envp *head, t_envp *del)
+// {
+// 	t_envp	*tmp;
 
-	while (tmp->next != del) //del 전 노드 찾기
-		tmp = tmp->next;
-	//이제 tmp->next == del
-	tmp->next = tmp->next->next;
-	free(del->key);
-	free(del->value);
-	free(del);
-}
+// 	while (tmp->next)
+// 	{
+// 		if (ft_strncmp(tmp->next->key, ) == )
+// 		tmp = tmp->next;
+// 	}
+// 	//이제 tmp->next == del
+// 	tmp->next = tmp->next->next;
+// 	free(del->key);
+// 	free(del->value);
+// 	free(del);
+// }
 
 void	delete_envp_all(t_envp **envp)
 {
