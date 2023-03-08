@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/07 22:41:19 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/08 14:56:44 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int main()
 	t_info *head1;
 	t_info *head2;
 
-	char *str = "\"\'\'\"\"\"\'\'-al\"\"\'\'\"\'\'\"";
+	char *str = "cat \"$USER\" | ls -al | cat '-e' | 'w'c -l > a";
 
 	printf("line : %s\n", str);
 	test = init_list();

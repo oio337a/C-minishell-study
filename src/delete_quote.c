@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/07 22:41:17 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/08 15:20:56 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,13 @@ static void	delete_quote(t_info *token)
 			else
 			{
 				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
+				if (is_dollar(clear_qoute_in_token) >= 0)
+				{
+					tmp = parse_dollar();
+					free(clear_token);
+					tmp = clear_token;
+					free(tmp);
+				}
 				insert_list(cmd, clear_token, WORD);
 				free(clear_token);
 				i += next_idx;
