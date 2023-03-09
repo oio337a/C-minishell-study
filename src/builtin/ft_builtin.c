@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:58:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/09 21:04:31 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/09 21:51:41 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	builtin(t_info *cmd, t_envp *head)
 {
 	int	ret;
 
+	ret = 0;
 	if (ft_strcmp(cmd, "env") == 0) //실행 과정에서 명령어 유효성 체크해야되면. 이대론않되~
 		ret = ft_env(head);
 	else if (ft_strcmp(cmd, "pwd") == 0)

@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/09 21:11:43 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/09 21:59:23 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,11 @@ void	common_errno(char *cmd, int errno, char *next_arg)
 		printf("%s: command not found", cmd);
 		g_last_status = 127;
 	}
-	// if (next_arg == NULL)
-	// {
-	// 	printf("%s: %s\n", cmd, strerror(errno)); // No such~ errno == 2
-	// 	return (1);
-	// }
+	if (next_arg == NULL)
+	{
+		printf("%s: %s\n", cmd, strerror(errno)); // No such~ errno == 2
+		return (1);
+	}
 	printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
 	g_last_status = 1;
 	// return (1); // 앞에는 실행 가능하다는 cmd 전제
