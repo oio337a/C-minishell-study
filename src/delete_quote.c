@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/08 15:20:56 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/09 19:18:23 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	*count_q(char *munja)
 	return (q);
 }
 
-static int	find_next_quotes(char *line, char quote, int quote_idx)
+int	find_next_quotes(char *line, char quote, int quote_idx)
 {
 	int	next_idx;
 
@@ -49,7 +49,8 @@ static int	find_next_quotes(char *line, char quote, int quote_idx)
 			return (next_idx);
 		next_idx++;
 	}
-	return (-1);
+	// printf("쿼터 이상해요\n");
+	return (-1); // 에러 출력으로 바꾸는게 나을듯염
 }
 
 static int	here_quote(char *line)
@@ -130,13 +131,6 @@ static void	delete_quote(t_info *token)
 			else
 			{
 				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
-				if (is_dollar(clear_qoute_in_token) >= 0)
-				{
-					tmp = parse_dollar();
-					free(clear_token);
-					tmp = clear_token;
-					free(tmp);
-				}
 				insert_list(cmd, clear_token, WORD);
 				free(clear_token);
 				i += next_idx;
@@ -173,7 +167,7 @@ static int	is_qoute(char *s)
 void	clear_qoute_in_token(t_info *token)
 {
 	t_info	*head;
-	char	*tmp;
+	// char	*tmp;
 
 	head = token;
 	while (head != NULL)

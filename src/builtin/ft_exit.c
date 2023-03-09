@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/08 21:43:30 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/09 17:14:55 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,13 @@ long long	ft_exit(t_info *arg)
 	{
 		if (check_arg)
 		{
-			errno_toomany("exit");
+			exit_errno(check_arg, arg->cmd, 1); // 이 함수에서 글로벌 변수 변경시켜줘여
 			last_exit_code = 1;
 		}
 		else if (!check_arg)
 		{
 			errno_numeric("exit", (arg->next)->cmd);
+			exit_errno(check_arg, (arg->next)->cmd, 255);
 			last_exit_code = 255;
 			exit(last_exit_code);
 		}

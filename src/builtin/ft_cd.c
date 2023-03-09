@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/08 17:21:21 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/09 19:33:58 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,50 +71,46 @@
 // 	return (NULL);
 // }
 
-// void	ft_cd(char *dir, t_envp *envp)
-// {
-// 	char	*path;
-// 	t_envp	*tmp;
-
-// 	tmp = envp;
-// 	if (!chdir(dir))
-// 	{
-// 		path = getcwd(NULL, 0);
-// 		if (!path)
-// 			return (NULL);
-// 		while (tmp != NULL)
-// 		{
-// 			if (!ft_strncmp(tmp->key, "PWD", 3))
-// 			{
-// 				free(tmp->value);
-// 				tmp->value = ft_strdup(path);
-// 				break ;
-// 			}
-// 			tmp = tmp->next;
-// 		}
-// 		free(path);
-// 	}
-// 	else 
-// 		errno_print("cd", 2, dir);
-// }
-
-#include <unistd.h>
-#include <errno.h>
-#include <string.h>
-
-int	main()
+void	ft_cd(char *dir, t_envp *envp)
 {
-	t_envp *tmp;
-	char	*file_path;
+	char	*path;
+	t_envp	*tmp;
 
-	file_path = getcwd(NULL, 0);
-	printf("현재 dir 경로 : %s\n", file_path);
-	// while (tmp != NULL)
-	// {
-	// 	printf("key : %s, value : %s", tmp->key, tmp->value);
-	// 	tmp = tmp->next;
-	// }
-
-	errno = ENOENT;
-	printf("err : %s\n", strerror(1883));
+	tmp = envp;
+	if (!chdir(dir))
+	{
+		path = getcwd(NULL, 0);
+		if (!path)
+			return (NULL);
+		while (tmp != NULL)
+		{
+			if (!ft_strncmp(tmp->key, "PWD", 3))
+			{
+				free(tmp->value);
+				tmp->value = ft_strdup(path);
+				break ;
+			}
+			tmp = tmp->next;
+		}
+		free(path);
+	}
+	else 
+		common_errno("cd", 2, dir);
 }
+
+// int	main()
+// {
+// 	t_envp *tmp;
+// 	char	*file_path;
+
+// 	file_path = getcwd(NULL, 0);
+// 	printf("현재 dir 경로 : %s\n", file_path);
+// 	// while (tmp != NULL)
+// 	// {
+// 	// 	printf("key : %s, value : %s", tmp->key, tmp->value);
+// 	// 	tmp = tmp->next;
+// 	// }
+
+// 	errno = ENOENT;
+// 	printf("err : %s\n", strerror(1883));
+// }

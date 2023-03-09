@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/06 19:41:35 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/09 21:14:10 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ int	main(int ac, char **av, char **envp)
 				tmp = info;
 				while (tmp != NULL)
 				{
-					printf("%s\n", tmp->cmd);
+					printf("after tokenize! : %s\n", tmp->cmd);
 					tmp = tmp->next;
 				}
 				/*작동*/
 				//parse_command()
+				//자르기 -> 쿼터 확인 -> 달러 처리 -> 쿼터 제거 -> 실행
 			}
-			free(str);
 		}
 		list_delete(&info);
 	}

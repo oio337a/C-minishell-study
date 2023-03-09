@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_envp.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/09 20:02:42 by suhwpark          #+#    #+#             */
+/*   Updated: 2023/03/09 20:02:47 by suhwpark         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 t_envp	*init_envp(void)
@@ -32,21 +44,42 @@ void	insert_envp(t_envp *envp, char *key, char *value)
 	}
 }
 
-// void	delete_envp(t_envp *head, t_envp *del)
-// {
-// 	t_envp	*tmp;
+void	append_envp(t_envp *envp, char *key, char *value)
+{
+	t_envp	*head;
 
-// 	while (tmp->next)
-// 	{
-// 		if (ft_strncmp(tmp->next->key, ) == )
-// 		tmp = tmp->next;
-// 	}
-// 	//이제 tmp->next == del
-// 	tmp->next = tmp->next->next;
-// 	free(del->key);
-// 	free(del->value);
-// 	free(del);
-// }
+	head = envp;
+	while (head->next)
+	{
+		if (ft_strcmp(head->key, key) == 0)
+			break ;
+		head = head->next;
+	}
+	if (head->next == NULL)
+	{
+		if (ft_strcmp(head->key, key) == 0)
+			head->value = ft_strjoin_free(head->value, value);
+		else
+			insert_envp(envp, key, value);
+	}
+	else
+		head->value = ft_strjoin_free(head->value, value);
+}
+
+int	size_envp(t_envp *lst)
+{
+	int		i;
+	t_envp	*temp;
+
+	i = 0;
+	temp = lst;
+	while (temp)
+	{
+		temp = temp->next;
+		i++;
+	}
+	return (i);
+}
 
 void	delete_envp_all(t_envp **envp)
 {

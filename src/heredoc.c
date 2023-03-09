@@ -3,51 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/02 22:03:41 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/09 20:38:13 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_heredoc(char *str)
+int	is_here_doc(char *argv)
 {
-	if (!ft_strncmp(str, "here_doc", ft_strlen2("here_doc")))
-		return (1);
-	return (0);
+	if (ft_strlen(argv) != 8)
+		return (FALSE);
+	if (ft_strncmp(argv, "here_doc", ft_strlen(argv)) != 0)
+		return (FALSE);
+	return (TRUE);
 }
 
-static void	unlink_heredoc(char *str)
+void	here_doc(char *limiter)
 {
-	unlink(str);
-	print_exit("cant't open tmp heredoc");
-}
-
-void	here_doc(t_arg *arg)
-{
-	int		heredoc_fd;
+	int		fd;
 	char	*line;
 
-	arg->limiter = ft_strjoin(arg->av[2], "\n");
-	heredoc_fd = open("/tmp/.here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (heredoc_fd == -1)
-		print_exit("can't make tmp file for heredoc");
+	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		ft_perror("here_doc failed");
 	while (1)
 	{
-		ft_printf("heredoc> ");
+		write(1, "here doc> ", 10);
 		line = get_next_line(STDIN_FILENO);
-		if (line == NULL || !ft_strncmp(arg->limiter, line, ft_strlen(line)))
+		if (line == NULL || ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
 		{
 			free(line);
 			break ;
 		}
-		ft_putstr_fd(line, heredoc_fd);
+		write(fd, line, ft_strlen(line));
 		free(line);
 	}
-	heredoc_fd = open("/tmp/.here_doc", O_RDONLY);
-	if (heredoc_fd == -1)
-		unlink_heredoc("/tmp/.here_doc");
-	dup2(heredoc_fd, STDIN_FILENO);
+	fd = open(".here_doc", O_RDONLY);
+	if (fd == -1)
+	{
+		unlink(".here_doc");
+		ft_perror("here_doc failed");
+	}
+	dup2(fd, STDIN_FILENO);
 }

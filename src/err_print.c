@@ -1,20 +1,104 @@
-#include "../includes/minishell.c"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   err_print.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
+/*   Updated: 2023/03/09 21:11:43 by suhwpark         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	errno_print(char *cmd, int errnum, char *string)
+#include "../includes/minishell.h"
+
+// void	errno_print(char *cmd, int errnum, char *string)
+// {
+// 	errno = errnum;
+// 	if (cmd != NULL && string != NULL && errno != 0)
+// 		printf("%s: %s: %s", cmd, string, strerror(errno));
+// 	if (cmd != NULL && char == NULL)
+// 		printf("%s: %s", cmd, strerror(errno));
+// }
+// errno 대충 
+/*
+	0	: It indicates successful execution.	
+	1	: It is used to catch all general errors.	“Divide by zero”, “Operation not permitted” etc. can be the error messages of this code.
+	2	: It indicates the abuse of shell built-ins.	“Missing keyword”, “No such file or directory” etc. can be the error messages of this code.
+	126	: It generates when the any command is unable to execute.	Permission problem or required key not available can generate this status code
+	127	: It normally generates for the command path problem.	“Command not found” can be the message for this error code.
+	130	: It generates for fatal error.	“Script terminated by Ctrl+C” can be the message of this code.
+	255*	It indicates exit code out of range.$
+
+	에러 출력 순서?
+
+	일반적으로는
+	1. 인자가 하나다
+		bash: cmd: command not found
+	// 2. 인자가 두개다
+	// 	처음은 맞는 cmd고, 옵션에서 터졌다
+	// 	ls: illegal option -- j
+	// 	usage: ls [-@ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1%] [file ...]
+
+	-------------------------------------------------------
+exit은 예외 인자가 3개일 때
+
+	첫번 째에서 터졌다
+		bash: exit: cmd1: numeric arg ~ (인자가 두개일 때도 동일하다.)
+	두번 째에서 터졌다
+		bash: exit: too many arg
+	
+
+환경변수
+	value만 들어왔다
+		export TEST =2244
+			bash: export: `=value`: errmsg(not a valid idnetifier)
+
+*/
+
+// int	errno_print(char *str, int errnum, char *option)
+// {
+
+// 	return (errnum);
+// }
+int	g_last_status;
+
+void	common_errno(char *cmd, int errno, char *next_arg)
 {
-	errno = errnum;
-	if (cmd != NULL && string != NULL && errno != 0)
-		printf("%s: %s: %s", cmd, string, strerror(errno));
-	if (cmd != NULL && char == NULL)
-		printf("%s: %s", cmd, strerror(errno));
+	if (errno == 127) // command not found  errno에 등록 안돼있어여
+	{
+		printf("%s: command not found", cmd);
+		g_last_status = 127;
+	}
+	// if (next_arg == NULL)
+	// {
+	// 	printf("%s: %s\n", cmd, strerror(errno)); // No such~ errno == 2
+	// 	return (1);
+	// }
+	printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
+	g_last_status = 1;
+	// return (1); // 앞에는 실행 가능하다는 cmd 전제
 }
 
-// void	errno_toomany(char *cmd)
-// {
-// 	printf("%s: too many arguments\n", cmd);
-// }
+void	envp_errno(char *err_value, int res)
+{
+	printf("export: %s: not a valid identifier", err_value);
+	// return (res);
+	g_last_status = 1;
+}
 
-// void	errno_numeric(char *cmd, char *string)
-// {
-// 	printf("%s: %s: numeric argument required", cmd, string);
-// }
+void	exit_errno(int arg_status, char *cmd, int res)
+{
+	if (arg_status != 0)
+	{
+		printf("%s: too many arguments", cmd);
+		g_last_status = 1;
+	}
+	else
+	{
+		printf("exit: %s: numeric argument required", cmd);
+		// res = 255;
+		g_last_status = 255;
+	}
+	// return (res);
+}

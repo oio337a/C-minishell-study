@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/08 14:56:44 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/09 15:07:01 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,29 +124,29 @@ void	str_tokenize(t_info *info, char *line)
 	}
 }
 
-int main()
-{
-	t_info *test;
-	t_info *head1;
-	t_info *head2;
+// int main()
+// {
+// 	t_info *test;
+// 	t_info *head1;
+// 	t_info *head2;
 
-	char *str = "cat \"$USER\" | ls -al | cat '-e' | 'w'c -l > a";
+// 	char *str = "cat \"$USER\" | ls -al | cat '-e' | 'w'c -l > a";
 
-	printf("line : %s\n", str);
-	test = init_list();
-	str_tokenize(test, str);
-	head1 = test;
-	while(head1 != NULL)
-	{
-		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
-		head1 = head1->next;
-	}
-	clear_qoute_in_token(test);
-	head2 = test;
-	while (head2 != NULL)
-	{
-		printf("a-fter cmd : %s, type : %d\n", head2->cmd, head2->type);
-		head2 = head2->next;
-	}
-	// system("leaks a.out");
-}
+// 	printf("line : %s\n", str);
+// 	test = init_list();
+// 	str_tokenize(test, str);
+// 	head1 = test;
+// 	while(head1 != NULL)
+// 	{
+// 		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
+// 		head1 = head1->next;
+// 	}
+// 	clear_qoute_in_token(test);
+// 	head2 = test;
+// 	while (head2 != NULL)
+// 	{
+// 		printf("a-fter cmd : %s, type : %d\n", head2->cmd, head2->type);
+// 		head2 = head2->next;
+// 	}
+// 	// system("leaks a.out");
+// }
