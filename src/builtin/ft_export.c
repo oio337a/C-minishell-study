@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/07 22:41:29 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/09 11:28:04 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 	기존 환경변수 free 해주고 **new로 대체
 	파이프 뒤에 있다면 자식프로세스의 export이기 때문에 환경변수 생성 X
 
-	key가 숫자로 시작하면 안 됨. 
+	key가 숫자로 시작하면 안 됨.
 
 	스페이스, 특수문자 등은 key, value 모두 안되는데, .랑 -랑 /는 왜 됨 ;;
 
@@ -80,7 +80,7 @@ t_envp	*dup_envp(t_envp *head) //정렬하기 위한 리스트 만들기
 }
 
 t_envp	*sort_envp(t_envp *head) //strcmp 사용해서 문자열 정렬 ! 리스트 정렬 vs 내부 인자만 직접 바꾸기
-{ //대문자 언더바 소문자 순이네요 .. 그냥 아스키순서 라네요 .. 씨 발 푸시스왑이잖아요
+{
 	t_envp	*tmp;
 
 	tmp = head->next;
@@ -92,7 +92,22 @@ t_envp	*sort_envp(t_envp *head) //strcmp 사용해서 문자열 정렬 ! 리스�
 	return(tmp);
 }
 
-void	add_envp(t_envp *head, char *argv) // =로 나눠진다는 보장 없음, 스페이스 및 숫자 예외 처리
+int	check_argv(char *argv)
+{
+	char	*key;
+	int		i;
+	int		ret;
+
+	i = ft_strchr_int(argv, '=');
+	if (i == -1)
+		return (validate_key(argv)); // ft_unset.c
+	key = ft_substr(argv, 0, i);
+	ret = validate_key(key);
+	free(key);
+	return (ret);
+}
+
+void	add_envp(char *argv, t_envp *head) // =로 나눠진다는 보장 없음, 스페이스 및 숫자 예외 처리
 {
 	t_envp	*new;
 	char	**arr;
@@ -100,31 +115,42 @@ void	add_envp(t_envp *head, char *argv) // =로 나눠진다는 보장 없음, �
 
 	if (!head || !argv)
 		return ;
-	i = ft_strchr_int(argv, '='); //없으면 key만
-	arr = (char **)ft_safe_malloc(2 * sizeof(char *));
-	arr[0] = ft_substr()
 	if (!check_argv(argv))
 	{
 		print_error("minishell: export: '%s' : not a valid identifier\n", argv);
 		return ;
 	}
-	new = init_envp(arr[0], arr[1]);
+	i = ft_strchr_int(argv, '=');
+	if (i == -1) //없으면 key만
+		new = init_envp(argv, NULL);
+	else
+	{
+		arr = (char **)ft_safe_malloc(2 * sizeof(char *));
+		arr[0] = ft_substr(argv, 0, i);
+		arr[1] = ft_substr(argv, i + 1, ft_strlen(argv) - i + 1);
+		new = init_envp(arr[0], arr[1]);
+	}
 	insert_envp(head, new);
-	free(arr);
+	if (arr)
+	{
+		free(arr[0]);
+		free(arr[1]);
+		free(arr);
+	}
 }
 
-int	ft_export(t_envp *head, char *argv) += =
+int	ft_export(int ac, char **av, t_envp *head)
 {
 	t_envp	*sorted;
 	t_envp	*tmp;
 	char	**arr;
+	int		i;
 
-	if (!argv)
+	if (ac == 1)
 	{
 		sorted = dup_envp(head);
 		sort_envp(sorted);
 		tmp = sorted;
-		tmp = head;
 		while (tmp)
 		{
 			if (tmp->value == NULL)
@@ -136,7 +162,13 @@ int	ft_export(t_envp *head, char *argv) += =
 		delete_envp_all(&sorted);
 	}
 	else
-		add_envp(head, argv);
+	{
+		i = 0;
+		while (i < ac)
+		{
+			add_envp(av[i], head);
+			i++
+		}
 	}
 	return (1);
 }
