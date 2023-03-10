@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 21:20:42 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 22:33:18 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define TRUE 1
 # define FALSE 0
 
-extern int	g_last_exit_code = 0;
+extern int	g_last_exit_code;
 
 typedef enum s_type
 {
@@ -101,7 +101,7 @@ int			ft_pwd(void);
 int			ft_env(t_envp *head);
 int			ft_export(t_info *arg, t_envp *head);
 void		ft_unset(char *str, t_envp **envp);
-void		ft_cd(char *dir, t_envp *envp);
+void		ft_cd(t_info *arg, t_envp *envp);
 void		ft_echo(t_info *arg);	
 long long	ft_exit(t_info *arg);
 void		ft_unset(char *str, t_envp **envp);
@@ -123,7 +123,8 @@ int		find_next_quotes(char *line, char quote, int quote_idx);
 /*err*/
 void	exit_errno(int arg_status, char *cmd, int res);
 void	envp_errno(char *err_value, int res);
-void	common_errno(char *cmd, int errno, char *next_arg);
+void	common_errno(char *cmd, int res, char *next_arg);
 void	syntax_errno(char *cmd);
+void	badpath_errno(char *str, int res);
 
 #endif

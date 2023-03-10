@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/10 21:06:09 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 22:32:44 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,20 +66,23 @@ int	g_last_status;
 // 추후에 errno를 사용하지 않는 케이스는 테스트 후 perror로 바꾸겠읍니다
 // 우리 쉘에서 될지 안될지 몰라서 일단 printf..
 
-void	common_errno(char *cmd, int errno, char *next_arg)
+void	common_errno(char *cmd, int res, char *next_arg)
 {
-	if (errno == 127) // command not found  errno에 등록 안돼있어여
+	if (res == 127) // command not found  errno에 등록 안돼있어여
 	{
 		printf("%s: command not found\n", cmd);
 		g_last_status = 127;
 	}
 	if (next_arg == NULL)
 	{
-		printf("%s: %s\n", cmd, strerror(errno)); // No such~ errno == 2
+		printf("%s: %s\n", cmd, strerror(res)); // No such~ errno == 2
 		g_last_status = 1;
 	}
-	printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
-	g_last_status = 1;
+	else
+	{
+		printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
+		g_last_status = 1;
+	}
 	// return (1); // 앞에는 실행 가능하다는 cmd 전제
 }
 
@@ -110,4 +113,9 @@ void	syntax_errno(char *cmd)
 {
 	printf("syntax error near unexpected token `%s'\n", cmd);
 	g_last_status = 258;
+}
+
+void badpath_errno(char *str, int res)
+{
+	printf("%s\n", strerror(res));
 }

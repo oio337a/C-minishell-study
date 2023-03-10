@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 21:15:11 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 21:24:40 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 	exit값 인자 자체는 long long 범위까지 처리가 가능함 long long을 넘어갈시 numeric error을 출력하면서 255로 exit
 	255가 넘어가는 숫자는 %256함
 */
-
+int g_last_exit_code;
 
 void	errno_toomany(char *cmd)
 {

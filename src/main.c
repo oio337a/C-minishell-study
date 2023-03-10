@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 20:50:46 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 22:32:24 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	main(int ac, char **av, char **envp)
 {
+	int g_last_exit_code = 0;
 	char			*str;
 	t_info			*info;
 	t_info			*tmp;

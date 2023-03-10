@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 21:18:56 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 22:33:39 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,18 +71,45 @@
 // 	return (NULL);
 // }
 
-void	ft_cd(char *dir, t_envp *envp)
+static char	*set_home(t_envp *envp) // string 들어가서 ':' 기준으로 split 합니다.
+{
+	int		i;
+	char	*path;
+	t_envp	*envp_tmp;
+
+	envp_tmp = envp;
+	i = 0;
+	while (ft_strcmp("HOME", envp_tmp->key))
+		envp_tmp = envp_tmp->next;
+	path = ft_strdup(envp_tmp->value);
+	return (path);
+}
+
+void	ft_cd(t_info *arg, t_envp *envp)
 {
 	char	*path;
+	t_info	*temp;
 	t_envp	*tmp;
 
 	tmp = envp;
-	printf("goal : %s\n", dir);
-	if (!chdir(dir))
+	temp = arg;
+	if (temp->next == NULL || ((temp->next)->cmd[0] == '~'
+			&& (temp->next)->cmd[1] == '\0'))
 	{
+		printf("aaa");
+		path = set_home(envp);
+	}
+	else
+	{
+		path = ft_strjoin(ft_strjoin(getcwd(NULL, 0), "/"), (temp->next)->cmd);
+		printf("bbb%s\n", path);
+	}
+	
+	if (!chdir(path))
+	{
+		printf("i'm in chdir!!%s\n", path);
 		path = getcwd(NULL, 0);
-		if (!path)
-			common_errno("cd", 2, NULL);
+		printf("%s\n", path);
 		while (tmp != NULL)
 		{
 			if (!ft_strncmp(tmp->key, "PWD", 3))
@@ -93,10 +120,13 @@ void	ft_cd(char *dir, t_envp *envp)
 			}
 			tmp = tmp->next;
 		}
-		free(path);
 	}
-	else 
-		common_errno("cd", 2, dir);
+	else // 함수 종료 후 뉴라인 띄우기
+	{
+		printf("from else...\n");
+		common_errno("cd", 2, NULL);
+		// badpath_errno("cd", 2);
+	}
 }
 
 // int	main()

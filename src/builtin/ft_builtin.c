@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:58:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 21:13:58 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 22:26:05 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ int	builtin(t_info *cmd, t_envp *head)
 	else if (ft_strcmp(cmd->cmd, "export") == 0)
 		ret = ft_export(cmd, head);
 	else if (ft_strcmp(cmd->cmd, "unset") == 0) //인자로 str
-		ft_unset(cmd->cmd, &head);
+		ft_unset(cmd->next->cmd, &head);
 	else if (ft_strcmp(cmd->cmd, "cd") == 0) //인자로 dir ! 
-		ft_cd(cmd->cmd, head);
+		ft_cd(cmd, head);
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		ft_echo(cmd);
 	else if (ft_strcmp(cmd->cmd, "exit") == 0)

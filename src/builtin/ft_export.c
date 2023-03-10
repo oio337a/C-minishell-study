@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 21:07:34 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 22:18:53 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,55 +44,55 @@
 	작은, 큰 따옴표 제거하고 환경변수 목록에 추가되어야 함.
 */
 
-char	**dup_envp(t_envp *head) //정렬하기 위한 배열 만들기
-{
-	t_envp	*tmp;
-	char	**ret;
-	int		i;
+// char	**dup_envp(t_envp *head) //정렬하기 위한 배열 만들기
+// {
+// 	t_envp	*tmp;
+// 	char	**ret;
+// 	int		i;
 
-	tmp = head;
-	ret = (char **)ft_safe_malloc(sizeof(char *) * (size_envp(head) + 1));
-	i = 0;
-	while (tmp)
-	{
-		ret[i] = ft_strdup(tmp->key);
-		if (tmp->value)
-		{
-			ret[i] = ft_strjoin_free(ret[i], "=\"");
-			ret[i] = ft_strjoin_free(ret[i], tmp->value);
-			ret[i] = ft_strjoin_free(ret[i], "\"");
-		}
-		tmp = tmp->next;
-		i++;
-	}
-	return (ret);
-}
+// 	tmp = head;
+// 	ret = (char **)ft_safe_malloc(sizeof(char *) * (size_envp(head) + 1));
+// 	i = 0;
+// 	while (tmp)
+// 	{
+// 		ret[i] = ft_strdup(tmp->key);
+// 		if (tmp->value)
+// 		{
+// 			ret[i] = ft_strjoin_free(ret[i], "=\"");
+// 			ret[i] = ft_strjoin_free(ret[i], tmp->value);
+// 			ret[i] = ft_strjoin_free(ret[i], "\"");
+// 		}
+// 		tmp = tmp->next;
+// 		i++;
+// 	}
+// 	return (ret);
+// }
 
-void	sort_arr(char **arr) //strcmp 사용해서 문자열 정렬
-{
-	char	*tmp;
-	int		i;
-	int		j;
-	int		len;
+// void	sort_arr(char **arr) //strcmp 사용해서 문자열 정렬
+// {
+// 	char	*tmp;
+// 	int		i;
+// 	int		j;
+// 	int		len;
 
-	len = ft_arrlen(arr);
-	i = 0;
-	while (i < len - 1)
-	{
-		j = 0;
-		while (j < len - 1)
-		{
-			if (ft_strcmp(*(arr + i), *(arr + j)) < 0)
-			{
-				tmp = *(arr + j);
-				*(arr + j) = *(arr + i);
-				*(arr + i) = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
+// 	len = ft_arrlen(arr);
+// 	i = 0;
+// 	while (i < len - 1)
+// 	{
+// 		j = 0;
+// 		while (j < len - 1)
+// 		{
+// 			if (ft_strcmp(*(arr + i), *(arr + j)) < 0)
+// 			{
+// 				tmp = *(arr + j);
+// 				*(arr + j) = *(arr + i);
+// 				*(arr + i) = tmp;
+// 			}
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 int	check_argv(char *argv)
 {
@@ -165,15 +165,20 @@ int	ft_export(t_info *arg, t_envp *head)
 	env_tmp = head;
 	if (arg_tmp->next == NULL)
 	{
-		arr = dup_envp(head);
-		sort_arr(arr);
-		i = 0;
-		while (arr[i]) 
+		// arr = dup_envp(head);
+		// sort_arr(arr);
+		// i = 0;
+		// while (arr[i]) 
+		// {
+		// 	printf("declare -x %s\n", arr[i]);
+		// 	i++;
+		// }
+		// ft_free(arr);
+		while (env_tmp)
 		{
-			printf("declare -x %s\n", arr[i]);
-			i++;
+			printf("declare -x %s=\"%s\"\n", env_tmp->key, env_tmp->value);
+			env_tmp = env_tmp->next;
 		}
-		ft_free(arr);
 		return (1);
 	}
 	arg_tmp = arg_tmp->next;
