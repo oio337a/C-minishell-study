@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/09 17:14:55 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 21:15:11 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@
 	255가 넘어가는 숫자는 %256함
 */
 
-int last_exit_code = 0;
 
 void	errno_toomany(char *cmd)
 {
@@ -82,8 +81,8 @@ long long	ft_exit(t_info *arg)
 	write(1, "exit\n", 5);
 	if (arg_size == 1) // 걍 exit (위 아래 위위 아래 위 아래 위위 아래)
 	{
-		last_exit_code = 0;
-		exit(last_exit_code);
+		g_last_exit_code = 0;
+		exit(g_last_exit_code);
 	}
 	check_arg = check_sec(arg);
 	if (arg_size >= 3)
@@ -91,75 +90,75 @@ long long	ft_exit(t_info *arg)
 		if (check_arg)
 		{
 			exit_errno(check_arg, arg->cmd, 1); // 이 함수에서 글로벌 변수 변경시켜줘여
-			last_exit_code = 1;
+			g_last_exit_code = 1;
 		}
 		else if (!check_arg)
 		{
-			errno_numeric("exit", (arg->next)->cmd);
 			exit_errno(check_arg, (arg->next)->cmd, 255);
-			last_exit_code = 255;
-			exit(last_exit_code);
+			g_last_exit_code = 255;
+			exit(g_last_exit_code);
 		}
 	}
 	else // 인자 1개 들어왓을 때
 	{
 		if (check_arg)
 		{
-			last_exit_code = ft_atoi((arg->next)->cmd) % 256;
-			exit(last_exit_code);
+			g_last_exit_code = ft_atoi((arg->next)->cmd) % 256;
+			exit(g_last_exit_code);
 		}
 		else
 		{
-			errno_numeric("exit", (arg->next)->cmd);
-			last_exit_code = 255;
-			exit(last_exit_code);
+			// errno_numeric("exit", (arg->next)->cmd);
+			exit_errno(check_arg, (arg->next)->cmd, 255);
+			g_last_exit_code = 255;
+			exit(g_last_exit_code);
 		}
 	}
-	return (last_exit_code);
+	return (g_last_exit_code);
 }
 
-int main()
-{
-	/*
-		1. exit 만 들어왓다.
-			=> exit\n 출력  exit code 0 O
-		2. 3개다
-			exit q24 142  -> numeric 255  O
-			exit 142 242 -> 출력만, 1로 반환 O
-		3. 2개다
-			eixt qkw -> numeric 255 O
-			exit 2 -> 2로 exit O
-		all clear ~!~!~!
-	*/
-	t_info	*arg;
+// int main()
+// {
+// 	/*
+// 		1. exit 만 들어왓다.
+// 			=> exit\n 출력  exit code 0 O
+// 		2. 3개다
+// 			exit q24 142  -> numeric 255  O
+// 			exit 142 242 -> 출력만, 1로 반환 O
+// 		3. 2개다
+// 			eixt qkw -> numeric 255 O
+// 			exit 2 -> 2로 exit O
+// 		all clear ~!~!~!
+// 	*/
+// 	t_info	*arg;
 
-	arg = malloc(sizeof(t_info));
-	arg->next = NULL;
+// 	arg = malloc(sizeof(t_info));
+// 	arg->next = NULL;
 
-	t_info	*node1 = malloc(sizeof(t_info));
-	node1->next = arg->next;
-	node1->cmd = "exit";
-	arg->next = node1;
+// 	t_info	*node1 = malloc(sizeof(t_info));
+// 	node1->next = arg->next;
+// 	node1->cmd = "exit";
+// 	arg->next = node1;
 
-	t_info	*node2 = malloc(sizeof(t_info));
-	node2->next = node1->next;
-	node2->cmd = "123";
-	node1->next = node2;
+// 	t_info	*node2 = malloc(sizeof(t_info));
+// 	node2->next = node1->next;
+// 	node2->cmd = "123";
+// 	node1->next = node2;
 
-	t_info	*node3 = malloc(sizeof(t_info));
-	node3->next = node2->next;
-	node3->cmd = "1";
-	node2->next = node3;
+// 	t_info	*node3 = malloc(sizeof(t_info));
+// 	node3->next = node2->next;
+// 	node3->cmd = "1";
+// 	node2->next = node3;
 
-	// t_info	*node4 = malloc(sizeof(t_info));
-	// node4->next = node3->next;
-	// node4->cmd = "-n";
-	// node3->next = node4;
+// 	// t_info	*node4 = malloc(sizeof(t_info));
+// 	// node4->next = node3->next;
+// 	// node4->cmd = "-n";
+// 	// node3->next = node4;
 
-	t_info *curr = arg->next;
-	ft_exit(curr);
-	return (0);
-}
+// 	t_info *curr = arg->next;
+// 	ft_exit(curr);
+// 	return (0);
+// }
 /*
 // 여러분~~~ 이런 경우 생각 해야해요.  exit > e 또는 exit << EOF 이런거 말이죵~!~!!~!
 exit 뒤의!!

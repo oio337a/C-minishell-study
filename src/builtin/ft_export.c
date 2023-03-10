@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 16:57:01 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 21:07:34 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,21 +115,6 @@ int	check_argv(char *argv)
 	free(key);
 	return (ret);
 }
-
-// int main() //check_argv main
-// {
-// 	char *str = "aaa=bbb";
-// 	char *str2 = "zzz+=yyy";
-// 	char *str3 = "+";
-// 	char *str4 = "=";
-// 	char *str5 = "=+";
-
-// 	printf("%s : %d\n", str, check_argv(str));
-// 	printf("%s : %d\n", str2, check_argv(str2));
-// 	printf("%s : %d\n", str3, check_argv(str3));
-// 	printf("%s : %d\n", str4, check_argv(str4));
-// 	printf("%s : %d\n", str5, check_argv(str5));
-// }
 
 void	add_envp(char *argv, t_envp *head) // =로 나눠진다는 보장 없음, 스페이스 및 숫자 예외 처리
 {

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/08 16:48:01 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 20:59:17 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static int	find_option(t_info *arg)
 		option_idx++;
 		temp = temp->next;
 	}
-	free(temp);
 	return (option_idx);
 }
 
@@ -81,7 +80,7 @@ static void	ft_pcmd(t_info *temp)
 {
 	while (temp)
 	{
-		if (temp->type == "WORD")
+		if (temp->type == WORD)
 		{
 			write(1, temp->cmd, ft_strlen(temp->cmd));
 			if (!temp->next)
@@ -105,7 +104,6 @@ void	ft_echo(t_info *arg)
 	t_info	*temp;
 
 	option = find_option(arg);
-	temp = malloc(sizeof(t_info));
 	temp = arg->next;
 	i = 1;
 	if (option)
@@ -119,7 +117,6 @@ void	ft_echo(t_info *arg)
 		ft_pcmd(temp);
 		write(1, "\n", 1);
 	}
-	free(temp);
 }
 
 // int main()

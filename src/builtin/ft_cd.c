@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/09 19:33:58 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 21:18:56 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,12 @@ void	ft_cd(char *dir, t_envp *envp)
 	t_envp	*tmp;
 
 	tmp = envp;
+	printf("goal : %s\n", dir);
 	if (!chdir(dir))
 	{
 		path = getcwd(NULL, 0);
 		if (!path)
-			return (NULL);
+			common_errno("cd", 2, NULL);
 		while (tmp != NULL)
 		{
 			if (!ft_strncmp(tmp->key, "PWD", 3))

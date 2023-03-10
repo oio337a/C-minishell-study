@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_dollar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/09 19:40:17 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:35:08 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,4 +147,4 @@ void	find_dollar(t_info *token, t_envp *_env)
 // 		head2 = head2->next;
 // 	}
 	// system("leaks a.out");
-}
+// }

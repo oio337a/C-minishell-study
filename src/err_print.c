@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/10 15:57:01 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 21:06:09 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,13 @@ void	common_errno(char *cmd, int errno, char *next_arg)
 {
 	if (errno == 127) // command not found  errno에 등록 안돼있어여
 	{
-		printf("%s: command not found", cmd);
+		printf("%s: command not found\n", cmd);
 		g_last_status = 127;
 	}
 	if (next_arg == NULL)
 	{
 		printf("%s: %s\n", cmd, strerror(errno)); // No such~ errno == 2
-		return (1);
+		g_last_status = 1;
 	}
 	printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
 	g_last_status = 1;
@@ -85,7 +85,7 @@ void	common_errno(char *cmd, int errno, char *next_arg)
 
 void	envp_errno(char *err_value, int res)
 {
-	printf("export: %s: not a valid identifier", err_value);
+	printf("export: %s: not a valid identifier\n", err_value);
 	// return (res);
 	g_last_status = 1;
 }
@@ -94,12 +94,12 @@ void	exit_errno(int arg_status, char *cmd, int res)
 {
 	if (arg_status != 0)
 	{
-		printf("%s: too many arguments", cmd);
+		printf("Nakishell$: %s: too many arguments\n", cmd);
 		g_last_status = 1;
 	}
 	else
 	{
-		printf("exit: %s: numeric argument required", cmd);
+		printf("Nakishell$: exit: %s: numeric argument required\n", cmd);
 		// res = 255;
 		g_last_status = 255;
 	}
@@ -108,6 +108,6 @@ void	exit_errno(int arg_status, char *cmd, int res)
 
 void	syntax_errno(char *cmd)
 {
-	printf("syntax error near unexpected token `%s'", cmd);
+	printf("syntax error near unexpected token `%s'\n", cmd);
 	g_last_status = 258;
 }

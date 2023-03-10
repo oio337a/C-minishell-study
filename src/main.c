@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 16:48:57 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 20:50:46 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	main(int ac, char **av, char **envp)
 	t_info			*after_deleteq;
 
 	envp_head = set_envp(envp); // 환경변수 세팅
-	envp_char = set_path(t_envp);
 	info = NULL;
 	// 시그널 처리도 위에서 !
 	while (1)
@@ -48,17 +47,19 @@ int	main(int ac, char **av, char **envp)
 				else
 					common_errno(info->cmd, 1, NULL); // 나중에 고치는걸로 완벽 X
 				tmp = info;
+				// after_deleteq = info;
 				// token -> builtin 검수 후 그대로 실행한다. 
 				// builtin의 요소가 아니라면 cmd의 path를 가져와 execve로 넣거나,에러처리
 				while (tmp != NULL)
 				{
-					if (!builtin(tmp, envp_head)) // 추가적인 list 생성이 필요할수도?ㅠ
-					{
-						cmd_path = get_cmd(tmp->cmd, envp_head);
-						execve(cmd_path, 2차원배열, envp);
+					// if (!builtin(tmp, envp_head)) // 추가적인 list 생성이 필요할수도?ㅠ
+					// {
+					// 	cmd_path = get_cmd(tmp->cmd, envp_head);
+					// 	execve(cmd_path, 2차원배열, envp);
 						
-						//path 실행
-					}
+					// 	//path 실행
+					// }
+					builtin(tmp, envp_head);
 					tmp = tmp->next;
 				}
 			}
