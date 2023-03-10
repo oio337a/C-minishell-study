@@ -31,3 +31,20 @@ int	ft_strchr_int(const char *s, char c)
 		return (i);
 	return (-1);
 }
+
+char	*ft_strjoin_free(char *s1, char const *s2)
+{
+	char	*str;
+	size_t	s1_len;
+	size_t	s2_len;
+
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	str = (char *)malloc(s1_len + s2_len + 1);
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1, s1_len + 1);
+	ft_strlcat(str + s1_len, s2, s2_len + 1);
+	free(s1);
+	return (str);
+}

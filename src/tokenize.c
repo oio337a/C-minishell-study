@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/09 15:07:01 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:48:07 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,21 @@ void	str_tokenize(t_info *info, char *line)
 		{
 			if (*(line + 1) == '>')
 			{
-				insert_list(info, ">>", REDIR);
+				insert_list(info, ">>", HEREDOC_OUT);
 				line++;
 			}
 			else
-				insert_list(info, ">", REDIR);
+				insert_list(info, ">", REDIR_OUT);
 		}
 		if (*line == '<')
 		{
 			if (*(line + 1) == '<')
 			{
-				insert_list(info, "<<", REDIR);
+				insert_list(info, "<<", HEREDOC_IN);
 				line++;
 			}
 			else
-				insert_list(info, "<", REDIR);
+				insert_list(info, "<", REDIR_IN);
 		}
 		if (*line == '|')
 			insert_list(info, "|", PIPE);

@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/09 21:59:23 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:57:01 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ exit은 예외 인자가 3개일 때
 // }
 int	g_last_status;
 
+// 추후에 errno를 사용하지 않는 케이스는 테스트 후 perror로 바꾸겠읍니다
+// 우리 쉘에서 될지 안될지 몰라서 일단 printf..
+
 void	common_errno(char *cmd, int errno, char *next_arg)
 {
 	if (errno == 127) // command not found  errno에 등록 안돼있어여
@@ -101,4 +104,10 @@ void	exit_errno(int arg_status, char *cmd, int res)
 		g_last_status = 255;
 	}
 	// return (res);
+}
+
+void	syntax_errno(char *cmd)
+{
+	printf("syntax error near unexpected token `%s'", cmd);
+	g_last_status = 258;
 }

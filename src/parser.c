@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 18:34:22 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/07 20:11:57 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:19:59 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ char	*validate_readline(char *line)
 	// if (count[0]/2 != 0 || count[1]/2 != 0)
 	// 	printf("%s: %s\n", line, strerror(errno)); // 에러 출력 후 새로운 line을 받도록
 	v_line = delete_quote(line, count);
-		printf("v_r 빠져나왔음\n");
 	i = 0;
 	while (v_line[i])
 	{

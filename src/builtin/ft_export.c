@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/09 20:55:12 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:57:01 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int	ft_export(t_info *arg, t_envp *head)
 		arr = dup_envp(head);
 		sort_arr(arr);
 		i = 0;
-		while (arr[i])
+		while (arr[i]) 
 		{
 			printf("declare -x %s\n", arr[i]);
 			i++;

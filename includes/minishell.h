@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/09 21:06:48 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/10 15:48:30 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,13 @@ extern int	g_last_status;
 
 typedef enum s_type
 {
-	REDIR,
-	PIPE,
+	HEREDOC_IN, // <<
+	HEREDOC_OUT, // >> append
+	REDIR_IN, // <
+	REDIR_OUT, // >
+	PIPE, // |
 	WORD
-} 	t_type;
+}	t_type;
 
 typedef struct s_info
 {
@@ -72,6 +75,7 @@ void	handler(int signum);
 void	print_error(char *errmsg, int errnum);
 int		ft_arrlen(char **arr);
 int		ft_strchr_int(const char *s, char c);
+char	*ft_strjoin_free(char *s1, char const *s2);
 
 /*envp_utils*/
 t_envp	*init_envp(void);
@@ -97,7 +101,6 @@ int		ft_export(t_info *arg, t_envp *head);
 void	ft_unset(char *str, t_envp **envp);
 
 /*quotes*/
-char	*ft_strjoin_free(char *s1, char const *s2);
 char	*parse_dollar(char *str, t_envp *head);
 void	clear_qoute_in_token(t_info *token);
 int		find_next_quotes(char *line, char quote, int quote_idx);
@@ -106,5 +109,6 @@ int		find_next_quotes(char *line, char quote, int quote_idx);
 void	exit_errno(int arg_status, char *cmd, int res);
 void	envp_errno(char *err_value, int res);
 void	common_errno(char *cmd, int errno, char *next_arg);
+int		syntax_errno(char *cmd);
 
 #endif
