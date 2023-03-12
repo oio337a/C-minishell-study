@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 22:33:18 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/12 12:06:46 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ char	**dup_envp(t_envp *head);
 void	sort_arr(char **arr);
 int		check_argv(char *argv);
 void	add_envp(char *argv, t_envp *head);
+int	check_dupkey(t_envp *envp, char *key);
 
 /*unset*/
 int 	validate_key(char *str);
@@ -102,7 +103,7 @@ int			ft_env(t_envp *head);
 int			ft_export(t_info *arg, t_envp *head);
 void		ft_unset(char *str, t_envp **envp);
 void		ft_cd(t_info *arg, t_envp *envp);
-void		ft_echo(t_info *arg);	
+void		ft_echo(t_info *arg);
 long long	ft_exit(t_info *arg);
 void		ft_unset(char *str, t_envp **envp);
 

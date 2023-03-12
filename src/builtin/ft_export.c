@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 22:18:53 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/12 12:24:27 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 /*
+	추가할 것  : 인자로 받은 key가 이미 있을 때, 덮어 씌우기
+	-> init_envp.c에 insert_envp 시 check_dupkey 조건 추가했어요
+
 	# 예시
 	export <변수명>=<값> : export abc=123
 	-------------------------------
@@ -65,6 +68,7 @@
 // 		tmp = tmp->next;
 // 		i++;
 // 	}
+// 	ret[i] = NULL;
 // 	return (ret);
 // }
 
@@ -116,7 +120,7 @@ int	check_argv(char *argv)
 	return (ret);
 }
 
-void	add_envp(char *argv, t_envp *head) // =로 나눠진다는 보장 없음, 스페이스 및 숫자 예외 처리
+void	add_envp(char *argv, t_envp *head)
 {
 	t_envp	*new;
 	char	**arr;
@@ -134,23 +138,22 @@ void	add_envp(char *argv, t_envp *head) // =로 나눠진다는 보장 없음, �
 	plus = ft_strchr_int(argv, '+');
 	if (i == -1) //없으면 key만
 		insert_envp(head, argv, NULL);
-	else
+	else // 이부분 함수로 빼기
 	{
-		arr = (char **)ft_safe_malloc(2 * sizeof(char *));
+		arr = (char **)ft_safe_malloc(3 * sizeof(char *));
 		arr[1] = ft_substr(argv, i + 1, ft_strlen(argv) - i + 1);
-		if (plus == i - 1)
+		arr[2] = NULL;
+		if (plus == i - 1) // +=인 경우 뒤에 덧붙이기
 		{
 			arr[0] = ft_substr(argv, 0, i - 1);
 			append_envp(head, arr[0], arr[1]);
 		}
-		else
+		else // 그냥 key=value인 경우
 		{
 			arr[0] = ft_substr(argv, 0, i);
 			insert_envp(head, arr[0], arr[1]);
 		}
-		free(arr[0]);
-		free(arr[1]);
-		free(arr);
+		ft_free(arr);
 	}
 }
 
@@ -168,7 +171,7 @@ int	ft_export(t_info *arg, t_envp *head)
 		// arr = dup_envp(head);
 		// sort_arr(arr);
 		// i = 0;
-		// while (arr[i]) 
+		// while (arr[i])
 		// {
 		// 	printf("declare -x %s\n", arr[i]);
 		// 	i++;
@@ -200,7 +203,7 @@ int	ft_export(t_info *arg, t_envp *head)
 // 	insert_list(arg, "xxx=123", 2);
 // 	insert_list(arg, "a====b", 2);
 // 	insert_list(arg, "123a=123", 2);
-// 	insert_list(arg, "xxx+=456", 2);
+// 	insert_list(arg, "xxx=456", 2);
 // 	insert_list(arg, "ooo+=456", 2);
 
 // 	ft_export(arg, head);
