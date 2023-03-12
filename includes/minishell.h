@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 12:06:46 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/12 18:45:59 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,17 @@ void	append_envp(t_envp *envp, char *key, char *value);
 int		size_envp(t_envp *lst);
 void	delete_envp_all(t_envp **envp);
 t_envp	*set_envp(char **envp);
-
+int		list_size(t_info *info);
+int	cmd_size(t_info *info);
 /*export*/
 char	**dup_envp(t_envp *head);
 void	sort_arr(char **arr);
 int		check_argv(char *argv);
 void	add_envp(char *argv, t_envp *head);
-int	check_dupkey(t_envp *envp, char *key);
+int		check_dupkey(t_envp *envp, char *key);
 
 /*unset*/
-int 	validate_key(char *str);
+int		validate_key(char *str);
 
 /*builtin*/
 int			builtin(t_info *cmd, t_envp *head);
@@ -127,5 +128,16 @@ void	envp_errno(char *err_value, int res);
 void	common_errno(char *cmd, int res, char *next_arg);
 void	syntax_errno(char *cmd);
 void	badpath_errno(char *str, int res);
+
+/*pipe*/
+void	access_token(t_info *token, t_envp *env);
+void	firsrt_process(t_info *token, t_envp *env, int fd[]);
+void	mid_process(t_info *token, t_envp *env, int fd[]);
+void	last_process(t_info *token, t_envp *env, int fd[]);
+void	redir_case(t_info *token);
+char	**execve_path(t_info *token);
+t_info	*make_new_list(t_info *token);
+int		get_pipe_count(t_info *token);
+char	**envp_arr(t_envp *envp);
 
 #endif

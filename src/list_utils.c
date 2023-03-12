@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:34 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/09 20:02:01 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:45:52 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,3 +57,32 @@ void	list_delete(t_info **info)
 	}
 }
 
+int	list_size(t_info *info)
+{
+	t_info	*head;
+	int		i;
+
+	head = info;
+	i = 0;
+	while (head)
+	{
+		i++;
+		head = head->next;
+	}
+	return (i);
+}
+
+int	cmd_size(t_info *info)
+{
+	t_info	*head;
+	int		i;
+
+	head = info;
+	i = 0;
+	while (head && (head->type != REDIR_IN) || (head->type != REDIR_OUT) || head->type != HEREDOC_IN || head->type != HEREDOC_IN)
+	{
+		i++;
+		head = head->next;
+	}
+	return (i);
+}

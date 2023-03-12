@@ -6,7 +6,7 @@
 /*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 15:02:11 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/12 16:22:13 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	main(int ac, char **av, char **envp)
 					// 	//path 실행
 					// }
 					builtin(tmp, envp_head);
+					//path 실행 
 					tmp = tmp->next;
 				}
 			}

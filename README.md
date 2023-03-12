@@ -59,4 +59,9 @@ ex)
 ---
 
 1. errno 함수 타면 무조건 뒤에 함수 실행 안하고, newline을 띄우도록
+
 2. pipe를 어떻게 하면 예쁘게 자를 수 있을가요?벅
+- 1. 파이프 뒤까지 새로 담음
+- 2. redir 검사 후 있으면 fd값을 갖고 stdin, out조작
+- 3. 이후 first, mid, last 프로세스는 기존과 동일하게 작동
+ㅋㅋ command_test로 와주세여네네네 access_token 함수가 시작이에여
