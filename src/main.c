@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 22:32:24 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/12 15:02:11 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ int	main(int ac, char **av, char **envp)
 					clear_qoute_in_token(info); // 쿼터 제거
 				}
 				else
+				{
 					common_errno(info->cmd, 1, NULL); // 나중에 고치는걸로 완벽 X
+					continue ;
+				}
 				tmp = info;
 				// after_deleteq = info;
 				// token -> builtin 검수 후 그대로 실행한다. 

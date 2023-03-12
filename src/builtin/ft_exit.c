@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 21:24:40 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/12 14:23:11 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,6 @@
 	255가 넘어가는 숫자는 %256함
 */
 int g_last_exit_code;
-
-void	errno_toomany(char *cmd)
-{
-	printf("%s: too many arguments\n", cmd);
-}
-
-void	errno_numeric(char *cmd, char *string)
-{
-	printf("%s: %s: numeric argument required", cmd, string);
-}
 
 int	check_sec(t_info *arg)
 {
@@ -79,7 +69,7 @@ long long	ft_exit(t_info *arg)
 
 	arg_size = list_get_size(arg);
 	write(1, "exit\n", 5);
-	if (arg_size == 1) // 걍 exit (위 아래 위위 아래 위 아래 위위 아래)
+	if (arg_size == 1)
 	{
 		g_last_exit_code = 0;
 		exit(g_last_exit_code);
@@ -88,14 +78,10 @@ long long	ft_exit(t_info *arg)
 	if (arg_size >= 3)
 	{
 		if (check_arg)
-		{
-			exit_errno(check_arg, arg->cmd, 1); // 이 함수에서 글로벌 변수 변경시켜줘여
-			g_last_exit_code = 1;
-		}
+			exit_errno(check_arg, arg->cmd, 1);
 		else if (!check_arg)
 		{
 			exit_errno(check_arg, (arg->next)->cmd, 255);
-			g_last_exit_code = 255;
 			exit(g_last_exit_code);
 		}
 	}
@@ -108,9 +94,7 @@ long long	ft_exit(t_info *arg)
 		}
 		else
 		{
-			// errno_numeric("exit", (arg->next)->cmd);
 			exit_errno(check_arg, (arg->next)->cmd, 255);
-			g_last_exit_code = 255;
 			exit(g_last_exit_code);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 13:58:38 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/12 14:15:42 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*set_home(t_envp *envp)
 	return (path);
 }
 
-t_envp	set_oldpath(t_envp *envp)
+void	set_oldpath(t_envp *envp)
 {
 	while (envp)
 	{
@@ -65,7 +65,6 @@ t_envp	set_oldpath(t_envp *envp)
 void	ft_cd(t_info *arg, t_envp *envp)
 {
 	char	*path;
-	char	*old_pwd;
 
 	set_oldpath(envp);
 	if (arg->next == NULL || ((arg->next)->cmd[0] == '~'
