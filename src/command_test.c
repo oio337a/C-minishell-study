@@ -22,7 +22,7 @@ char	**envp_arr(t_envp *envp)
 	int		i;
 
 	i = 0;
-	res = (char **)malloc(sizeof(char *) * (list_size(envp)) + 1);
+	res = (char **)malloc(sizeof(char *) * (size_envp(envp)) + 1);
 	while (envp)
 	{
 		tmp = ft_strjoin(envp->key, "=");
@@ -40,6 +40,7 @@ int	get_pipe_count(t_info *token)
 	int		cnt;
 
 	head = token;
+	cnt = 0;
 	while (head)
 	{
 		if (head->type == PIPE)
@@ -49,20 +50,21 @@ int	get_pipe_count(t_info *token)
 	return (cnt);
 }
 // 파이프 전까지 새로운 리스트에 담는다
-t_info	*make_new_list(t_info *token)
+t_info	*make_new_list(t_info **token)
 {
 	t_info	*new;
 
 	new = init_list();
-	while (token)
+	while (*token)
 	{
-		if (token->type == PIPE)
+		if ((*token)->type == PIPE)
 		{
-			token = token->next;
+			*token = (*token)->next;
 			break ;
 		}	
-		insert_list(new, token->cmd, token->type);
-		token = token->next;
+		insert_list(new, (*token)->cmd, (*token)->type);
+		printf("cmd %s\n", (*token)->cmd);
+		*token = (*token)->next;
 	}
 	return (new);
 }
@@ -109,13 +111,30 @@ void	redir_case(t_info *token)
 		dup2(new_fd, STDOUT_FILENO);
 		close(new_fd);
 	}
-
 }
 
-void	firsrt_process(t_info *token, t_envp *env, int fd[])
+void	first_process(t_info *token, t_envp *env, int fd[])
 {
+	printf("It's first\n");
 	char	**cmd_line;
-	int		new_fd;
+
+	close(fd[0]);
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[1]);
+	while (token)
+	{
+		redir_case(token);
+		cmd_line = execve_path(token);
+		printf("path : %s\n", get_cmd(cmd_line[0], env));
+		execve(get_cmd(cmd_line[0], env), cmd_line, envp_arr(env));
+		token = token->next;
+	}
+}
+
+void	last_process(t_info *token, t_envp *env, int fd[])
+{
+	printf("It's last\n");
+	char	**cmd_line;
 
 	while (token)
 	{
@@ -129,23 +148,10 @@ void	firsrt_process(t_info *token, t_envp *env, int fd[])
 	close(fd[1]);
 }
 
-void	last_process(t_info *token, t_envp *env, int fd[])
-{
-	int		new_fd;
-	char	*cmd_line;
-
-	while (token)
-	{
-		redir_case(token);
-		cmd_line = execve_path(token);
-		execve(get_cmd(cmd_line[0], env), cmd_line, envp_arr(env));
-		token = token->next;
-	}
-}
-
 void	mid_process(t_info *token, t_envp *env, int fd[])
 {
-	char	*cmd_line;
+	printf("dont'here\n");
+	char	**cmd_line;
 
 	while (token)
 	{
@@ -155,7 +161,7 @@ void	mid_process(t_info *token, t_envp *env, int fd[])
 		token = token->next;
 	}
 	dup2(fd[1], STDOUT_FILENO);
-	close(fd[0]);
+	close(fd[1]);
 }
 
 void	access_token(t_info *token, t_envp *env)
@@ -168,9 +174,9 @@ void	access_token(t_info *token, t_envp *env)
 
 	i = -1;
 	pipe_cnt = get_pipe_count(token);
-	while (++i < pipe_cnt)
+	while (++i < pipe_cnt + 1)
 	{
-		new_token = make_new_list(token);
+		new_token = make_new_list(&token);
 		if (pipe(fd) == -1)
 			exit(1);
 		pid = fork();
@@ -178,13 +184,14 @@ void	access_token(t_info *token, t_envp *env)
 		{
 			if (i == 0)
 				first_process(new_token, env, fd);
-			if (i == pipe_cnt - 1)
+			if (i == pipe_cnt)
 				last_process(new_token, env, fd);
 			mid_process(new_token, env, fd);
-			dup2(fd[0], STDIN_FILENO);
-			close(fd[0]);
-			close(fd[1]);
 		}
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		list_delete(&new_token);
 	}
 	while (wait(NULL) == -1)
 		return ;

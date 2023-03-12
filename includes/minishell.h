@@ -6,7 +6,7 @@
 /*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 18:45:59 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/12 21:42:42 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ void	mid_process(t_info *token, t_envp *env, int fd[]);
 void	last_process(t_info *token, t_envp *env, int fd[]);
 void	redir_case(t_info *token);
 char	**execve_path(t_info *token);
-t_info	*make_new_list(t_info *token);
+t_info	*make_new_list(t_info **token);
 int		get_pipe_count(t_info *token);
 char	**envp_arr(t_envp *envp);
 
