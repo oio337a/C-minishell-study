@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 22:33:39 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/12 13:52:07 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,6 @@
 	-> 에러메세지 없이 ~로 이동
 */
 
-// void	ft_cd(char **path)
-// {
-// 	if (path[0] == "" || path[0] == "~")
-// 	{
-		
-// 	}
-// 	else
-// 	{
-// 		/*
-// 			// if path[0] 이 있을때
-// 			// else path[0] 이 없을 때
-// 				{
-// 					if 환경 변수 일때 
-// 					else 
-// 						bash: cd: asdf: No such file or directory
-// 				}
-// 		*/
-			
-// 	}
-// }
-
 /*
 	#include <unistd.h>
 
@@ -58,20 +37,21 @@
 	
 */
 
-// char	*old_path(char **envp)
-// {
-// 	int	i;
-	
-// 	i = -1;
-// 	while (envp[++i])
-// 	{
-// 		if (ft_strncmp("PWD", envp[i], 3))
-// 			return (envp[i] + 4); // PWD 뒤부터염
-// 	}
-// 	return (NULL);
-// }
+char	*old_path(t_envp *envp)
+{
+	int	i;
 
-static char	*set_home(t_envp *envp) // string 들어가서 ':' 기준으로 split 합니다.
+	i = -1;
+	while (envp)
+	{
+		if (ft_strncmp("PWD", envp->key, 3))
+			return (envp->value);
+		envp = envp->next;
+	}
+	return (NULL);
+}
+
+static char	*set_home(t_envp *envp)
 {
 	int		i;
 	char	*path;
@@ -88,28 +68,29 @@ static char	*set_home(t_envp *envp) // string 들어가서 ':' 기준으로 spli
 void	ft_cd(t_info *arg, t_envp *envp)
 {
 	char	*path;
+	char	*old_pwd;
 	t_info	*temp;
 	t_envp	*tmp;
 
 	tmp = envp;
 	temp = arg;
+	while (envp)
+	{
+		if (!ft_strncmp("OLDPWD", envp->key, 6))
+		{
+			envp->value = ft_strdup(getcwd(NULL, 0));
+			break ;
+		}
+		envp = envp->next;
+	}
 	if (temp->next == NULL || ((temp->next)->cmd[0] == '~'
 			&& (temp->next)->cmd[1] == '\0'))
-	{
-		printf("aaa");
 		path = set_home(envp);
-	}
 	else
-	{
 		path = ft_strjoin(ft_strjoin(getcwd(NULL, 0), "/"), (temp->next)->cmd);
-		printf("bbb%s\n", path);
-	}
-	
 	if (!chdir(path))
 	{
-		printf("i'm in chdir!!%s\n", path);
 		path = getcwd(NULL, 0);
-		printf("%s\n", path);
 		while (tmp != NULL)
 		{
 			if (!ft_strncmp(tmp->key, "PWD", 3))
