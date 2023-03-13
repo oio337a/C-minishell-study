@@ -12,61 +12,160 @@
 
 #include "../includes/minishell.h"
 
-char	**make_second_arg(char *str, t_info *arg) // 쿼터가 지워진 list를 순회하며 2차원 배열로 적절히 뱉어보자..
-{
-	t_info	*tmp;
+/*
+파이프 전까지 리스트 새로 담아
+두개씩 join해 -> 실행, 만약 builtin이 있으면 그거 처리 먼저해
 
-	tmp = arg;
-	while (tmp)
-	{
-		if (tmp->cmd == '|' && tmp->type == PIPE)
-			return (do_split_pipe(str, tmp));
-		tmp = tmp->next;
-	}
-	return (ft_split(str));
-}
+< a ls -al | cat -e | wc -l
 
-char	*delete_all_quote_str(char *str)
+< a ls -al
+
+<
+a
+ls
+-al
+ -> first_process
+*/
+
+char	**envp_arr(t_envp *envp)
 {
-	char	*cleared;
+	char	**res;
+	char	*tmp;
 	int		i;
-	int		count;
 
 	i = 0;
-	while (str[i])
+	res = (char **)malloc(sizeof(char *) * (list_size(envp)) + 1);
+	while (envp)
 	{
-		if (str[i] == '\'' || str[i] == '\"')
-			count++;
+		tmp = ft_strjoin(envp->key, "=");
+		res[i] = ft_strjoin_free(tmp, envp->value);
 		i++;
+		envp = envp->next;
 	}
-	i = 0;
-	cleared = (char *)malloc(sizeof(char) * (ft_strlen(str) - count) + 1);
-	while (str[i])
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-			i++;
-		else
-			cleared[i] == str[i];
-		i++;
-	}
-	return (cleared);
+	res[i] = 0;
+	return (res);
 }
 
-char	**do_split_pipe(char *str, t_info *arg)
+int	get_pipe_count(t_info *token)
 {
-	t_info	*tmp;
-	char	*line;
-	char	**splitted_str;
+	t_info	*head;
+	int		cnt;
 
-	tmp = arg;
-	line = delete_all_quote_str(str);
-	splitted_str = ft_split(line, '|');
-	while (tmp)
+	head = token;
+	while (head)
 	{
-		if (tmp->type != WORD)
-		{
-			tmp = tmp->next;
-		}
-		tmp = tmp->next;
+		if (head->type == PIPE)
+			cnt++;
+		head = head->next;
 	}
+	return (cnt);
+}
+// 파이프 전까지 새로운 리스트에 담는다
+t_info	*make_new_list(t_info *token)
+{
+	t_info	*new;
+
+	new = init_list();
+	while (token)
+	{
+		if (token->type == PIPE)
+		{
+			token = token->next;
+			break ;
+		}	
+		insert_list(new, token->cmd, token->type);
+		token = token->next;
+	}
+	return (new);
+}
+
+//cmd에 대한 이차원 배열 만들기 ls , -al -> ls / -al / NULL 
+char	**execve_path(t_info *token)
+{
+	char	**res;
+	int		cnt;
+	int		i;
+
+	i = 0;
+	// cnt = list_size(token);
+	cnt = cmd_size(token);
+	res = (char **)malloc(sizeof(char *) * cnt + 1);  // dd나 해봐도 됌?
+	while (token && i < cnt)
+	{
+		res[i] = token->cmd;
+		token = token->next;
+		i++;
+	}
+	res[i] = 0;
+	return (res);
+}
+
+void	firsrt_process(t_info *token, t_envp *env, int fd[])
+{
+	t_info	*new;
+	char	**cmd_line;
+	char	*path;
+	int		new_fd;
+
+	new = make_new_list(token); // 얘 리스트 자체를 한바퀴 돌아야될거같음 중간에 RDIR나와도 실행이라 // 이거일줄은 몰랐네
+	while (new) // token 자체를 밀어주면 안될거같은 생각이 듬 왜냐면 main 끝나면 list delete 하는데 거기서 터질거같음
+	{
+		if (new->type == REDIR_IN)
+		{
+			new = new->next;
+			new_fd = open(new->cmd, O_RDONLY);
+			if (new_fd == -1)
+				common_errno(new->cmd, 2, NULL);
+			dup2(new_fd, STDIN_FILENO);
+			close(new_fd);
+			new = new->next;
+		}
+		else
+		{
+			cmd_line = execve_path(new);
+			path = get_cmd(cmd_line[0], env);
+			execve(path, cmd_line, envp_arr(env));
+			free(path);
+			ft_free(cmd_line);
+		}
+		// new = new->next;
+	}
+	close(fd[0]);
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[1]);
+}
+
+void	last_process(t_info *token, t_envp *env, int fd[])
+{
+
+}
+
+void	access_token(t_info *token, t_envp *env)
+{
+	int		pipe_cnt;
+	pid_t	pid;
+	int		fd[2];
+	int		i;
+
+	i = -1;
+	pipe_cnt = get_pipe_count(token);
+	while (++i < pipe_cnt)
+	{
+		if (pipe(fd) == -1)
+			exit(1); // 나중에 고치자
+		pid = fork();
+		if (pid == 0)
+		{
+			if (i == 0)
+				first_process(token, env, fd);
+			if (i == pipe_cnt - 1)
+				last_process(token, env, fd);
+			mid_process(token, env, fd);
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+			close(fd[1]);
+		}
+	}
+	while (wait(NULL) == -1)
+		return ;
 }

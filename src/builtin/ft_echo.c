@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 20:59:17 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/12 16:22:13 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 	echo hello ; ; 혹은 echo hello | |
 	-> syntax error near unexpected token ;'` (258)
 */
+int	g_last_exit_code;
 
 static int	find_option(t_info *arg)
 {
@@ -82,18 +83,21 @@ static void	ft_pcmd(t_info *temp)
 	{
 		if (temp->type == WORD)
 		{
-			write(1, temp->cmd, ft_strlen(temp->cmd));
-			if (!temp->next)
-				break ;
-			temp = temp->next;
-			write(1, " ", 1);
+			if (!ft_strncmp(temp->cmd, "$?", 2))
+				printf("%i%s", g_last_exit_code, (temp->cmd + 2));
+			else
+				printf("%s", temp->cmd);
+			// if (!temp->next)
+			// 	break ;
+			// temp = temp->next;
+			printf(" ");
 		}
-		else
-		{
-			if (!temp->next)
-				break ;
+		// else
+		// {
+			// if (!temp->next)
+				// break ;
 			temp = temp->next;
-		}
+		// }
 	}
 }
 
@@ -115,7 +119,8 @@ void	ft_echo(t_info *arg)
 	else
 	{
 		ft_pcmd(temp);
-		write(1, "\n", 1);
+		// write(1, "\n", 1);
+		printf("\n");
 	}
 }
 

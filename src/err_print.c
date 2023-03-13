@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/10 22:32:44 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/12 18:04:54 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,28 @@ exit은 예외 인자가 3개일 때
 
 // 	return (errnum);
 // }
-int	g_last_status;
+int	g_last_exit_code;
 
 // 추후에 errno를 사용하지 않는 케이스는 테스트 후 perror로 바꾸겠읍니다
 // 우리 쉘에서 될지 안될지 몰라서 일단 printf..
-
+// +) 여기서 뉴라인 띄우도록 기능 추가 필요
 void	common_errno(char *cmd, int res, char *next_arg)
 {
+	printf("here?\n");
 	if (res == 127) // command not found  errno에 등록 안돼있어여
 	{
 		printf("%s: command not found\n", cmd);
-		g_last_status = 127;
+		g_last_exit_code = 127;
 	}
 	if (next_arg == NULL)
 	{
 		printf("%s: %s\n", cmd, strerror(res)); // No such~ errno == 2
-		g_last_status = 1;
+		g_last_exit_code = 1;
 	}
 	else
 	{
 		printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
-		g_last_status = 1;
+		g_last_exit_code = 1;
 	}
 	// return (1); // 앞에는 실행 가능하다는 cmd 전제
 }
@@ -89,8 +90,7 @@ void	common_errno(char *cmd, int res, char *next_arg)
 void	envp_errno(char *err_value, int res)
 {
 	printf("export: %s: not a valid identifier\n", err_value);
-	// return (res);
-	g_last_status = 1;
+	g_last_exit_code = 1;
 }
 
 void	exit_errno(int arg_status, char *cmd, int res)
@@ -98,21 +98,19 @@ void	exit_errno(int arg_status, char *cmd, int res)
 	if (arg_status != 0)
 	{
 		printf("Nakishell$: %s: too many arguments\n", cmd);
-		g_last_status = 1;
+		g_last_exit_code = 1;
 	}
 	else
 	{
 		printf("Nakishell$: exit: %s: numeric argument required\n", cmd);
-		// res = 255;
-		g_last_status = 255;
+		g_last_exit_code = 255;
 	}
-	// return (res);
 }
 
 void	syntax_errno(char *cmd)
 {
 	printf("syntax error near unexpected token `%s'\n", cmd);
-	g_last_status = 258;
+	g_last_exit_code = 258;
 }
 
 void badpath_errno(char *str, int res)

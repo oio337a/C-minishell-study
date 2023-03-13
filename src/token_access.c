@@ -31,6 +31,7 @@ t_info	*get_token(t_info *token)
 		insert_list(new, token->cmd, token->type);
 		token = token->next;
 	}
+	return (new);
 }
 
 void	pipex(t_info *token, t_envp *env)

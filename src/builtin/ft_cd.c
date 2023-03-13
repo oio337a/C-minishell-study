@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 22:33:39 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/12 14:15:42 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,7 @@
 	cd $HSIDHSIHD (없는 환경변수일때)
 
 	-> 에러메세지 없이 ~로 이동
-*/
-
-// void	ft_cd(char **path)
-// {
-// 	if (path[0] == "" || path[0] == "~")
-// 	{
-		
-// 	}
-// 	else
-// 	{
-// 		/*
-// 			// if path[0] 이 있을때
-// 			// else path[0] 이 없을 때
-// 				{
-// 					if 환경 변수 일때 
-// 					else 
-// 						bash: cd: asdf: No such file or directory
-// 				}
-// 		*/
-			
-// 	}
-// }
-
-/*
+	
 	#include <unistd.h>
 
 	int	chdir(const char *dirname(path))
@@ -58,20 +35,7 @@
 	
 */
 
-// char	*old_path(char **envp)
-// {
-// 	int	i;
-	
-// 	i = -1;
-// 	while (envp[++i])
-// 	{
-// 		if (ft_strncmp("PWD", envp[i], 3))
-// 			return (envp[i] + 4); // PWD 뒤부터염
-// 	}
-// 	return (NULL);
-// }
-
-static char	*set_home(t_envp *envp) // string 들어가서 ':' 기준으로 split 합니다.
+static char	*set_home(t_envp *envp)
 {
 	int		i;
 	char	*path;
@@ -85,60 +49,57 @@ static char	*set_home(t_envp *envp) // string 들어가서 ':' 기준으로 spli
 	return (path);
 }
 
+void	set_oldpath(t_envp *envp)
+{
+	while (envp)
+	{
+		if (!ft_strncmp("OLDPWD", envp->key, 6))
+		{
+			envp->value = ft_strdup(getcwd(NULL, 0));
+			break ;
+		}
+		envp = envp->next;
+	}
+}
+
 void	ft_cd(t_info *arg, t_envp *envp)
 {
 	char	*path;
-	t_info	*temp;
-	t_envp	*tmp;
 
-	tmp = envp;
-	temp = arg;
-	if (temp->next == NULL || ((temp->next)->cmd[0] == '~'
-			&& (temp->next)->cmd[1] == '\0'))
-	{
-		printf("aaa");
+	set_oldpath(envp);
+	if (arg->next == NULL || ((arg->next)->cmd[0] == '~'
+			&& (arg->next)->cmd[1] == '\0'))
 		path = set_home(envp);
-	}
 	else
-	{
-		path = ft_strjoin(ft_strjoin(getcwd(NULL, 0), "/"), (temp->next)->cmd);
-		printf("bbb%s\n", path);
-	}
-	
+		path = ft_strjoin(ft_strjoin(getcwd(NULL, 0), "/"), (arg->next)->cmd);
 	if (!chdir(path))
 	{
-		printf("i'm in chdir!!%s\n", path);
 		path = getcwd(NULL, 0);
-		printf("%s\n", path);
-		while (tmp != NULL)
+		while (envp != NULL)
 		{
-			if (!ft_strncmp(tmp->key, "PWD", 3))
+			if (!ft_strncmp(envp->key, "PWD", 3))
 			{
-				free(tmp->value);
-				tmp->value = ft_strdup(path);
+				free(envp->value);
+				envp->value = ft_strdup(path);
 				break ;
 			}
-			tmp = tmp->next;
+			envp = envp->next;
 		}
 	}
-	else // 함수 종료 후 뉴라인 띄우기
-	{
-		printf("from else...\n");
+	else
 		common_errno("cd", 2, NULL);
-		// badpath_errno("cd", 2);
-	}
 }
 
 // int	main()
 // {
-// 	t_envp *tmp;
+// 	t_envp *envp;
 // 	char	*file_path;
 
 // 	file_path = getcwd(NULL, 0);
 // 	printf("현재 dir 경로 : %s\n", file_path);
-// 	// while (tmp != NULL)
+// 	// while (envp != NULL)
 // 	// {
-// 	// 	printf("key : %s, value : %s", tmp->key, tmp->value);
+// 	// 	printf("key : %s, value : %s", envp->key, tmp->value);
 // 	// 	tmp = tmp->next;
 // 	// }
 

@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   init_envp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 20:02:42 by suhwpark          #+#    #+#             */
 /*   Updated: 2023/03/13 14:33:05 by yongmipa         ###   ########seoul.kr  */
+=======
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/09 20:02:42 by suhwpark          #+#    #+#             */
+/*   Updated: 2023/03/12 16:51:20 by sohyupar         ###   ########.fr       */
+>>>>>>> d99338a6d7d05c94f9cfd9fece4e458504baf720
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +39,36 @@ void	insert_envp(t_envp *envp, char *key, char *value)
 	{
 		head->key = ft_strdup(key);
 		head->value = ft_strdup(value);
+		return ;
 	}
-	else
+	if (check_dupkey(envp, key)) //중복 key
 	{
-		while (head->next != NULL)
+		while (ft_strcmp(head->key, key) != 0)
 			head = head->next;
-		head->next = (t_envp *)ft_safe_malloc(sizeof(t_envp));
-		head->next->key = ft_strdup(key);
-		head->next->value = ft_strdup(value);
-		head->next->next = NULL;
+		free(head->value);
+		head->value = ft_strdup(value);
+		return ;
 	}
+	while (head->next != NULL)
+		head = head->next;
+	head->next = (t_envp *)ft_safe_malloc(sizeof(t_envp));
+	head->next->key = ft_strdup(key);
+	head->next->value = ft_strdup(value);
+	head->next->next = NULL;
+}
+
+int	check_dupkey(t_envp *envp, char *key)
+{
+	t_envp	*head;
+
+	head = envp;
+	while (head != NULL)
+	{
+		if (ft_strcmp(head->key, key) == 0)
+			return (1);
+		head = head->next;
+	}
+	return (0);
 }
 
 void	append_envp(t_envp *envp, char *key, char *value)
@@ -49,20 +76,20 @@ void	append_envp(t_envp *envp, char *key, char *value)
 	t_envp	*head;
 
 	head = envp;
-	while (head->next)
+	while (head->next) //envp 탐색하면서 마지막 도달하거나, 동일 key 찾으면 나옴
 	{
 		if (ft_strcmp(head->key, key) == 0)
 			break ;
 		head = head->next;
 	}
-	if (head->next == NULL)
+	if (head->next == NULL) // 마지막까지 동일 key 못 찾은 경우
 	{
-		if (ft_strcmp(head->key, key) == 0)
+		if (ft_strcmp(head->key, key) == 0) // 마지막이 동일 key인 경우
 			head->value = ft_strjoin_free(head->value, value);
-		else
+		else // 끝까지 없는 경우, 그냥 insert
 			insert_envp(envp, key, value);
 	}
-	else
+	else //동일 key 있는 경우 현재 value 뒤에 append
 		head->value = ft_strjoin_free(head->value, value);
 }
 
