@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 21:47:17 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/13 18:00:07 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	g_exit_status;
+
 /*
 	추가할 것  : 인자로 받은 key가 이미 있을 때, 덮어 씌우기
 	-> init_envp.c에 insert_envp 시 check_dupkey 조건 추가했어요

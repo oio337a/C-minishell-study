@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 18:18:48 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 19:07:29 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static char	*find_value(char *dollar, t_envp *envp, int *idx) //find_key랑 합�
 static int	check_edges(char next, char **str, int *i)
 {
 	char	*pid;
-	int		ret;
 
 	if (ft_isdigit(next))
 		*i += 2;
@@ -87,9 +86,10 @@ char	*parse_dollar(char *str, t_envp *head)
 		{
 			if (check_edges(str[i + 1], &ret, &i))
 				continue ;
-			value = find_value(str + i, head, &i); // 어차피 find_value함수 내에서 tmp선언하기 때문에 head 직접 대입
+			value = find_value((str + i), head, &i); // 어차피 find_value함수 내에서 tmp선언하기 때문에 head 직접 대입
 			ret = ft_strjoin_free(ret, value);
 			free(value);
+			return (ret);
 		}
 		else
 		{
@@ -101,6 +101,7 @@ char	*parse_dollar(char *str, t_envp *head)
 	}
 	return (ret);
 }
+
 /*
 	1. str[i] == $
 		$뒤에를 판별하자! 

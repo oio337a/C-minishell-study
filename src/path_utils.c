@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 14:25:50 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 14:33:32 by yongmipa         ###   ########seoul.kr  */
-=======
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 14:25:50 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 20:10:59 by sohyupar         ###   ########.fr       */
->>>>>>> d99338a6d7d05c94f9cfd9fece4e458504baf720
+/*   Created: 2023/03/13 15:00:06 by yongmipa          #+#    #+#             */
+/*   Updated: 2023/03/13 16:23:29 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +20,7 @@ char	**set_path(t_envp *envp) // string 들어가서 ':' 기준으로 split 합�
 
 	envp_tmp = envp;
 	i = 0;
-	while (ft_strcmp("PATH", envp_tmp->key))
+	while (ft_strncmp("PATH", envp_tmp->key, 4))
 		envp_tmp = envp_tmp->next;
 	path = envp_tmp->value;
 	return (ft_split(path, ':'));
@@ -45,7 +38,6 @@ char	*get_cmd(char *cmd, t_envp *envp)
 	if (access(cmd, X_OK) != -1)
 		return (cmd);
 	cmd_path = ft_strjoin("/", cmd);
-	printf("cmd_path : %s\n", cmd_path);
 	i = -1;
 	while (envp_in_list[++i])
 	{

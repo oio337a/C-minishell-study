@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 16:22:13 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:41:59 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,12 @@ int	g_last_exit_code;
 
 static int	find_option(t_info *arg)
 {
-	// echo 다음에 -n 이 있으면 -n 으로 시작해야함.
-	// echo -nn 블라블라 
-	// echo aaaa -n daaa => aaaa -n daaa
 	int		i;
 	int		option_idx;
 	t_info	*temp;
 
 	option_idx = 0;
-	temp = arg->next; // echo 명령어 건너기
-	// 1. -n 으로 시작해야 하고 다음은 n만 올 수 있다.
+	temp = arg->next;
 	while (temp && temp->cmd[0] == '-' && temp->cmd[1] == 'n')
 	{
 		i = 1;
@@ -87,17 +83,9 @@ static void	ft_pcmd(t_info *temp)
 				printf("%i%s", g_last_exit_code, (temp->cmd + 2));
 			else
 				printf("%s", temp->cmd);
-			// if (!temp->next)
-			// 	break ;
-			// temp = temp->next;
 			printf(" ");
 		}
-		// else
-		// {
-			// if (!temp->next)
-				// break ;
 			temp = temp->next;
-		// }
 	}
 }
 
@@ -119,7 +107,6 @@ void	ft_echo(t_info *arg)
 	else
 	{
 		ft_pcmd(temp);
-		// write(1, "\n", 1);
 		printf("\n");
 	}
 }

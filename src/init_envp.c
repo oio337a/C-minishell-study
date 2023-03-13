@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_envp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/09 20:02:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 14:33:05 by yongmipa         ###   ########seoul.kr  */
-=======
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/09 20:02:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/12 16:51:20 by sohyupar         ###   ########.fr       */
->>>>>>> d99338a6d7d05c94f9cfd9fece4e458504baf720
+/*   Created: 2023/03/13 15:00:37 by yongmipa          #+#    #+#             */
+/*   Updated: 2023/03/13 16:48:32 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +21,20 @@ t_envp	*init_envp(void)
 	envp->key = NULL;
 	envp->value = NULL;
 	return (envp);
+}
+
+static int	check_dupkey(t_envp *envp, char *key)
+{
+	t_envp	*head;
+
+	head = envp;
+	while (head != NULL)
+	{
+		if (ft_strcmp(head->key, key) == 0)
+			return (1);
+		head = head->next;
+	}
+	return (0);
 }
 
 void	insert_envp(t_envp *envp, char *key, char *value)
@@ -57,19 +64,6 @@ void	insert_envp(t_envp *envp, char *key, char *value)
 	head->next->next = NULL;
 }
 
-int	check_dupkey(t_envp *envp, char *key)
-{
-	t_envp	*head;
-
-	head = envp;
-	while (head != NULL)
-	{
-		if (ft_strcmp(head->key, key) == 0)
-			return (1);
-		head = head->next;
-	}
-	return (0);
-}
 
 void	append_envp(t_envp *envp, char *key, char *value)
 {
@@ -120,6 +114,13 @@ void	delete_envp_all(t_envp **envp)
 		free(*envp);
 		*envp = tmp;
 	}
+}
+
+void	free_envp(t_envp *envp)
+{
+	free(envp->key);
+	free(envp->value);
+	free(envp);
 }
 
 t_envp	*set_envp(char **envp)

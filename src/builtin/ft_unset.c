@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:32 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/09 20:47:43 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/13 18:03:28 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 	이미 존재하는 환경변수인지 검사
 	파이프 뒤에 있다면 자식프로세스의 unset이기 때문에 환경변수 삭제 X <- 먼말임 ?
 */
-int validate_key(char *str)
+
+int	validate_key(char *str)
 {
 	int	i;
 
@@ -43,43 +44,46 @@ int validate_key(char *str)
 	return (1);
 }
 
-void	ft_unset(char *str, t_envp **envp)
-{
-	t_envp	*tmp;
-	t_envp	*before;
-	t_envp	*curr;
+// int	check_edges_unset(t_info *arg, t_envp **envp)
+// {
+// 	if (!arg->next || !envp)
+// 		return (1);
+// 	if (!validate_key(str))
+// 	{
+// 		printf("Nakishell: unset '%s': not a valid identifier", str);
+// 		return (1);
+// 	}u
+// 	return (0);
+// }
 
-	if (!str || !envp)
-		return ;
-	if (!validate_key(str))
-	{
-		printf("Nakishell: unset '%s': not a valid identifier", str);
-		return ;
-	}
-	tmp = *envp;
-	if (!ft_strcmp(str, tmp->key))
-	{
-		*envp = (*envp)->next;
-		free(tmp->key);
-		free(tmp->value);
-		free(tmp);
-		return ;
-	}
-	while (tmp->next != NULL)
-	{
-		if (!ft_strcmp(str, tmp->next->key))//, ft_strlen(str)) && (ft_strlen(str) == ft_strlen(tmp->next->key)))
-		{
-			before = tmp;
-			curr = tmp->next;
-			before->next = curr->next;
-			free(curr->key);
-			free(curr->value);
-			free(curr);
-		}
-		else
-			tmp = tmp->next;
-	}
-}
+// void	ft_unset(t_info *arg, t_envp **envp)
+// {
+// 	t_envp	*tmp;
+// 	t_envp	*before;
+// 	t_envp	*curr;
+
+// 	if (check_edges_unset(str, envp))
+// 		return ;
+// 	tmp = *envp;
+// 	if (!ft_strcmp(str, tmp->key))
+// 	{
+// 		*envp = (*envp)->next;
+// 		free_envp(tmp);
+// 		return ;
+// 	}
+// 	while (tmp->next != NULL)
+// 	{
+// 		if (!ft_strcmp(str, tmp->next->key))
+// 		{
+// 			before = tmp;
+// 			curr = tmp->next;
+// 			before->next = curr->next;
+// 			free_envp(curr);
+// 		}
+// 		else
+// 			tmp = tmp->next;
+// 	}
+// }
 
 // int	main(int ac, char **av, char **envp) //test 메인문
 // {

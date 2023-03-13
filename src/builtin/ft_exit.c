@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 14:23:11 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/13 16:27:39 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,20 @@ int	list_get_size(t_info *lst)
 	return (i);
 }
 
+static void	one_arg(int check_arg, t_info *arg)
+{
+	if (check_arg)
+	{
+		g_last_exit_code = ft_atoi((arg->next)->cmd) % 256;
+		exit(g_last_exit_code);
+	}
+	else
+	{
+		exit_errno(check_arg, (arg->next)->cmd, 255);
+		exit(g_last_exit_code);
+	}
+}
+
 long long	ft_exit(t_info *arg)
 {
 	int	check_arg;
@@ -86,18 +100,7 @@ long long	ft_exit(t_info *arg)
 		}
 	}
 	else // 인자 1개 들어왓을 때
-	{
-		if (check_arg)
-		{
-			g_last_exit_code = ft_atoi((arg->next)->cmd) % 256;
-			exit(g_last_exit_code);
-		}
-		else
-		{
-			exit_errno(check_arg, (arg->next)->cmd, 255);
-			exit(g_last_exit_code);
-		}
-	}
+		one_arg(check_arg, arg);
 	return (g_last_exit_code);
 }
 

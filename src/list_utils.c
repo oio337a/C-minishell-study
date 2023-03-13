@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:34 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 14:33:24 by yongmipa         ###   ########seoul.kr  */
-=======
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 22:03:34 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/12 18:45:52 by sohyupar         ###   ########.fr       */
->>>>>>> d99338a6d7d05c94f9cfd9fece4e458504baf720
+/*   Updated: 2023/03/13 14:57:25 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +72,17 @@ int	list_size(t_info *info)
 	return (i);
 }
 
-int	cmd_size(t_info *info)
-{
-	t_info	*head;
-	int		i;
+// int	cmd_size(t_info *info)
+// {
+// 	t_info	*head;
+// 	int		i;
 
-	head = info;
-	i = 0;
-	while (head && (head->type != REDIR_IN) || (head->type != REDIR_OUT) || head->type != HEREDOC_IN || head->type != HEREDOC_IN)
-	{
-		i++;
-		head = head->next;
-	}
-	return (i);
-}
+// 	head = info;
+// 	i = 0;
+// 	while (head && (head->type != REDIR_IN) || (head->type != REDIR_OUT) || head->type != HEREDOC_IN || head->type != HEREDOC_IN)
+// 	{
+// 		i++;
+// 		head = head->next;
+// 	}
+// 	return (i);
+// }

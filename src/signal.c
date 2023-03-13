@@ -6,21 +6,14 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 14:43:25 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 15:37:48 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-// void	control_d(char *str)
-// {
-// 	if (!str)
-// 	{
-// 		printf("\033[1A\033[7Cexit"); //커서 위로 한 칸 올리고 7칸 앞에 출력. ANSI 이스케이프 시퀀스
-// 		exit(0);
-// 	}
-// 	return ;
-// }
+//ctrl + d == 시그널이 아니라, 아스키코드 4번 EOT임
+//따라서 따로 시그널 처리할 필요 없이, char == 4 && idx == 0일 때 exit 출력 후 종료하면 됨
 
 void	handler(int signum)
 {
@@ -33,21 +26,24 @@ void	handler(int signum)
 	}
 }
 
-void	set_signal()
+void	set_signal(t_signal mode)
 {
-	if () //기본
+	if (mode == CHILD) // 자식프로세스
+	{
+		signal(SIGINT, SIG_DFL); // SIG_DFL는 원래 설정된 시그널 동작
+		signal(SIGQUIT, SIG_DFL);
+	}
+	else if (mode == WAITING) // 자식 기다리는 부모 프로세스
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else // 히어독 & 기본 설정
 	{
 		signal(SIGINT, handler);
 		signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시
 	}
-	else if () //
-	{
-
-	}
 }
-
-//ctrl + d == 시그널이 아니라, 아스키코드 4번 EOT임
-//따라서 따로 시그널 처리할 필요 없이, char == 4 && idx == 0일 때 exit 출력 후 종료하면 됨
 
 /*
 기본 상태
