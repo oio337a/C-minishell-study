@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 14:33:47 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 20:35:42 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ void	str_tokenize(t_info *info, char *line)
 			}
 			insert_list(info, bulk, WORD);
 			free(tmp);
-			// free(bulk);
 			if (*line == '\0')
 				break ;
 		}
@@ -104,7 +103,6 @@ void	str_tokenize(t_info *info, char *line)
 			line += (ft_strlen(bulk) - ft_strlen(tmp));
 			insert_list(info, bulk, WORD);
 			free(tmp);
-			// free(bulk);
 			if (*line == '\0')
 				break ;
 		}

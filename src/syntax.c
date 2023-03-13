@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:05:00 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 14:33:43 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 20:34:10 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,3 @@ int	get_pipe_count(t_info *token)
 	}
 	return (cnt);
 }
-

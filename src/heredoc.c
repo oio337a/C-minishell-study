@@ -6,20 +6,11 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 14:33:19 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 22:25:47 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	is_here_doc(char *argv)
-{
-	if (ft_strlen(argv) != 8)
-		return (FALSE);
-	if (ft_strncmp(argv, "here_doc", ft_strlen(argv)) != 0)
-		return (FALSE);
-	return (TRUE);
-}
 
 void	here_doc(char *limiter)
 {
@@ -28,7 +19,7 @@ void	here_doc(char *limiter)
 
 	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		ft_perror("here_doc failed");
+		common_errno("fd", 2 ,NULL);
 	while (1)
 	{
 		write(1, "here doc> ", 10);
@@ -45,7 +36,8 @@ void	here_doc(char *limiter)
 	if (fd == -1)
 	{
 		unlink(".here_doc");
-		ft_perror("here_doc failed");
+		common_errno("fd", 2 ,NULL);
 	}
+	unlink(".here_doc");
 	dup2(fd, STDIN_FILENO);
 }

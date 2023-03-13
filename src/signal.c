@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 15:37:48 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 21:48:22 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	set_signal(t_signal mode)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else // 히어독 & 기본 설정
+	else //if (mode == HEREDOC || mode == GENERAL)
 	{
 		signal(SIGINT, handler);
 		signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시

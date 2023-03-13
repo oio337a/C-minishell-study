@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 20:06:54 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 22:35:27 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(int ac, char **av, char **envp)
 	char			*cmd_path;
 	t_info			*after_deleteq;
 
+	// set_signal(GENERAL);
 	envp_head = set_envp(envp); // 환경변수 세팅
 	info = NULL;
 	show_naki();
@@ -54,6 +55,13 @@ int	main(int ac, char **av, char **envp)
 		{
 			add_history(str);
 			str_tokenize(info, str);
+			// t_info *a;
+			// a = info;
+			// while(a)
+			// {
+			// 	printf("%s\n", a->cmd);
+			// 	a = a->next;
+			// }
 			if (validate_quote_line(info))
 			{
 				find_dollar(info, envp_head);
@@ -69,5 +77,6 @@ int	main(int ac, char **av, char **envp)
 		}
 		list_delete(&info);
 	}
+	delete_envp_all(&envp_head);
 	return (0);
 }

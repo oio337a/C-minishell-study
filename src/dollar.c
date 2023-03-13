@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 19:07:29 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 22:31:14 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*find_value(char *dollar, t_envp *envp, int *idx) //find_key랑 합�
 	*idx += (ft_strlen(key) + 1); //int 포인터를 받아 값을 변경..
 	free(key);
 	head = envp;
-	while (head != NULL)	//3. 환경변수 리스트 돌면서 key값 일치하는 것 있는지 찾음
+	while (head != NULL) //3. 환경변수 리스트 돌면서 key값 일치하는 것 있는지 찾음
 	{
 		if (!ft_strcmp(key, head->key)) // 있는 환경변수면 replace
 			return (ft_strdup(head->value));
@@ -71,6 +71,14 @@ static int	check_edges(char next, char **str, int *i)
 	return (1);
 }
 
+// char	*set_sub(char *str)
+// {
+// 	char	*sub;
+
+// sub = ft_substr((str), 0, is_dollar(str));
+// ret = 
+// }
+
 char	*parse_dollar(char *str, t_envp *head)
 {
 	char	*ret;
@@ -93,6 +101,7 @@ char	*parse_dollar(char *str, t_envp *head)
 		}
 		else
 		{
+			//set_sub(str + i);
 			sub = ft_substr((str + i), 0, is_dollar(str + i));
 			ret = ft_strjoin_free(ret, sub);
 			i += is_dollar(str + i);

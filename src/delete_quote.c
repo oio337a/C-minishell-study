@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 19:48:12 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 22:39:28 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	delete_quote(t_info *token)
 	cmd = init_list();
 	if (ft_strlen(token->cmd) == 2)
 	{
-		if ((token->cmd[0] == '\"' && token->cmd[1] == '\"')
+		if ((token->cmd[0] == '\"' && token->cmd[1] == '\"') // 얘 돌앗음 내일 처리
 			|| (token->cmd[0] == '\'' && token->cmd[1] == '\''))
 		{
 			tmp = token->cmd;

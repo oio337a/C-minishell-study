@@ -6,19 +6,59 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 20:18:45 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 21:33:41 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	g_last_exit_code;
+
 t_info	*get_token(t_info **token)
 {
 	t_info	*new;
+	int		open_fd;
 
 	new = init_list();
 	while (*token)
 	{
+		if ((*token)->type == REDIR_IN)
+		{
+			(*token) = (*token)->next;
+			open_fd = open((*token)->cmd, O_RDONLY);
+			if (open_fd == -1)
+				common_errno((*token)->cmd, 2, NULL);
+			(dup2(open_fd, STDIN_FILENO), close(open_fd));
+			(*token) = (*token)->next;
+		}
+		if ((*token)->type == REDIR_OUT)
+		{
+			(*token) = (*token)->next;
+			open_fd = open((*token)->cmd, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			if (open_fd == -1)
+				common_errno((*token)->cmd, 2, NULL);
+			(dup2(open_fd, STDOUT_FILENO), close(open_fd));
+			if (!(*token)->next)
+				break ;
+			(*token) = (*token)->next;
+		}
+		if ((*token)->type == HEREDOC_IN)
+		{
+			(*token) = (*token)->next;
+			here_doc((*token)->cmd);
+			(*token) = (*token)->next;
+		}
+		if ((*token)->type == HEREDOC_OUT)
+		{
+			(*token) = (*token)->next;
+			open_fd = open((*token)->cmd, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (open_fd == -1)
+				common_errno((*token)->cmd, 2, NULL);
+			(dup2(open_fd, STDOUT_FILENO), close(open_fd));
+			if (!(*token)->next)
+				break ;
+			(*token) = (*token)->next;
+		}
 		if ((*token)->type == PIPE)
 		{
 			(*token) = (*token)->next;
@@ -41,7 +81,7 @@ static void	execve_token(t_info *token, t_envp *env)
 	cmd = (char **)malloc(sizeof(char *) * (len + 1));
 	head = token;
 	i = 0;
-	
+
 	/*
 	if (빌트인이 아니면 밑에 실행)
 	*/
@@ -52,7 +92,8 @@ static void	execve_token(t_info *token, t_envp *env)
 		head = head->next;
 	}
 	cmd[i] = 0;
-	execve(get_cmd(cmd[0], env), cmd, set_path(env));
+	if (execve(get_cmd(cmd[0], env), cmd, set_path(env)) == -1)
+		g_last_exit_code = -1;
 	ft_free(cmd);
 }
 
@@ -60,16 +101,16 @@ void	pipex(t_info *token, t_envp *env)
 {
 	pid_t	pid;
 	int		i;
-	int		fd[2];
-	int		origin_fd;
+	int		fd[4];
 	t_info	*splited_token;
 	t_info	*head;
-	int		status;
-	
+
 	i = 0;
 	head = token;
-	origin_fd = dup(STDIN_FILENO);
-	while (i < get_pipe_count(token) + 1) // pipe count 빼면서 하는건 어떰 좋지
+	fd[2] = dup(STDIN_FILENO);
+	fd[3] = dup(STDOUT_FILENO);
+	g_last_exit_code = 0;
+	while (i < get_pipe_count(token) + 1)
 	{
 		splited_token = get_token(&head);
 		if (pipe(fd) == -1)
@@ -92,11 +133,7 @@ void	pipex(t_info *token, t_envp *env)
 		}
 		i++;
 	}
-	dup2(origin_fd, STDIN_FILENO);
-	// dup2(fd[0], STDIN_FILENO);
-	// while(wait(&status) == -1)
-	// 	return ;
-	// while (wait(&status) > 0);
-	// while (waitpid(pid, &status, 0) > 0)
-	// 	;
+	dup2(fd[2], STDIN_FILENO);
+	dup2(fd[3], STDOUT_FILENO);
+	// return (g_last_exit_code);
 }

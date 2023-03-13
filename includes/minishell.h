@@ -61,7 +61,6 @@ char		*get_cmd(char *cmd, t_envp *envp);
 int			is_whitespace(char *line);
 void		insert_list(t_info *info, char *cmd, int tpye);
 void		list_delete(t_info **info);
-void		pipe_parser(char *line, t_info *info);
 // int		*count_q(char *munja);
 int			validate_quote_line(t_info *token);
 void		str_tokenize(t_info *info, char *line);
@@ -70,8 +69,8 @@ char		*parse_dollar(char *str, t_envp *head);
 void		clear_qoute_in_token(t_info *token);
 
 /*signal*/
-void		handler(int signum);
-void		set_signal(t_signal mode);
+// void		handler(int signum);
+// void		set_signal(t_signal mode);
 
 /*shell_utils*/
 void		print_error(char *errmsg, int errnum);
@@ -81,21 +80,23 @@ char		*ft_strjoin_free(char *s1, char const *s2);
 
 /*envp_utils*/
 t_envp		*init_envp(void);
+int			check_dupkey(t_envp *envp, char *key);
 void		insert_envp(t_envp *envp, char *key, char *value);
 void		append_envp(t_envp *envp, char *key, char *value);
-int			size_envp(t_envp *lst);
 void		delete_envp_all(t_envp **envp);
-void		free_envp(t_envp *envp);
 t_envp		*set_envp(char **envp);
 
 /*export*/
-void		sort_arr(char **arr);
+// int			size_envp(t_envp *lst);
+// void		sort_arr(char **arr);
 int			check_argv(char *argv);
+void		set_key_value(t_envp *head, char *argv, int i, int plus);
 void		add_envp(char *argv, t_envp *head);
 
 /*unset*/
 int			validate_key(char *str);
 int			check_edges_unset(t_info *arg, t_envp **envp);
+void		free_envp(t_envp *envp);
 
 /*builtin*/
 int			builtin(t_info *cmd, t_envp *head);
@@ -112,6 +113,7 @@ void		pipex(t_info *token, t_envp *env);
 int			get_pipe_count(t_info *token);
 int			list_size(t_info *info);
 t_info		*get_token(t_info **token);
+void		here_doc(char *limiter);
 
 /*dollar*/
 void		find_dollar(t_info *token, t_envp *_env);

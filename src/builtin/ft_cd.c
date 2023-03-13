@@ -6,12 +6,14 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 16:36:12 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 22:22:26 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 /*
+	PWD / OLDPWD 환경변수 업뎃 !
+	
 	cd, cd ~ 일때
 	-> HOME 경로 찾아서 path에 저장 후 이동
 
@@ -30,7 +32,6 @@
 // {
 // 	if (path[0] == "" || path[0] == "~")
 // 	{
-		
 // 	}
 // 	else
 // 	{
@@ -43,7 +44,6 @@
 // 						bash: cd: asdf: No such file or directory
 // 				}
 // 		*/
-			
 // 	}
 // }
 
@@ -60,7 +60,6 @@
 // char	*old_path(char **envp)
 // {
 // 	int	i;
-	
 // 	i = -1;
 // 	while (envp[++i])
 // 	{
