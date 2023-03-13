@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 18:20:46 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 20:18:45 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	pipex(t_info *token, t_envp *env)
 		{
 			waitpid(pid, NULL, 0);
 			dup2(fd[0], STDIN_FILENO);
+			(close(fd[0]), close(fd[1]));
 		}
 		i++;
 	}

@@ -85,7 +85,7 @@ void		insert_envp(t_envp *envp, char *key, char *value);
 void		append_envp(t_envp *envp, char *key, char *value);
 int			size_envp(t_envp *lst);
 void		delete_envp_all(t_envp **envp);
-void	free_envp(t_envp *envp);
+void		free_envp(t_envp *envp);
 t_envp		*set_envp(char **envp);
 
 /*export*/
@@ -100,8 +100,8 @@ int			check_edges_unset(t_info *arg, t_envp **envp);
 /*builtin*/
 int			builtin(t_info *cmd, t_envp *head);
 void		ft_pwd(void);
-void		ft_env(t_envp *head);
-int			ft_export(t_info *arg, t_envp *head);
+void		ft_env(t_info *cmd, t_envp *head);
+void		ft_export(t_info *arg, t_envp *head);
 void		ft_unset(t_info *arg, t_envp **envp);
 void		ft_cd(t_info *arg, t_envp *envp);
 void		ft_echo(t_info *arg);

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 18:00:07 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 20:18:51 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void	add_envp(char *argv, t_envp *head)
 	}
 }
 
-int	ft_export(t_info *arg, t_envp *head)
+void	ft_export(t_info *arg, t_envp *head)
 {
 	t_info	*arg_tmp;
 	t_envp	*env_tmp;

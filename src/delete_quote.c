@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 18:17:43 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 19:48:12 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ static void	delete_quote(t_info *token)
 			next_idx = find_next_quotes(token->cmd, '\'', i);
 			if (next_idx == i + 1)
 				i++;
-			// else
-			// {
-			// 	clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
-			// 	insert_list(cmd, clear_token, WORD);
-			// 	free(clear_token);
-			// 	i += next_idx;
-			// }
 			else
-				i = quotes_case(cmd, token, i, next_idx);
+			{
+				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
+				insert_list(cmd, clear_token, WORD);
+				free(clear_token);
+				i += next_idx;
+			}
+			// else
+			// 	i = quotes_case(cmd, token, i, next_idx);
 		}
 		else if (token->cmd[i] == '\"')
 		{
@@ -78,21 +78,21 @@ static void	delete_quote(t_info *token)
 			if (next_idx == i + 1)
 				i++;
 			else
-			// {
-			// 	clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
-			// 	insert_list(cmd, clear_token, WORD);
-			// 	free(clear_token);
-			// 	i += next_idx;
-			// }
-				i = quotes_case(cmd, token, i, next_idx);
+			{
+				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
+				insert_list(cmd, clear_token, WORD);
+				free(clear_token);
+				i += next_idx;
+			}
+				// i = quotes_case(cmd, token, i, next_idx);
 		}
 		else
 		{
-			// clear_token = ft_substr(token->cmd, i, here_quote(token->cmd + i));
-			// insert_list(cmd, clear_token, WORD);
-			// free(clear_token);
-			// i += here_quote(token->cmd + i) - 1;
-			i = not_quotes(cmd, token, i);
+			clear_token = ft_substr(token->cmd, i, here_quote(token->cmd + i));
+			insert_list(cmd, clear_token, WORD);
+			free(clear_token);
+			i += here_quote(token->cmd + i) - 1;
+			// i = not_quotes(cmd, token, i);
 		}
 		i++;
 	}

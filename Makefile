@@ -6,14 +6,14 @@
 #    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/13 17:42:18 by yongmipa         ###   ########seoul.kr   #
+#    Updated: 2023/03/13 20:04:21 by yongmipa         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Wextra
+CFLAGS		= -Wall -Wextra -Wextra -g3
 RFLAGS		= -lreadline
 LFLAGS		= -L${HOME}/.brew/opt/readline/lib
 IFLAGS		= -I${HOME}/.brew/opt/readline/include
@@ -32,7 +32,7 @@ LIB_NAME	= ./libft/libft.a
 
 INCS		= -I includes
 
-SRC			=	list_utils.c main.c init_shell.c path_utils.c tokenize.c delete_quote.c \
+SRC			=	list_utils.c main.c path_utils.c tokenize.c delete_quote.c \
 				init_envp.c shell_utils.c err_print.c dollar.c find_dollar.c token_access.c syntax.c delete_quote_util.c
 BUILTIN		=	ft_export.c ft_unset.c ft_builtin.c ft_cd.c ft_echo.c ft_env.c \
 				ft_exit.c ft_pwd.c
