@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:35:33 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 22:33:18 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 14:32:23 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	insert_list(t_info *info, char *cmd, int tpye);
 void	list_delete(t_info **info);
 void	pipe_parser(char *line, t_info *info);
 // int		*count_q(char *munja);
-int		vaildate_quote_line(t_info *token);
+int		validate_quote_line(t_info *token);
 void	str_tokenize(t_info *info, char *line);
 int		is_dollar(char *token);
 char	*parse_dollar(char *str, t_envp *head);

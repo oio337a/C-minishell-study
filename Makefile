@@ -6,7 +6,7 @@
 #    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/10 17:46:48 by yongmipa         ###   ########seoul.kr   #
+#    Updated: 2023/03/13 14:36:08 by yongmipa         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME		= minishell
 CC			= cc
 CFLAGS		= -Wall -Wextra -Wextra
 RFLAGS		= -lreadline
-LFLAGS		= -L${HOME}.brew/opt/readline/lib
+LFLAGS		= -L${HOME}/.brew/opt/readline/lib
 IFLAGS		= -I${HOME}/.brew/opt/readline/include
 
 AR			= ar

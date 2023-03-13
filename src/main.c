@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 22:32:24 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 14:40:46 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,38 +31,35 @@ int	main(int ac, char **av, char **envp)
 		str = readline("Nakishell$: ");
 		if (!str) //ctrl+D == NULL
 		{
-			printf("\033[1A\033[7Cexit");
+			printf("\033[1A\033[20Cexit"); //
 			exit(0);
 		}
-		else
+		if (*str != '\0')
 		{
-			if (*str != '\0')
+			add_history(str);
+			str_tokenize(info, str); // info 스페이스바 기준으로 잘린 cmd들이 들어있습니다.
+			if (validate_quote_line(info)) // validate임 ㅅㅂ럼아 수 정 완
 			{
-				add_history(str);
-				str_tokenize(info, str); // info 스페이스바 기준으로 잘린 cmd들이 들어있습니다.
-				if (vaildate_quote_line(info)) // validate임 ㅅㅂ럼아
-				{
-					find_dollar(info, envp_head);
-					clear_qoute_in_token(info); // 쿼터 제거
-				}
-				else
-					common_errno(info->cmd, 1, NULL); // 나중에 고치는걸로 완벽 X
-				tmp = info;
-				// after_deleteq = info;
-				// token -> builtin 검수 후 그대로 실행한다. 
-				// builtin의 요소가 아니라면 cmd의 path를 가져와 execve로 넣거나,에러처리
-				while (tmp != NULL)
-				{
-					// if (!builtin(tmp, envp_head)) // 추가적인 list 생성이 필요할수도?ㅠ
-					// {
-					// 	cmd_path = get_cmd(tmp->cmd, envp_head);
-					// 	execve(cmd_path, 2차원배열, envp);
-						
-					// 	//path 실행
-					// }
-					builtin(tmp, envp_head);
-					tmp = tmp->next;
-				}
+				find_dollar(info, envp_head);
+				clear_qoute_in_token(info); // 쿼터 제거
+			}
+			else
+				common_errno(info->cmd, 1, NULL); // 나중에 고치는걸로 완벽 X
+			tmp = info;
+			// after_deleteq = info;
+			// token -> builtin 검수 후 그대로 실행한다. 
+			// builtin의 요소가 아니라면 cmd의 path를 가져와 execve로 넣거나,에러처리
+			while (tmp != NULL)
+			{
+				// if (!builtin(tmp, envp_head)) // 추가적인 list 생성이 필요할수도?ㅠ
+				// {
+				// 	cmd_path = get_cmd(tmp->cmd, envp_head);
+				// 	execve(cmd_path, 2차원배열, envp);
+					
+				// 	//path 실행
+				// }
+				builtin(tmp, envp_head);
+				tmp = tmp->next;
 			}
 		}
 		list_delete(&info);

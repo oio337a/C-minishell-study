@@ -6,21 +6,21 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/03 20:07:18 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 14:43:25 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	control_d(char *str)
-{
-	if (!str)
-	{
-		printf("\033[1A\033[7Cexit"); //커서 위로 한 칸 올리고 7칸 앞에 출력. ANSI 이스케이프 시퀀스
-		exit(0);
-	}
-	return ;
-}
+// void	control_d(char *str)
+// {
+// 	if (!str)
+// 	{
+// 		printf("\033[1A\033[7Cexit"); //커서 위로 한 칸 올리고 7칸 앞에 출력. ANSI 이스케이프 시퀀스
+// 		exit(0);
+// 	}
+// 	return ;
+// }
 
 void	handler(int signum)
 {

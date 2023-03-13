@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 14:58:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/10 22:26:05 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/10 22:37:31 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	builtin(t_info *cmd, t_envp *head)
 }
 /*화긴된거 (인자 하나만 썻음)
 	pwd
-	exit
+	exit 
 	echo(환경변수 추가 처리 필요)
+	cd
+	env
 */

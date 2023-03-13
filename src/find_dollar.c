@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/10 17:35:08 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 14:32:40 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	qoute_qoute(char *token)
 	return (1);
 }
 
-int	vaildate_quote_line(t_info *token)
+int	validate_quote_line(t_info *token)
 {
 	t_info	*head;
 
@@ -135,7 +135,7 @@ void	find_dollar(t_info *token, t_envp *_env)
 // 		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
 // 		head1 = head1->next;
 // 	}
-// 	if (vaildate_quote_line(test))
+// 	if (validate_quote_line(test))
 // 	{
 // 		find_dollar(test, env);
 // 		clear_qoute_in_token(test);
