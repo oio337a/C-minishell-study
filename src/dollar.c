@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 16:30:25 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:18:15 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,17 @@ static int	check_edges(char next, char **str, int *i)
 	return (1);
 }
 
-// char	*set_sub(char *str)
-// {
-// 	char	*sub;
+static int	set_sub(char *str, char **ret)
+{
+	int	i;
+	char	*sub;
 
-// sub = ft_substr((str), 0, is_dollar(str));
-// ret = 
-// }
+	sub = ft_substr((str), 0, is_dollar(str));
+	*ret = ft_strjoin_free(*ret, sub);
+	i = is_dollar(str);
+	free(sub);
+	return (i);
+}
 
 char	*parse_dollar(char *str, t_envp *head)
 {
@@ -94,18 +98,17 @@ char	*parse_dollar(char *str, t_envp *head)
 		{
 			if (check_edges(str[i + 1], &ret, &i))
 				continue ;
-			value = find_value((str + i), head, &i);
+			value = find_value(str + i, head, &i);
 			ret = ft_strjoin_free(ret, value);
 			free(value);
-			return (ret);
 		}
 		else
 		{
-			//set_sub(str + i);
-			sub = ft_substr((str + i), 0, is_dollar(str + i));
-			ret = ft_strjoin_free(ret, sub);
-			i += is_dollar(str + i);
-			free(sub);
+			i += set_sub(str + i, &ret);
+			// sub = ft_substr((str + i), 0, is_dollar(str + i));
+			// ret = ft_strjoin_free(ret, sub);
+			// i += is_dollar(str + i);
+			// free(sub);
 		}
 	}
 	return (ret);

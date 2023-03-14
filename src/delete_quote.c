@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 17:02:10 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 18:00:30 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	delete_quote(t_info *token)
 		else if (token->cmd[i] == '\"')
 			i = quotes_case(cmd, token->cmd, i, '\"');
 		else
-			i = not_quotes(cmd, token, i);
+			i = not_quotes(cmd, token->cmd, i);
 		i++;
 	}
 	tmp = token->cmd;

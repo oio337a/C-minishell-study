@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:01:16 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 17:10:21 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 17:36:04 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,5 @@ int	builtin(t_info *cmd, t_envp *head) // 전체 cmd 모두 들어옴 -> 빌트�
 		ft_exit(cmd);
 	else //위의 경우에서 전부 해당 안되면, 0 리턴
 		return (0);
-	return (1); //if나 else if에서 안 끝날 시 1리턴
+	return (1); //builtin 해당 시 1리턴
 }

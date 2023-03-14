@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 17:16:42 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 18:13:01 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,12 @@ static void	execve_token(t_info *token, t_envp *env)
 	/*
 	if (빌트인이 아니면 밑에 실행)
 	*/
-	if (!builtin(head, env))
-	{
+	// if (!builtin(head, env))
+	// {
 		while (head)
 		{
 			cmd[i] = ft_strdup(head->cmd);
-			// printf("cmd : %s, %d\n", cmd[i], i);
+			printf("cmd : cmd : %s, %d\n", cmd[i], i);
 			i++;
 			head = head->next;
 		}
@@ -99,7 +99,7 @@ static void	execve_token(t_info *token, t_envp *env)
 		if (execve(get_cmd(cmd[0], env), cmd, set_path(env)) == -1)
 			g_last_exit_code = -1;
 		ft_free(cmd);
-	}
+	// }
 }
 
 void	pipex(t_info *token, t_envp *env)

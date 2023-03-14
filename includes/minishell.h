@@ -114,18 +114,20 @@ int			get_pipe_count(t_info *token);
 int			list_size(t_info *info);
 t_info		*get_token(t_info **token);
 void		here_doc(char *limiter);
+
 /*dollar*/
 void		find_dollar(t_info *token, t_envp *_env);
 char		*parse_dollar(char *str, t_envp *head);
 
-/*quotes*/
+// /*quotes*/
 int			is_quote(char *s);
-int			find_next_quotes(char *line, char quote, int quote_idx);
 int			*count_q(char *munja);
 int			here_quote(char *line);
 char		*parse_dollar(char *str, t_envp *head);
 char		*get_full_token(t_info *cmd);
 void		clear_quote_in_token(t_info *token);
+// void		delete_quote(t_info *token);
+int			find_next_quotes(char *line, char quote, int quote_idx);
 
 /*err*/
 void		exit_errno(int arg_status, char *cmd, int res);

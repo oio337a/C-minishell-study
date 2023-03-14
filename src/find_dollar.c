@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 16:08:23 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 18:19:16 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	check_envp(char *token)
 	i = 0;
 	j = 0;
 	k = 0;
+	write(1, token, ft_strlen(token));
 	if (!ft_strcmp("", token))
 		return (0);
 	while (token[k])
@@ -55,7 +56,7 @@ static int	check_envp(char *token)
 	return (0);
 }
 
-static int	qoute_qoute(char *token)
+static int	quote_quote(char *token)
 {
 	int	i;
 	int	next;
@@ -90,7 +91,7 @@ int	validate_quote_line(t_info *token)
 	head = token;
 	while (head)
 	{
-		if (!qoute_qoute(head->cmd))
+		if (!quote_quote(head->cmd))
 		{
 			printf("error\n");
 			return (0);
@@ -110,6 +111,7 @@ void	find_dollar(t_info *token, t_envp *_env)
 	{
 		if (check_envp(head->cmd))
 		{
+			printf("???????????\n");
 			tmp = head->cmd;
 			head->cmd = parse_dollar(head->cmd, _env);
 			free(tmp);
@@ -140,7 +142,7 @@ void	find_dollar(t_info *token, t_envp *_env)
 // 	if (validate_quote_line(test))
 // 	{
 // 		find_dollar(test, env);
-// 		clear_qoute_in_token(test);
+// 		clear_quote_in_token(test);
 // 	}
 // 	head2 = test;
 // 	while (head2 != NULL)
