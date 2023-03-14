@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 20:35:42 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 13:38:25 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	is_whitespace2(char line)
 {
-	if (line != 32 && !(line >= 9 && line <= 13))
+	if (line && line != 32 && !(line >= 9 && line <= 13))
 		return (1);
 	return (0);
 }
@@ -139,7 +139,7 @@ void	str_tokenize(t_info *info, char *line)
 // 		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
 // 		head1 = head1->next;
 // 	}
-// 	clear_qoute_in_token(test);
+// 	clear_quote_in_token(test);
 // 	head2 = test;
 // 	while (head2 != NULL)
 // 	{

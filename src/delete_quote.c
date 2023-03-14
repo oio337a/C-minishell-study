@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 22:39:28 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 13:33:01 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,14 @@ static void	delete_quote(t_info *token)
 	free(tmp);
 }
 
-void	clear_qoute_in_token(t_info *token)
+void	clear_quote_in_token(t_info *token)
 {
 	t_info	*head;
 
 	head = token;
 	while (head != NULL)
 	{
-		if (is_qoute(head->cmd) >= 0)
+		if (is_quote(head->cmd) >= 0)
 			delete_quote(head);
 		head = head->next;
 	}

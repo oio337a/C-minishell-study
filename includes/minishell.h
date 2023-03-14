@@ -66,7 +66,7 @@ int			validate_quote_line(t_info *token);
 void		str_tokenize(t_info *info, char *line);
 int			is_dollar(char *token);
 char		*parse_dollar(char *str, t_envp *head);
-void		clear_qoute_in_token(t_info *token);
+void		clear_quote_in_token(t_info *token);
 
 /*signal*/
 // void		handler(int signum);
@@ -120,13 +120,13 @@ void		find_dollar(t_info *token, t_envp *_env);
 char		*parse_dollar(char *str, t_envp *head);
 
 /*quotes*/
-int			is_qoute(char *s);
+int			is_quote(char *s);
 int			find_next_quotes(char *line, char quote, int quote_idx);
 int			*count_q(char *munja);
 int			here_quote(char *line);
 char		*parse_dollar(char *str, t_envp *head);
 char		*get_full_token(t_info *cmd);
-void		clear_qoute_in_token(t_info *token);
+void		clear_quote_in_token(t_info *token);
 
 /*err*/
 void		exit_errno(int arg_status, char *cmd, int res);
