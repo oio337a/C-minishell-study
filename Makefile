@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+         #
+#    By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/13 21:50:18 by suhwpark         ###   ########.fr        #
+#    Updated: 2023/03/14 16:30:24 by sohyupar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Wextra
+CFLAGS		= -Wall -Wextra -Wextra -g3
 RFLAGS		= -lreadline
 LFLAGS		= -L${HOME}/.brew/opt/readline/lib
 IFLAGS		= -I${HOME}/.brew/opt/readline/include

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:37 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 16:48:32 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 22:18:36 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_envp	*init_envp(void)
 	return (envp);
 }
 
-static int	check_dupkey(t_envp *envp, char *key)
+int	check_dupkey(t_envp *envp, char *key)
 {
 	t_envp	*head;
 
@@ -48,7 +48,7 @@ void	insert_envp(t_envp *envp, char *key, char *value)
 		head->value = ft_strdup(value);
 		return ;
 	}
-	if (check_dupkey(envp, key)) //중복 key
+	if (check_dupkey(envp, key))
 	{
 		while (ft_strcmp(head->key, key) != 0)
 			head = head->next;
@@ -63,7 +63,6 @@ void	insert_envp(t_envp *envp, char *key, char *value)
 	head->next->value = ft_strdup(value);
 	head->next->next = NULL;
 }
-
 
 void	append_envp(t_envp *envp, char *key, char *value)
 {
@@ -87,21 +86,6 @@ void	append_envp(t_envp *envp, char *key, char *value)
 		head->value = ft_strjoin_free(head->value, value);
 }
 
-int	size_envp(t_envp *lst)
-{
-	int		i;
-	t_envp	*temp;
-
-	i = 0;
-	temp = lst;
-	while (temp)
-	{
-		temp = temp->next;
-		i++;
-	}
-	return (i);
-}
-
 void	delete_envp_all(t_envp **envp)
 {
 	t_envp	*tmp;
@@ -114,13 +98,6 @@ void	delete_envp_all(t_envp **envp)
 		free(*envp);
 		*envp = tmp;
 	}
-}
-
-void	free_envp(t_envp *envp)
-{
-	free(envp->key);
-	free(envp->value);
-	free(envp);
 }
 
 t_envp	*set_envp(char **envp)

@@ -6,13 +6,11 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 18:00:07 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 22:23:52 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	g_exit_status;
 
 /*
 	추가할 것  : 인자로 받은 key가 이미 있을 때, 덮어 씌우기
@@ -49,6 +47,21 @@ int	g_exit_status;
 	스페이스, 특수문자 등은 key, value 모두 안되는데, .랑 -랑 /는 왜 됨 ;;
 	작은, 큰 따옴표 제거하고 환경변수 목록에 추가되어야 함.
 */
+
+// static int	size_envp(t_envp *lst)
+// {
+// 	int		i;
+// 	t_envp	*temp;
+
+// 	i = 0;
+// 	temp = lst;
+// 	while (temp)
+// 	{
+// 		temp = temp->next;
+// 		i++;
+// 	}
+// 	return (i);
+// }
 
 // char	**dup_envp(t_envp *head) //정렬하기 위한 배열 만들기
 // {
@@ -123,10 +136,27 @@ int	check_argv(char *argv)
 	return (ret);
 }
 
+void	set_key_value(t_envp *head, char *argv, int i, int plus)
+{
+	char	*key;
+	char	*value;
+	
+	value = ft_substr(argv, i + 1, ft_strlen(argv) - i + 1);
+	if (plus == i - 1) // +=인 경우 뒤에 덧붙이기
+	{
+		key = ft_substr(argv, 0, i - 1);
+		append_envp(head, key, value);
+	}
+	else // 그냥 key=value인 경우
+	{
+		key = ft_substr(argv, 0, i);
+		insert_envp(head, key, value);
+	}
+}
+
 void	add_envp(char *argv, t_envp *head)
 {
 	t_envp	*new;
-	char	**arr;
 	int		i;
 	int		plus;
 
@@ -142,25 +172,11 @@ void	add_envp(char *argv, t_envp *head)
 	if (i == -1) //없으면 key만
 		insert_envp(head, argv, NULL);
 	else // 이부분 함수로 빼기
-	{
-		arr = (char **)ft_safe_malloc(3 * sizeof(char *));
-		arr[1] = ft_substr(argv, i + 1, ft_strlen(argv) - i + 1);
-		arr[2] = NULL;
-		if (plus == i - 1) // +=인 경우 뒤에 덧붙이기
-		{
-			arr[0] = ft_substr(argv, 0, i - 1);
-			append_envp(head, arr[0], arr[1]);
-		}
-		else // 그냥 key=value인 경우
-		{
-			arr[0] = ft_substr(argv, 0, i);
-			insert_envp(head, arr[0], arr[1]);
-		}
-		ft_free(arr);
-	}
+		set_key_value(head, argv, i, plus);
+	return ;
 }
 
-int	ft_export(t_info *arg, t_envp *head)
+void	ft_export(t_info *arg, t_envp *head)
 {
 	t_info	*arg_tmp;
 	t_envp	*env_tmp;
@@ -185,7 +201,6 @@ int	ft_export(t_info *arg, t_envp *head)
 			printf("declare -x %s=\"%s\"\n", env_tmp->key, env_tmp->value);
 			env_tmp = env_tmp->next;
 		}
-		return (1);
 	}
 	arg_tmp = arg_tmp->next;
 	while (arg_tmp)
@@ -193,7 +208,6 @@ int	ft_export(t_info *arg, t_envp *head)
 		add_envp(arg_tmp->cmd, head);
 		arg_tmp = arg_tmp->next;
 	}
-	return (1);
 }
 
 // int main(int ac, char **av, char **env) //테스트 메인문

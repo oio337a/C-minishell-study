@@ -6,7 +6,7 @@
 /*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 16:14:39 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:28:49 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,14 @@ static void	delete_quote(t_info *token)
 	free(tmp);
 }
 
-void	clear_qoute_in_token(t_info *token)
+void	clear_quote_in_token(t_info *token)
 {
 	t_info	*head;
 
 	head = token;
 	while (head != NULL)
 	{
-		if (is_qoute(head->cmd) >= 0)
+		if (is_quote(head->cmd) >= 0)
 			delete_quote(head);
 		head = head->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 21:26:16 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:27:47 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	here_doc(char *limiter)
 
 	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
-		common_errno("fd", 2, NULL);
+		common_errno("fd", 2 ,NULL);
 	while (1)
 	{
 		write(1, "Nadocki > ", 10);
@@ -36,8 +36,8 @@ void	here_doc(char *limiter)
 	if (fd == -1)
 	{
 		unlink(".here_doc");
-		common_errno("fd", 2, NULL);
+		common_errno("fd", 2 ,NULL);
 	}
-	dup2(fd, STDIN_FILENO);
 	unlink(".here_doc");
+	dup2(fd, STDIN_FILENO);
 }

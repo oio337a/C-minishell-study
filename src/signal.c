@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 21:50:00 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:30:33 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	set_signal(t_signal mode)
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 	}
-	else // 히어독 & 기본 설정
+	else //if (mode == HEREDOC || mode == GENERAL)
 	{
 		signal(SIGINT, handler);
 		signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시

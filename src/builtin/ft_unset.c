@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:32 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 18:03:28 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 22:25:44 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,72 +44,87 @@ int	validate_key(char *str)
 	return (1);
 }
 
-// int	check_edges_unset(t_info *arg, t_envp **envp)
+void	free_envp(t_envp *envp)
+{
+	free(envp->key);
+	free(envp->value);
+	free(envp);
+}
+
+static void	delete_envp(t_info *arg_tmp, t_envp **envp)
+{
+	t_envp	*tmp;
+	t_envp	*before;
+	t_envp	*curr;
+
+	tmp = *envp;
+	if (!ft_strcmp(arg_tmp->cmd, tmp->key))
+	{
+		*envp = (*envp)->next;
+		free_envp(tmp);
+	}
+	while (tmp->next != NULL)
+	{
+		if (!ft_strcmp(arg_tmp->cmd, tmp->next->key))
+		{
+			before = tmp;
+			curr = tmp->next;
+			before->next = curr->next;
+			free_envp(curr);
+		}
+		else
+			tmp = tmp->next;
+	}
+}
+
+void	ft_unset(t_info *arg, t_envp **envp)
+{
+	t_info	*arg_tmp;
+
+	if (!arg->next || !envp)
+		return ;
+	arg_tmp = arg->next;
+	while (arg_tmp)
+	{
+		if (!validate_key(arg_tmp->cmd))
+		{
+			printf("Nakishell: unset '%s': not a valid identifier\n", \
+			arg_tmp->cmd);
+			arg_tmp = arg_tmp->next;
+			continue ;
+		}
+		delete_envp(arg_tmp, envp);
+		arg_tmp = arg_tmp->next;
+	}
+}
+
+// int	main(int ac, char **av, char **envp)
 // {
-// 	if (!arg->next || !envp)
-// 		return (1);
-// 	if (!validate_key(str))
-// 	{
-// 		printf("Nakishell: unset '%s': not a valid identifier", str);
-// 		return (1);
-// 	}u
+// 	t_envp	*head = set_envp(envp);
+// 	t_info	*arg = init_list();
+// 	t_info	*arg2 = init_list();
+// 	t_info	*arg3 = init_list();
+
+// 	insert_list(arg, "export", WORD);
+// 	insert_list(arg, "xxx=123", WORD);
+// 	insert_list(arg, "a====b", WORD);
+// 	insert_list(arg, "123a=123", WORD);
+// 	insert_list(arg, "xxx=456", WORD);
+// 	insert_list(arg, "ooo+=456", WORD);
+// 	ft_export(arg, head);
+
+// 	insert_list(arg3, "export", WORD);
+
+// 	printf("before unset\n");
+// 	ft_export(arg3, head);
+
+// 	insert_list(arg2, "unset", WORD);
+// 	insert_list(arg2, "SECURITYSESSIONID", WORD);
+// 	insert_list(arg2, "a", WORD);
+// 	insert_list(arg2, "b=a", WORD);
+// 	ft_unset(arg2, &head);
+
+// 	printf("after unset\n");
+// 	ft_export(arg3, head);
 // 	return (0);
-// }
-
-// void	ft_unset(t_info *arg, t_envp **envp)
-// {
-// 	t_envp	*tmp;
-// 	t_envp	*before;
-// 	t_envp	*curr;
-
-// 	if (check_edges_unset(str, envp))
-// 		return ;
-// 	tmp = *envp;
-// 	if (!ft_strcmp(str, tmp->key))
-// 	{
-// 		*envp = (*envp)->next;
-// 		free_envp(tmp);
-// 		return ;
-// 	}
-// 	while (tmp->next != NULL)
-// 	{
-// 		if (!ft_strcmp(str, tmp->next->key))
-// 		{
-// 			before = tmp;
-// 			curr = tmp->next;
-// 			before->next = curr->next;
-// 			free_envp(curr);
-// 		}
-// 		else
-// 			tmp = tmp->next;
-// 	}
-// }
-
-// int	main(int ac, char **av, char **envp) //test 메인문
-// {
-// 	t_envp	*head;
-// 	t_envp	*tmp;
-// 	t_envp *tmp2;
-// 	int i = 0;
-// 	int j = 0;
-// 	char	*str = "SECURITYSESSIONID";
-
-// 	head = set_envp(envp);
-// 	tmp = head;
-// 	tmp2 = head;
-// 	while (tmp2)
-// 	{
-// 		printf("before : %s=%s\n", tmp2->key, tmp2->value);
-// 		tmp2 = tmp2->next;
-// 	}
-// 	ft_unset(str, &tmp);
-// 	while (tmp)
-// 	{
-// 		printf("after : %s=%s\n", tmp->key, tmp->value);
-// 		tmp = tmp->next;
-// 	}
-// 	// system("leaks a.out");
-// 	// ft_env(head);
-// 	return (0);
-// 	// 저희 exit done ~!@~!@ 뿡
 // }

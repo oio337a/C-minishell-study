@@ -6,7 +6,7 @@
 /*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 15:33:44 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:30:25 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	main(int ac, char **av, char **envp)
 			tmp = info;
 			if (validate_quote_line(info))
 			{
-				find_dollar(info, envp_head);		
-				clear_qoute_in_token(info);
+				find_dollar(info, envp_head);
+				clear_quote_in_token(info);
 			}
 			else
 			{

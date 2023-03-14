@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
+/*   test_1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 16:30:04 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:10:08 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,59 @@ static char	*get_after_quote(char *line, char *bulk)
 	return (real_bulk);
 }
 
+static void	redir_check(t_info *info, char **line)
+{
+	char	*temp;
+	int		type;
+
+	type = HEREDOC_IN;
+	if (**(line + 1) == **line)
+	{
+		if (**(line + 1) == '>')
+			type = HEREDOC_OUT;
+		temp = ft_substr(*line, 0, 2);
+		insert_list(info, temp, type);
+		free(temp);
+		*line++;
+	}
+	else
+	{
+		if (**line == '>')
+			insert_list(info, ">", REDIR_OUT);
+		else if (**line == '<')
+			insert_list(info, "<", REDIR_IN);
+		else
+			insert_list(info, "|", PIPE);
+	}
+}
+
+void	quote_process(t_info *info, char **line)
+{
+	bulk = quote_bulk(*line, **line);
+	if (!ft_strlen(bulk))
+	{
+		*line += 2;
+		while (**line == '\"' && **line != '\0' && **line != ' ')
+		{
+			if (**(line + 1) != '\"')
+				break ;
+			*line += 2;
+		}
+	}
+	else
+		*line += ft_strlen(bulk);
+	tmp = bulk;
+	if (**line != ' ')
+	{
+		bulk = get_after_quote(*line, tmp);
+		line += (ft_strlen(bulk) - ft_strlen(tmp));
+	}
+	insert_list(info, bulk, WORD);
+	free(tmp);
+	if (**line == '\0')
+		break ;
+}
+
 void	str_tokenize(t_info *info, char *line)
 {
 	int		i;
@@ -61,55 +114,10 @@ void	str_tokenize(t_info *info, char *line)
 	i = 0;
 	while (*line)
 	{
-		if (*line == '>')
-		{
-			if (*(line + 1) == '>')
-			{
-				insert_list(info, ">>", HEREDOC_OUT);
-				line++;
-			}
-			else
-				insert_list(info, ">", REDIR_OUT);
-		}
-		else if (*line == '<')
-		{
-			if (*(line + 1) == '<')
-			{
-				insert_list(info, "<<", HEREDOC_IN);
-				line++;
-			}
-			else
-				insert_list(info, "<", REDIR_IN);
-		}
-		else if (*line == '|')
-			insert_list(info, "|", PIPE);
-		else if (*line == '\"')
-		{
-			bulk = quote_bulk(line, '\"');
-			if (!ft_strlen(bulk))
-			{
-				line += 2;
-				while (*line == '\"' && *line != '\0' && *line != ' ')
-				{
-					if (*(line + 1) != '\"')
-						break ;
-					line += 2;
-				}
-			}
-			else
-				line += ft_strlen(bulk);
-			tmp = bulk;
-			if (*line != ' ')
-			{
-				bulk = get_after_quote(line, tmp);
-				line += (ft_strlen(bulk) - ft_strlen(tmp));
-			}
-			insert_list(info, bulk, WORD);
-			free(tmp);
-			// free(bulk);
-			if (*line == '\0')
-				break ;
-		}
+		if (*line == '>' || *line == '<' || *line == '|')
+			redir_check(info, &line);
+		else if (*line == '\"' || *line == '\'')
+			quote_process(info, &line);
 		else if (*line == '\'')
 		{
 			bulk = quote_bulk(line, '\'');
@@ -133,7 +141,6 @@ void	str_tokenize(t_info *info, char *line)
 			}
 			insert_list(info, bulk, WORD);
 			free(tmp);
-			// free(bulk);
 			if (*line == '\0')
 				break ;
 		}
