@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 22:40:13 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 16:10:08 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ static char	*quote_bulk(char *line, char c)
 	char	*bulk;
 
 	i = 1;
+	if (line[i] == c)
+	{
+		bulk = ft_strdup("");
+		return (bulk);
+	}
 	while (line[i] != c)
 		i++;
 	bulk = ft_substr(line, 0, i + 1);
@@ -38,7 +43,7 @@ static char	*get_after_quote(char *line, char *bulk)
 	int		i;
 
 	i = 0;
-	while (is_whitespace2(line[i]))
+	while (line[i] && is_whitespace2(line[i]))
 		i++;
 	tmp = ft_substr(line, 0, i);
 	real_bulk = ft_strjoin(bulk, tmp);
@@ -46,95 +51,138 @@ static char	*get_after_quote(char *line, char *bulk)
 	return (real_bulk);
 }
 
-int	redir_check(t_info *info, char *line, int i)
+static void	redir_check(t_info *info, char **line)
 {
 	char	*temp;
 	int		type;
 
 	type = HEREDOC_IN;
-	if (line[i] == line[i + 1])
+	if (**(line + 1) == **line)
 	{
-		if (line[i] == '>')
+		if (**(line + 1) == '>')
 			type = HEREDOC_OUT;
-		temp = ft_substr(line, i, i + 1);
+		temp = ft_substr(*line, 0, 2);
 		insert_list(info, temp, type);
 		free(temp);
-		i++;
+		*line++;
 	}
 	else
 	{
-		if (line[i] == '>')
+		if (**line == '>')
 			insert_list(info, ">", REDIR_OUT);
-		else if (line[i] == '<')
+		else if (**line == '<')
 			insert_list(info, "<", REDIR_IN);
 		else
 			insert_list(info, "|", PIPE);
 	}
-	return (i);
 }
 
-// static char	*char_to_str(char c)
-// {
-// 	char	*ret;
-
-// 	ret = malloc(2);
-// 	ret[0] = c;
-// 	ret[1] = '\0';
-// 	return (ret);
-// }
-
-int	bulk_bulk(t_info *info, char *line, int i)
+void	quote_process(t_info *info, char **line)
 {
-	char	*tmp;
-	int		j;
-
-	j = i;
-	while (line[j] && is_whitespace2(line[j]))
-		j++;
-	tmp = ft_substr(line, i, j);
-	insert_list(info, tmp, WORD);
-	i += j;
-	free(tmp);
-	return (i);
-}
-
-int	slice_quote_bulk(t_info *info, char *line, int i)
-{
-	char	*bulk;
-	char	*tmp;
-
-	bulk = quote_bulk(line, line[i]);
-	tmp = bulk;
-	i += ft_strlen(bulk);
-	if (line[i] != ' ')
+	bulk = quote_bulk(*line, **line);
+	if (!ft_strlen(bulk))
 	{
-		bulk = get_after_quote(line, tmp);
-		i += (ft_strlen(bulk) - ft_strlen(tmp));
+		*line += 2;
+		while (**line == '\"' && **line != '\0' && **line != ' ')
+		{
+			if (**(line + 1) != '\"')
+				break ;
+			*line += 2;
+		}
+	}
+	else
+		*line += ft_strlen(bulk);
+	tmp = bulk;
+	if (**line != ' ')
+	{
+		bulk = get_after_quote(*line, tmp);
+		line += (ft_strlen(bulk) - ft_strlen(tmp));
 	}
 	insert_list(info, bulk, WORD);
 	free(tmp);
-	return (i);
+	if (**line == '\0')
+		break ;
 }
 
 void	str_tokenize(t_info *info, char *line)
 {
 	int		i;
+	char	*tmp;
+	char	*bulk;
+	char	*tmp2;
 
-	i = -1;
-	while (line[++i])
+	i = 0;
+	while (*line)
 	{
-		if (line[i] == '>' || line[i] == '<' || line[i] == '|')
-			i = redir_check(info, &line, i);
-		else if (line[i] == '\"' || line[i] == '\'')
-			i = slice_quote_bulk(info, line, i);
-		else if (line[i] != '>' && line[i] != '<'
-			&& line[i] != '|' && line[i] != ' ')
-			i = bulk_bulk(info, line, i);
-		if (line[i] == '\0')
-			break ;
+		if (*line == '>' || *line == '<' || *line == '|')
+			redir_check(info, &line);
+		else if (*line == '\"' || *line == '\'')
+			quote_process(info, &line);
+		else if (*line == '\'')
+		{
+			bulk = quote_bulk(line, '\'');
+			if (!ft_strlen(bulk))
+			{
+				line += 2;
+				while (*line == '\'' && *line != '\0' && *line != ' ')
+				{
+					if (*(line + 1) != '\'')
+						break ;
+					line += 2;
+				}
+			}
+			else
+				line += ft_strlen(bulk);
+			tmp = bulk;
+			if (*line != ' ')
+			{
+				bulk = get_after_quote(line, tmp);
+				line += (ft_strlen(bulk) - ft_strlen(tmp));
+			}
+			insert_list(info, bulk, WORD);
+			free(tmp);
+			if (*line == '\0')
+				break ;
+		}
+		else if (*line != '>' && *line != '<' && *line != '|' && *line != ' ')
+		{
+			i = 0;
+			while (line[i] && is_whitespace2(line[i]))
+				i++;
+			tmp = ft_substr(line, 0, i);
+			insert_list(info, tmp, WORD);
+			line += ft_strlen(tmp);
+			free(tmp);
+			if (*line == '\0')
+				break ;
+		}
+		line++;
 	}
 }
 
-// 용민아 내일 이거 해야 되는데 기억해!!!
-// 이거 함수들 다 인덱스 받아와서 건드린다음에 보내줘야해.. 할 수 있지??
-// 힘내 용민 넌 할 수있어!! 오늘도 수고했어!!! ㅎㅎ
+// int main()
+// {
+// 	t_info *test;
+// 	t_info *head1;
+// 	t_info *head2;
+
+// 	char *str = "cat \"$USER\" | ls -al | cat '-e' | 'w'c -l > a";
+
+// 	printf("line : %s\n", str);
+// 	test = init_list();
+// 	str_tokenize(test, str);
+// 	head1 = test;
+// 	while(head1 != NULL)
+// 	{
+// 		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
+// 		head1 = head1->next;
+// 	}
+// 	clear_qoute_in_token(test);
+// 	head2 = test;
+// 	while (head2 != NULL)
+// 	{
+// 		printf("a-fter cmd : %s, type : %d\n", head2->cmd, head2->type);
+// 		head2 = head2->next;
+// 	}
+// 	// system("leaks a.out");
+// }

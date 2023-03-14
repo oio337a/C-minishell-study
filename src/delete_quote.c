@@ -3,23 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 13:33:01 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/14 16:09:33 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	quotes_case(t_info *cmd, t_info *arg, int i, int next_idx)
+static int	quotes_case(t_info *cmd, t_info *token, int i, char quote)
 {
 	char	*clear_token;
+	int		next_idx;
 
-	clear_token = ft_substr(arg->cmd, i + 1, next_idx - i - 1);
-	insert_list(cmd, clear_token, WORD);
-	free(clear_token);
-	i += next_idx;
+	next_idx = find_next_quotes(token->cmd, '\'', i);
+	if (next_idx == i + 1)
+		i++;
+	else
+	{
+		clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
+		insert_list(cmd, clear_token, WORD);
+		free(clear_token);
+		i += next_idx;
+	}
 	return (i);
 }
 
@@ -34,6 +41,13 @@ static int	not_quotes(t_info *cmd, t_info *arg, int i)
 	return (i);
 }
 
+static void	include_nothing(char *line, t_info *token)
+{
+	line = token->cmd;
+	token->cmd = ft_strdup("");
+	free(line);
+}
+
 static void	delete_quote(t_info *token)
 {
 	int		i;
@@ -44,16 +58,10 @@ static void	delete_quote(t_info *token)
 
 	i = 0;
 	cmd = init_list();
-	if (ft_strlen(token->cmd) == 2)
+	if (!ft_strlen(token->cmd))
 	{
-		if ((token->cmd[0] == '\"' && token->cmd[1] == '\"') // 얘 돌앗음 내일 처리
-			|| (token->cmd[0] == '\'' && token->cmd[1] == '\''))
-		{
-			tmp = token->cmd;
-			token->cmd = ft_strdup("");
-			free(tmp);
-			return ;
-		}
+		include_nothing(token->cmd, token);
+		return ;
 	}
 	while (token->cmd[i])
 	{
@@ -69,8 +77,7 @@ static void	delete_quote(t_info *token)
 				free(clear_token);
 				i += next_idx;
 			}
-			// else
-			// 	i = quotes_case(cmd, token, i, next_idx);
+			// i = quotes_case(cmd, token, i, '\'');
 		}
 		else if (token->cmd[i] == '\"')
 		{
@@ -84,7 +91,7 @@ static void	delete_quote(t_info *token)
 				free(clear_token);
 				i += next_idx;
 			}
-				// i = quotes_case(cmd, token, i, next_idx);
+			// i = quotes_case(cmd, token, i, '\"');
 		}
 		else
 		{

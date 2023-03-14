@@ -75,3 +75,7 @@ ex)
 2. pipe를 어떻게 하면 예쁘게 자를 수 있을가요?벅
 이부분 명령어 뒤에 더 실행할거 있으면 dup2(fd[1], STDOUT)반복 하고
 부모 프로세서에서 마지막에 닫아주면 병렬형 잘 될듯?????
+
+ㅇㅕ ㄹㅓ부ㄴ~~~
+최대한 기능 단위로 푸시하면 좋지만 안댔다면 git push 시 commit 메세지에 내역을 써주시면 감사하겟읍니다~~~
+ex) delete quote norm 을 맞췄따 -> commit 메세지를 file : delete_quote norm check 이런 식으로요~~~~~~

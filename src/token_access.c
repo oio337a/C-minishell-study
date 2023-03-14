@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 21:33:41 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 15:39:49 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_info	*get_token(t_info **token)
 		}
 		if ((*token)->type == HEREDOC_IN)
 		{
+			// set_signal(HEREDOC);
 			(*token) = (*token)->next;
 			here_doc((*token)->cmd);
 			(*token) = (*token)->next;
@@ -88,6 +89,7 @@ static void	execve_token(t_info *token, t_envp *env)
 	while (head)
 	{
 		cmd[i] = ft_strdup(head->cmd);
+		// printf("%s\n", cmd[i]);
 		i++;
 		head = head->next;
 	}
@@ -118,6 +120,7 @@ void	pipex(t_info *token, t_envp *env)
 		pid = fork();
 		if (pid == 0)
 		{
+			// set_signal(CHILD);
 			if (i == get_pipe_count(token))
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1]));
 			else
@@ -127,6 +130,7 @@ void	pipex(t_info *token, t_envp *env)
 		}
 		else
 		{
+			// set_signal(WAITING);
 			waitpid(pid, NULL, 0);
 			dup2(fd[0], STDIN_FILENO);
 			(close(fd[0]), close(fd[1]));

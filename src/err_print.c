@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 19:47:59 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 15:55:31 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ int	g_last_exit_code;
 // +) 여기서 뉴라인 띄우도록 기능 추가 필요
 void	common_errno(char *cmd, int res, char *next_arg)
 {
-	printf("here?\n");
 	if (res == 127) // command not found  errno에 등록 안돼있어여
 	{
 		printf("%s: command not found\n", cmd);
 		g_last_exit_code = 127;
+		return ;
 	}
 	if (next_arg == NULL)
 	{
