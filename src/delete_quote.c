@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 20:27:01 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 21:35:20 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	quotes_case(t_info *list, char *cmd, int i, char quote)
 	char	*clear_token;
 	int		next_idx;
 
-	next_idx = find_next_quotes(cmd, quote, i);
+	next_idx = find_next_quote(cmd, quote, i);
 	if (next_idx == i + 1)
 		i++;
 	else

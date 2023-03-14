@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 20:39:06 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 21:48:23 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,15 @@ t_info	*get_token(t_info **token)
 	{
 		if ((*token)->type == REDIR_IN)
 		{
+			printf("redir : %s, type : %d\n", (*token)->cmd, (*token)->type);
 			(*token) = (*token)->next;
 			open_fd = open((*token)->cmd, O_RDONLY);
 			if (open_fd == -1)
 				common_errno((*token)->cmd, 2, NULL);
 			(dup2(open_fd, STDIN_FILENO), close(open_fd));
-			if (!(*token)->next)
-				break ;
 			(*token) = (*token)->next;
 		}
-		else if ((*token)->type == REDIR_OUT)
+		if ((*token)->type == REDIR_OUT)
 		{
 			(*token) = (*token)->next;
 			open_fd = open((*token)->cmd, O_WRONLY | O_TRUNC | O_CREAT, 0644);
@@ -44,16 +43,15 @@ t_info	*get_token(t_info **token)
 				break ;
 			(*token) = (*token)->next;
 		}
-		else if ((*token)->type == HEREDOC_IN)
+		if ((*token)->type == HEREDOC_IN)
 		{
+			printf("redir %s, type : %d\n", (*token)->cmd, (*token)->type);
 			// set_signal(HEREDOC);
 			(*token) = (*token)->next;
 			here_doc((*token)->cmd);
-			if (!(*token)->next)
-				break ;
 			(*token) = (*token)->next;
 		}
-		else if ((*token)->type == HEREDOC_OUT)
+		if ((*token)->type == HEREDOC_OUT)
 		{
 			(*token) = (*token)->next;
 			open_fd = open((*token)->cmd, O_WRONLY | O_APPEND | O_CREAT, 0644);
@@ -64,11 +62,12 @@ t_info	*get_token(t_info **token)
 				break ;
 			(*token) = (*token)->next;
 		}
-		else if ((*token)->type == PIPE)
+		if ((*token)->type == PIPE)
 		{
 			(*token) = (*token)->next;
 			break ;
 		}
+		printf("cmd : %s, type : %d\n", (*token)->cmd, (*token)->type);
 		insert_list(new, (*token)->cmd, (*token)->type);
 		(*token) = (*token)->next;
 	}
@@ -90,19 +89,17 @@ static void	execve_token(t_info *token, t_envp *env)
 	/*
 	if (빌트인이 아니면 밑에 실행)
 	*/
-	// if (!builtin(head, env))
-	// {
-		while (head)
-		{
-			cmd[i] = ft_strdup(head->cmd);
-			i++;
-			head = head->next;
-		}
-		cmd[i] = 0;
-		if (execve(get_cmd(cmd[0], env), cmd, set_path(env)) == -1)
-			g_last_exit_code = -1;
-		ft_free(cmd);
-	// }
+	while (head)
+	{
+		cmd[i] = ft_strdup(head->cmd);
+		// printf("%s\n", cmd[i]);
+		i++;
+		head = head->next;
+	}
+	cmd[i] = 0;
+	if (execve(get_cmd(cmd[0], env), cmd, set_path(env)) == -1)
+		g_last_exit_code = -1;
+	ft_free(cmd);
 }
 
 void	pipex(t_info *token, t_envp *env)

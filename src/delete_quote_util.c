@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote_util.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:02:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 13:33:01 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/14 21:38:19 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	find_next_quotes(char *line, char quote, int quote_idx)
+int	find_next_quote(char *line, char quote, int quote_idx)
 {
 	int	next_idx;
 
@@ -23,8 +23,7 @@ int	find_next_quotes(char *line, char quote, int quote_idx)
 			return (next_idx);
 		next_idx++;
 	}
-	// printf("쿼터 이상해요\n");
-	return (-1); // 에러 출력으로 바꾸는게 나을듯염
+	return (-1); // 에러 출력으로 바꾸는게 나을듯염 -> main문에서 validate 실패 시 출력 ! ! 
 }
 
 int	*count_q(char *munja)

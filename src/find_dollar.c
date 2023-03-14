@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 20:26:52 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 21:52:34 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 	'$~` -> 걍 문자열 취급
 */
 
-static int	check_quote(char *token)
+static int	is_single_quote(char *token)
 {
 	int	i;
 
@@ -66,15 +66,15 @@ static int	check_envp(char *token)
 
 	i = 0;
 	j = 0;
-	if (!check_quote(token))
+	if (!is_single_quote(token))
 		return (0);
 	if (check_else(token) == 1)
 		return (1);
 	return (0);
 }
 
-static int	quote_quote(char *token)
-{
+static int	check_quote_couple(char *token) // quote_quote -> find_quote_couple
+{ //쿼터 발견 시 다음 쿼터 찾으면서 짝 맞는지 확인
 	int	i;
 	int	next;
 
@@ -84,14 +84,14 @@ static int	quote_quote(char *token)
 	{
 		if (token[i] == '\'')
 		{
-			next = find_next_quotes(token, '\'', i);
+			next = find_next_quote(token, '\'', i);
 			if (next == -1)
 				return (0);
 			i = next;
 		}
 		if (token[i] == '\"')
 		{
-			next = find_next_quotes(token, '\"', i);
+			next = find_next_quote(token, '\"', i);
 			if (next == -1)
 				return (0);
 			i = next;
@@ -101,18 +101,15 @@ static int	quote_quote(char *token)
 	return (1);
 }
 
-int	validate_quote_line(t_info *token)
-{
+int	validate_quote_all(t_info *token) // validate_quote_line -> validate_quote_all
+{ // 전체 명령어 토큰 돌면서 쿼터 짝 맞는지 확인
 	t_info	*head;
 
 	head = token;
 	while (head)
 	{
-		if (!quote_quote(head->cmd))
-		{
-			printf("error\n");
+		if (!check_quote_couple(head->cmd))
 			return (0);
-		}
 		head = head->next;
 	}
 	return (1);
@@ -155,7 +152,7 @@ void	find_dollar(t_info *token, t_envp *_env)
 // 		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
 // 		head1 = head1->next;
 // 	}
-// 	if (validate_quote_line(test))
+// 	if (validate_quote_all(test))
 // 	{
 // 		find_dollar(test, env);
 // 		clear_quote_in_token(test);

@@ -16,8 +16,9 @@
 # include <sys/wait.h>
 # define TRUE 1
 # define FALSE 0
-# define PROMPT_COLOR "\033[34m"
+# define PROMPT_COLOR "\033[38:5:111m"
 # define COMMAND_COLOR "\033[0m"
+# define WELCOME_COLOR "\033[38:5:225m"
 
 extern int	g_last_exit_code;
 
@@ -61,8 +62,7 @@ char		*get_cmd(char *cmd, t_envp *envp);
 int			is_whitespace(char *line);
 void		insert_list(t_info *info, char *cmd, int tpye);
 void		list_delete(t_info **info);
-// int		*count_q(char *munja);
-int			validate_quote_line(t_info *token);
+int			validate_quote_all(t_info *token);
 void		str_tokenize(t_info *info, char *line);
 int			is_dollar(char *token);
 char		*parse_dollar(char *str, t_envp *head);
@@ -119,7 +119,7 @@ void		here_doc(char *limiter);
 void		find_dollar(t_info *token, t_envp *_env);
 char		*parse_dollar(char *str, t_envp *head);
 
-// /*quotes*/
+/*quotes*/
 int			is_quote(char *s);
 int			*count_q(char *munja);
 int			here_quote(char *line);
@@ -127,7 +127,7 @@ char		*parse_dollar(char *str, t_envp *head);
 char		*get_full_token(t_info *cmd);
 void		clear_quote_in_token(t_info *token);
 // void		delete_quote(t_info *token);
-int			find_next_quotes(char *line, char quote, int quote_idx);
+int			find_next_quote(char *line, char quote, int quote_idx);
 
 /*err*/
 void		exit_errno(int arg_status, char *cmd, int res);

@@ -7,12 +7,12 @@
 		3. src/tokenize.c:17 is_whitespace2에서 line이 널이 아닌 경우에만 검사하는 조건 추가
 		4. src/find_dollar.c:43 check_envp에서 token[j]가 널이 아닌 경우에만 검사하는 조건 추가
 
-		이제 ""나 """" """""" 입력 시에는 세그폴트 안 나는 것 같은데 확인바랍니당 ..
+		이제 세그폴트 안 나는 것 같은데 확인바랍니당 ..
 
 		글고 첨엔 tokenize.c:86, :101 조건에도 *line이 널이 아닌 경우 조건으로 추가했었는데, 이건 일단 없어도 괜찮은 것 같네요 ?? 두 경우에서 원래 if문 안에 들어가는 내용이 다른 건지도 확인 부탁드려요 . . ! !
 
-		마지막으로 ....... 쿼터만 있는 명령어를 입력하는 횟수가 많아질수록 exit하기 위해 ctrl+D를 눌러야 하는 횟수가 많아지는 문제가 있읍니다 ..
-		다른 명령어들은 안 그러는데 혹시 쿼터 만들때마다 자식프로세스 만들거나 머 그런게 있나요 ? ㅠㅠ ctrl+D 누를 때마다 (!str) 조건문 들어가지는 건 확인되는데, 그러면 미니쉘 종료하려고 exit을 여러번 하게 된다는 건데 . . . 암튼 그렇습니다
+		마지막으로 ....... path에 없는 명령어를 입력하는 횟수가 많아질수록 exit하기 위해 ctrl+D를 눌러야 하는 횟수가 많아지는 문제가 있읍니다 ..
+		다른 명령어들은 안 그러는데 혹시 빌트인 만들때마다 자식프로세스 만들거나 머 그런게 있나요 ? ㅠㅠ ctrl+D 누를 때마다 (!str) 조건문 들어가지는 건 확인되는데, 그러면 미니쉘 종료하려고 exit을 여러번 하게 된다는 건데 . . . 암튼 그렇습니다
 
 ## 파싱 방법 (토큰화)
 1. 리다이렉션 (<, <<, >>, >) 뒤 : 무조건 파일네임 -> 뒤에 명령어 이어질 수도 있음
@@ -80,8 +80,6 @@ ex)
 최대한 기능 단위로 푸시하면 좋지만 안댔다면 git push 시 commit 메세지에 내역을 써주시면 감사하겟읍니다~~~
 ex) delete quote norm 을 맞췄따 -> commit 메세지를 file : delete_quote norm check 이런 식으로요~~~~~~
 
-
-
 ### norm 처리 해야할 파일들
 - main.c
 - heredoc.c
@@ -97,3 +95,31 @@ ex) delete quote norm 을 맞췄따 -> commit 메세지를 file : delete_quote n
                                                   ^
 - src/err_print.c:116:26: warning: unused parameter 'str' [-Wunused-parameter]
 	void    badpath_errno(char *str, int res)
+
+- src/syntax.c:37:16: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
+                syntax_errno((head->type));
+                             ^~~~~~~~~~~~
+- src/../includes/minishell.h:136:26: note: passing argument to parameter 'cmd' here
+void            syntax_errno(char *cmd);
+                                   ^
+- src/syntax.c:42:33: warning: '&&' within '||' [-Wlogical-op-parentheses]
+                        || (head->type == HEREDOC_IN && ((head->next)->type != WORD) || head->next == NULL))
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
+- src/syntax.c:42:33: note: place parentheses around the '&&' expression to silence this warning
+                        || (head->type == HEREDOC_IN && ((head->next)->type != WORD) || head->next == NULL))
+                                                     ^
+                            (                                                       )
+- src/syntax.c:44:17: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
+                        syntax_errno((head->next)->type);
+                                     ^~~~~~~~~~~~~~~~~~
+- src/../includes/minishell.h:136:26: note: passing argument to parameter 'cmd' here
+void            syntax_errno(char *cmd);
+                                   ^
+- src/syntax.c:47:58: warning: comparison between pointer and integer ('int' and 'void *') [-Wpointer-integer-compare]
+                else if (head->type == REDIR_IN && ((head->next)->type == NULL || (head->next)->type != WORD))
+                                                    ~~~~~~~~~~~~~~~~~~ ^  ~~~~
+- src/syntax.c:49:17: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
+                        syntax_errno((head->next)->type);
+                                     ^~~~~~~~~~~~~~~~~~
+- src/../includes/minishell.h:136:26: note: passing argument to parameter 'cmd' here
+void            syntax_errno(char *cmd);

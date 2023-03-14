@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 16:30:33 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/14 21:24:29 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 //ctrl + d == 시그널이 아니라, 아스키코드 4번 EOT임
 //따라서 따로 시그널 처리할 필요 없이, char == 4 && idx == 0일 때 exit 출력 후 종료하면 됨
 
+int	g_exit_status;
+
 void	handler(int signum)
 {
-	if (signum == SIGINT) //ctrl + c
+	if (signum == SIGINT) //ctrl + c 
 	{
 		write(1, "\n", 1);
 		rl_on_new_line(); //개행문자 출력 시 newline으로 이동한 것을 업데이트 해주는 함수
 		rl_replace_line("", 1); //내부 버퍼를 ""로 바꾸는 함수
 		rl_redisplay(); //버퍼와 프롬포트 재출력
+		g_exit_status = 1;
 	}
 }
 
