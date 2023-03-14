@@ -3,23 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 18:17:43 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 16:14:39 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	quotes_case(t_info *cmd, t_info *arg, int i, int next_idx)
+static int	quotes_case(t_info *list, char *cmd, int i, char quote)
 {
 	char	*clear_token;
+	int		next_idx;
 
-	clear_token = ft_substr(arg->cmd, i + 1, next_idx - i - 1);
-	insert_list(cmd, clear_token, WORD);
-	free(clear_token);
-	i += next_idx;
+	next_idx = find_next_quotes(cmd, '\'', i);
+	if (next_idx == i + 1)
+		i++;
+	else
+	{
+		clear_token = ft_substr(cmd, i + 1, next_idx - i - 1);
+		insert_list(list, clear_token, WORD);
+		free(clear_token);
+		i += next_idx;
+	}
 	return (i);
 }
 
@@ -34,6 +41,13 @@ static int	not_quotes(t_info *cmd, t_info *arg, int i)
 	return (i);
 }
 
+static void	include_nothing(char *line, t_info *token)
+{
+	line = token->cmd;
+	token->cmd = ft_strdup("");
+	free(line);
+}
+
 static void	delete_quote(t_info *token)
 {
 	int		i;
@@ -44,16 +58,10 @@ static void	delete_quote(t_info *token)
 
 	i = 0;
 	cmd = init_list();
-	if (ft_strlen(token->cmd) == 2)
+	if (!ft_strlen(token->cmd))
 	{
-		if ((token->cmd[0] == '\"' && token->cmd[1] == '\"')
-			|| (token->cmd[0] == '\'' && token->cmd[1] == '\''))
-		{
-			tmp = token->cmd;
-			token->cmd = ft_strdup("");
-			free(tmp);
-			return ;
-		}
+		include_nothing(token->cmd, token);
+		return ;
 	}
 	while (token->cmd[i])
 	{
@@ -62,15 +70,14 @@ static void	delete_quote(t_info *token)
 			next_idx = find_next_quotes(token->cmd, '\'', i);
 			if (next_idx == i + 1)
 				i++;
-			// else
-			// {
-			// 	clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
-			// 	insert_list(cmd, clear_token, WORD);
-			// 	free(clear_token);
-			// 	i += next_idx;
-			// }
 			else
-				i = quotes_case(cmd, token, i, next_idx);
+			{
+				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
+				insert_list(cmd, clear_token, WORD);
+				free(clear_token);
+				i += next_idx;
+			}
+			// i = quotes_case(cmd, token, i, '\'');
 		}
 		else if (token->cmd[i] == '\"')
 		{
@@ -78,21 +85,21 @@ static void	delete_quote(t_info *token)
 			if (next_idx == i + 1)
 				i++;
 			else
-			// {
-			// 	clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
-			// 	insert_list(cmd, clear_token, WORD);
-			// 	free(clear_token);
-			// 	i += next_idx;
-			// }
-				i = quotes_case(cmd, token, i, next_idx);
+			{
+				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
+				insert_list(cmd, clear_token, WORD);
+				free(clear_token);
+				i += next_idx;
+			}
+			// i = quotes_case(cmd, token, i, '\"');
 		}
 		else
 		{
-			// clear_token = ft_substr(token->cmd, i, here_quote(token->cmd + i));
-			// insert_list(cmd, clear_token, WORD);
-			// free(clear_token);
-			// i += here_quote(token->cmd + i) - 1;
-			i = not_quotes(cmd, token, i);
+			clear_token = ft_substr(token->cmd, i, here_quote(token->cmd + i));
+			insert_list(cmd, clear_token, WORD);
+			free(clear_token);
+			i += here_quote(token->cmd + i) - 1;
+			// i = not_quotes(cmd, token, i);
 		}
 		i++;
 	}

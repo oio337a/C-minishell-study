@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 19:07:29 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 21:35:48 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*parse_dollar(char *str, t_envp *head)
 		{
 			if (check_edges(str[i + 1], &ret, &i))
 				continue ;
-			value = find_value((str + i), head, &i); // 어차피 find_value함수 내에서 tmp선언하기 때문에 head 직접 대입
+			value = find_value((str + i), head, &i);
 			ret = ft_strjoin_free(ret, value);
 			free(value);
 			return (ret);

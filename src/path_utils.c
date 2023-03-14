@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:06 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 16:23:29 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 15:50:51 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*get_cmd(char *cmd, t_envp *envp)
 	char	*tmp;
 	char	**envp_in_list;
 
+	if (!ft_strlen(cmd))
+		common_errno(cmd, 127, NULL);
 	envp_in_list = set_path(envp);
 	if (access(cmd, X_OK) != -1)
 		return (cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/13 14:33:47 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/13 20:30:29 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ static char	*quote_bulk(char *line, char c)
 	char	*bulk;
 
 	i = 1;
+	if (line[i] == c)
+	{
+		bulk = ft_strdup("");
+		return (bulk);
+	}
 	while (line[i] != c)
 		i++;
 	bulk = ft_substr(line, 0, i + 1);
@@ -38,7 +43,7 @@ static char	*get_after_quote(char *line, char *bulk)
 	int		i;
 
 	i = 0;
-	while (is_whitespace2(line[i]))
+	while (line[i] && is_whitespace2(line[i]))
 		i++;
 	tmp = ft_substr(line, 0, i);
 	real_bulk = ft_strjoin(bulk, tmp);
@@ -66,7 +71,7 @@ void	str_tokenize(t_info *info, char *line)
 			else
 				insert_list(info, ">", REDIR_OUT);
 		}
-		if (*line == '<')
+		else if (*line == '<')
 		{
 			if (*(line + 1) == '<')
 			{
@@ -76,13 +81,24 @@ void	str_tokenize(t_info *info, char *line)
 			else
 				insert_list(info, "<", REDIR_IN);
 		}
-		if (*line == '|')
+		else if (*line == '|')
 			insert_list(info, "|", PIPE);
-		if (*line == '\"')
+		else if (*line == '\"')
 		{
 			bulk = quote_bulk(line, '\"');
+			if (!ft_strlen(bulk))
+			{
+				line += 2;
+				while (*line == '\"' && *line != '\0' && *line != ' ')
+				{
+					if (*(line + 1) != '\"')
+						break ;
+					line += 2;
+				}
+			}
+			else
+				line += ft_strlen(bulk);
 			tmp = bulk;
-			line += ft_strlen(bulk);
 			if (*line != ' ')
 			{
 				bulk = get_after_quote(line, tmp);
@@ -94,21 +110,34 @@ void	str_tokenize(t_info *info, char *line)
 			if (*line == '\0')
 				break ;
 		}
-		if (*line == '\'')
+		else if (*line == '\'')
 		{
 			bulk = quote_bulk(line, '\'');
+			if (!ft_strlen(bulk))
+			{
+				line += 2;
+				while (*line == '\'' && *line != '\0' && *line != ' ')
+				{
+					if (*(line + 1) != '\'')
+						break ;
+					line += 2;
+				}
+			}
+			else
+				line += ft_strlen(bulk);
 			tmp = bulk;
-			line += ft_strlen(bulk);
 			if (*line != ' ')
+			{
 				bulk = get_after_quote(line, tmp);
-			line += (ft_strlen(bulk) - ft_strlen(tmp));
+				line += (ft_strlen(bulk) - ft_strlen(tmp));
+			}
 			insert_list(info, bulk, WORD);
 			free(tmp);
 			// free(bulk);
 			if (*line == '\0')
 				break ;
 		}
-		if (*line != '>' && *line != '<' && *line != '|' && *line != ' ')
+		else if (*line != '>' && *line != '<' && *line != '|' && *line != ' ')
 		{
 			i = 0;
 			while (line[i] && is_whitespace2(line[i]))

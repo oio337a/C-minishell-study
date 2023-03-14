@@ -112,7 +112,7 @@ void		pipex(t_info *token, t_envp *env);
 int			get_pipe_count(t_info *token);
 int			list_size(t_info *info);
 t_info		*get_token(t_info **token);
-
+void		here_doc(char *limiter);
 /*dollar*/
 void		find_dollar(t_info *token, t_envp *_env);
 char		*parse_dollar(char *str, t_envp *head);

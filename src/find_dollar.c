@@ -27,6 +27,8 @@ static int	check_envp(char *token)
 	i = 0;
 	j = 0;
 	k = 0;
+	if (!ft_strcmp("", token))
+		return (0);
 	while (token[k])
 	{
 		if (token[k] == '\'')
