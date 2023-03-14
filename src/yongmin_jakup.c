@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_1.c                                           :+:      :+:    :+:   */
+/*   yongmin_jakup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 16:10:08 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 17:02:47 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ static void	redir_check(t_info *info, char **line)
 
 void	quote_process(t_info *info, char **line)
 {
+	char	*bulk;
+	char	*tmp;
+
 	bulk = quote_bulk(*line, **line);
 	if (!ft_strlen(bulk))
 	{
@@ -96,66 +99,38 @@ void	quote_process(t_info *info, char **line)
 	if (**line != ' ')
 	{
 		bulk = get_after_quote(*line, tmp);
-		line += (ft_strlen(bulk) - ft_strlen(tmp));
+		*line += (ft_strlen(bulk) - ft_strlen(tmp));
 	}
 	insert_list(info, bulk, WORD);
 	free(tmp);
-	if (**line == '\0')
-		break ;
+}
+
+void	remainder(t_info *info, char **line)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	while (*line[i] && is_whitespace2(*line[i]))
+		i++;
+	tmp = ft_substr(*line, 0, i);
+	insert_list(info, tmp, WORD);
+	*line += ft_strlen(tmp);
+	free(tmp);
 }
 
 void	str_tokenize(t_info *info, char *line)
 {
-	int		i;
-	char	*tmp;
-	char	*bulk;
-	char	*tmp2;
-
-	i = 0;
 	while (*line)
 	{
 		if (*line == '>' || *line == '<' || *line == '|')
 			redir_check(info, &line);
 		else if (*line == '\"' || *line == '\'')
 			quote_process(info, &line);
-		else if (*line == '\'')
-		{
-			bulk = quote_bulk(line, '\'');
-			if (!ft_strlen(bulk))
-			{
-				line += 2;
-				while (*line == '\'' && *line != '\0' && *line != ' ')
-				{
-					if (*(line + 1) != '\'')
-						break ;
-					line += 2;
-				}
-			}
-			else
-				line += ft_strlen(bulk);
-			tmp = bulk;
-			if (*line != ' ')
-			{
-				bulk = get_after_quote(line, tmp);
-				line += (ft_strlen(bulk) - ft_strlen(tmp));
-			}
-			insert_list(info, bulk, WORD);
-			free(tmp);
-			if (*line == '\0')
-				break ;
-		}
 		else if (*line != '>' && *line != '<' && *line != '|' && *line != ' ')
-		{
-			i = 0;
-			while (line[i] && is_whitespace2(line[i]))
-				i++;
-			tmp = ft_substr(line, 0, i);
-			insert_list(info, tmp, WORD);
-			line += ft_strlen(tmp);
-			free(tmp);
-			if (*line == '\0')
-				break ;
-		}
+			remainder(info, &line);
+		if (*line == '\0')
+			break ;
 		line++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 16:28:49 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/14 17:02:10 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	quotes_case(t_info *list, char *cmd, int i, char quote)
 	char	*clear_token;
 	int		next_idx;
 
-	next_idx = find_next_quotes(cmd, '\'', i);
+	next_idx = find_next_quotes(cmd, quote, i);
 	if (next_idx == i + 1)
 		i++;
 	else
@@ -30,14 +30,14 @@ static int	quotes_case(t_info *list, char *cmd, int i, char quote)
 	return (i);
 }
 
-static int	not_quotes(t_info *cmd, t_info *arg, int i)
+static int	not_quotes(t_info *list, char *cmd, int i)
 {
 	char	*clear_token;
 
-	clear_token = ft_substr(arg->cmd, i, here_quote(arg->cmd + i));
-	insert_list(cmd, clear_token, WORD);
+	clear_token = ft_substr(cmd, i, here_quote(cmd + i));
+	insert_list(list, clear_token, WORD);
 	free(clear_token);
-	i += here_quote(arg->cmd + i) - 1;
+	i += here_quote(cmd + i) - 1;
 	return (i);
 }
 
@@ -52,7 +52,6 @@ static void	delete_quote(t_info *token)
 {
 	int		i;
 	char	*clear_token;
-	int		next_idx;
 	t_info	*cmd;
 	char	*tmp;
 
@@ -66,41 +65,11 @@ static void	delete_quote(t_info *token)
 	while (token->cmd[i])
 	{
 		if (token->cmd[i] == '\'')
-		{
-			next_idx = find_next_quotes(token->cmd, '\'', i);
-			if (next_idx == i + 1)
-				i++;
-			else
-			{
-				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
-				insert_list(cmd, clear_token, WORD);
-				free(clear_token);
-				i += next_idx;
-			}
-			// i = quotes_case(cmd, token, i, '\'');
-		}
+			i = quotes_case(cmd, token->cmd, i, '\'');
 		else if (token->cmd[i] == '\"')
-		{
-			next_idx = find_next_quotes(token->cmd, '\"', i);
-			if (next_idx == i + 1)
-				i++;
-			else
-			{
-				clear_token = ft_substr(token->cmd, i + 1, next_idx - i - 1);
-				insert_list(cmd, clear_token, WORD);
-				free(clear_token);
-				i += next_idx;
-			}
-			// i = quotes_case(cmd, token, i, '\"');
-		}
+			i = quotes_case(cmd, token->cmd, i, '\"');
 		else
-		{
-			clear_token = ft_substr(token->cmd, i, here_quote(token->cmd + i));
-			insert_list(cmd, clear_token, WORD);
-			free(clear_token);
-			i += here_quote(token->cmd + i) - 1;
-			// i = not_quotes(cmd, token, i);
-		}
+			i = not_quotes(cmd, token, i);
 		i++;
 	}
 	tmp = token->cmd;

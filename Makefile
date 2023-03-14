@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+         #
+#    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/14 16:30:24 by sohyupar         ###   ########.fr        #
+#    Updated: 2023/03/14 16:37:44 by yongmipa         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ LIB_NAME	= ./libft/libft.a
 
 INCS		= -I includes
 
-SRC			=	list_utils.c main.c init_shell.c path_utils.c tokenize.c delete_quote.c \
+SRC			=	list_utils.c main.c path_utils.c tokenize.c delete_quote.c \
 				init_envp.c shell_utils.c err_print.c dollar.c find_dollar.c token_access.c syntax.c delete_quote_util.c heredoc.c
 BUILTIN		=	ft_export.c ft_unset.c ft_builtin.c ft_cd.c ft_echo.c ft_env.c \
 				ft_exit.c ft_pwd.c
