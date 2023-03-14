@@ -6,11 +6,7 @@
 #    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2023/03/14 17:43:11 by yongmipa         ###   ########seoul.kr   #
-=======
-#    Updated: 2023/03/14 16:33:26 by sohyupar         ###   ########.fr        #
->>>>>>> 7d73f58110b6c4f57d66cd7f4807fded84ba22f3
+#    Updated: 2023/03/14 20:31:01 by yongmipa         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 

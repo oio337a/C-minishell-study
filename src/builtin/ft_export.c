@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 22:23:52 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 20:15:47 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ void	set_key_value(t_envp *head, char *argv, int i, int plus)
 
 void	add_envp(char *argv, t_envp *head)
 {
-	t_envp	*new;
 	int		i;
 	int		plus;
 
@@ -180,8 +179,8 @@ void	ft_export(t_info *arg, t_envp *head)
 {
 	t_info	*arg_tmp;
 	t_envp	*env_tmp;
-	char	**arr;
-	int		i;
+	// char	**arr;
+	// int		i;
 
 	arg_tmp = arg;
 	env_tmp = head;

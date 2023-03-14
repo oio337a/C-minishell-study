@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 16:41:59 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 20:11:12 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,16 @@ void	ft_echo(t_info *arg)
 	int		option;
 	int		i;
 	t_info	*temp;
+	t_info 	*test;
 
 	option = find_option(arg);
 	temp = arg->next;
+	test = arg->next;
+	while (test)
+	{
+		printf("echo cmd : %s\n", test->cmd);
+		test = test->next;
+	}
 	i = 1;
 	if (option)
 	{

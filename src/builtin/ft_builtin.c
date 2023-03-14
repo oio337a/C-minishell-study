@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:01:16 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 17:36:04 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 19:58:47 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ unset PATH -> envp 위치 없어져서 env 명령어 터짐,
 
 int	builtin(t_info *cmd, t_envp *head) // 전체 cmd 모두 들어옴 -> 빌트인 실행하면 1, 아니면 0 리턴
 {
-	printf("builtin : %s\n", cmd->cmd);
-	if (ft_strcmp(cmd->cmd, "env") == 0)
+	printf("builtin cmd : %s\n", cmd->cmd);
+	if (cmd->cmd[0] == '\0')
+		return (0);
+	else if (ft_strcmp(cmd->cmd, "env") == 0)
 		ft_env(cmd, head);
 	else if (ft_strcmp(cmd->cmd, "pwd") == 0)
 		ft_pwd();

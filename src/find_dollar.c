@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 18:19:16 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 20:26:52 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,27 @@
 	'$~` -> 걍 문자열 취급
 */
 
-static int	check_envp(char *token)
+static int	check_quote(char *token)
+{
+	int	i;
+
+	i = 0;
+	while (token[i])
+	{
+		if (token[i] == '\'')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	check_else(char *token)
 {
 	int	i;
 	int	j;
-	int	k;
 
 	i = 0;
 	j = 0;
-	k = 0;
-	write(1, token, ft_strlen(token));
-	if (!ft_strcmp("", token))
-		return (0);
-	while (token[k])
-	{
-		if (token[k] == '\'')
-			return (0);
-		k++;
-	}
 	while (token[i])
 	{
 		if (token[i] == '$')
@@ -43,7 +46,7 @@ static int	check_envp(char *token)
 		if (token[i] == '\"')
 		{
 			j = i + 1;
-			while (token[j] != '\"')
+			while (token[j] && token[j] != '\"')
 			{
 				if (token[j] == '$')
 					return (1);
@@ -53,6 +56,20 @@ static int	check_envp(char *token)
 		}
 		i++;
 	}
+	return (0);
+}
+
+static int	check_envp(char *token)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (!check_quote(token))
+		return (0);
+	if (check_else(token) == 1)
+		return (1);
 	return (0);
 }
 
@@ -111,7 +128,6 @@ void	find_dollar(t_info *token, t_envp *_env)
 	{
 		if (check_envp(head->cmd))
 		{
-			printf("???????????\n");
 			tmp = head->cmd;
 			head->cmd = parse_dollar(head->cmd, _env);
 			free(tmp);

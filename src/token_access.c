@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 18:13:01 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 20:39:06 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,11 @@ t_info	*get_token(t_info **token)
 			if (open_fd == -1)
 				common_errno((*token)->cmd, 2, NULL);
 			(dup2(open_fd, STDIN_FILENO), close(open_fd));
+			if (!(*token)->next)
+				break ;
 			(*token) = (*token)->next;
 		}
-		if ((*token)->type == REDIR_OUT)
+		else if ((*token)->type == REDIR_OUT)
 		{
 			(*token) = (*token)->next;
 			open_fd = open((*token)->cmd, O_WRONLY | O_TRUNC | O_CREAT, 0644);
@@ -42,14 +44,16 @@ t_info	*get_token(t_info **token)
 				break ;
 			(*token) = (*token)->next;
 		}
-		if ((*token)->type == HEREDOC_IN)
+		else if ((*token)->type == HEREDOC_IN)
 		{
 			// set_signal(HEREDOC);
 			(*token) = (*token)->next;
 			here_doc((*token)->cmd);
+			if (!(*token)->next)
+				break ;
 			(*token) = (*token)->next;
 		}
-		if ((*token)->type == HEREDOC_OUT)
+		else if ((*token)->type == HEREDOC_OUT)
 		{
 			(*token) = (*token)->next;
 			open_fd = open((*token)->cmd, O_WRONLY | O_APPEND | O_CREAT, 0644);
@@ -60,7 +64,7 @@ t_info	*get_token(t_info **token)
 				break ;
 			(*token) = (*token)->next;
 		}
-		if ((*token)->type == PIPE)
+		else if ((*token)->type == PIPE)
 		{
 			(*token) = (*token)->next;
 			break ;
@@ -91,7 +95,6 @@ static void	execve_token(t_info *token, t_envp *env)
 		while (head)
 		{
 			cmd[i] = ft_strdup(head->cmd);
-			printf("cmd : cmd : %s, %d\n", cmd[i], i);
 			i++;
 			head = head->next;
 		}

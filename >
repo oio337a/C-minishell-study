@@ -1,0 +1,3 @@
+builtin cmd : echo
+echo cmd : EOF
+EOF 

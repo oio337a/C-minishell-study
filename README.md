@@ -79,3 +79,21 @@ ex)
 ㅇㅕ ㄹㅓ부ㄴ~~~
 최대한 기능 단위로 푸시하면 좋지만 안댔다면 git push 시 commit 메세지에 내역을 써주시면 감사하겟읍니다~~~
 ex) delete quote norm 을 맞췄따 -> commit 메세지를 file : delete_quote norm check 이런 식으로요~~~~~~
+
+
+
+### norm 처리 해야할 파일들
+- main.c
+- heredoc.c
+- token_access.c
+- tokenize.c -> yongmin_jakup.c
+
+### warning 뜨는 함수들
+- src/err_print.c:90:38: warning: unused parameter 'res' [-Wunused-parameter]
+	void    envp_errno(char *err_value, int res)
+                                        ^
+- src/err_print.c:96:48: warning: unused parameter 'res' [-Wunused-parameter]
+	void    exit_errno(int arg_status, char *cmd, int res)
+                                                  ^
+- src/err_print.c:116:26: warning: unused parameter 'str' [-Wunused-parameter]
+	void    badpath_errno(char *str, int res)

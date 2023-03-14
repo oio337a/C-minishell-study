@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:37 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 22:18:36 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 20:18:51 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ void	delete_envp_all(t_envp **envp)
 t_envp	*set_envp(char **envp)
 {
 	t_envp	*head;
-	t_envp	*new;
 	char	**arr;
 	int		i;
 	int		j;

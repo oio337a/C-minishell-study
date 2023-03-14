@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 18:18:15 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/14 20:12:28 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	check_edges(char next, char **str, int *i)
 
 static int	set_sub(char *str, char **ret)
 {
-	int	i;
+	int		i;
 	char	*sub;
 
 	sub = ft_substr((str), 0, is_dollar(str));
@@ -87,7 +87,6 @@ char	*parse_dollar(char *str, t_envp *head)
 {
 	char	*ret;
 	char	*value;
-	char	*sub;
 	int		i;
 
 	i = 0;
@@ -103,13 +102,7 @@ char	*parse_dollar(char *str, t_envp *head)
 			free(value);
 		}
 		else
-		{
 			i += set_sub(str + i, &ret);
-			// sub = ft_substr((str + i), 0, is_dollar(str + i));
-			// ret = ft_strjoin_free(ret, sub);
-			// i += is_dollar(str + i);
-			// free(sub);
-		}
 	}
 	return (ret);
 }
