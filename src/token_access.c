@@ -171,6 +171,7 @@ void	pipex(t_info *token, t_envp *env)
 		builtin(head, env, 12);
 		return ;
 	}
+	// 고침 
 	while (i < total_pipe)
 	{
 		splited_token = get_token(&head);
