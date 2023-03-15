@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:06 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 15:50:51 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/15 22:02:42 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*get_cmd(char *cmd, t_envp *envp)
 		}
 		free(tmp);
 	}
+	printf("!111111111\n");
 	common_errno(cmd, 127, NULL); // command not found 출력 후, 상태를 127로 저장합니다.
 	return (NULL);
 }

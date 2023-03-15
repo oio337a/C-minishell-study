@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/15 17:17:33 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 22:00:00 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,17 +71,20 @@ void	common_errno(char *cmd, int res, char *next_arg)
 	{
 		printf("Nakishell$: %s: command not found\n", cmd);
 		g_last_exit_code = 127;
+		// exit(g_last_exit_code);
 		return ;
 	}
 	if (next_arg == NULL)
 	{
 		printf("%s: %s\n", cmd, strerror(res)); // No such~ errno == 2
 		g_last_exit_code = 1;
+		// exit(g_last_exit_code);
 	}
 	else
 	{
 		printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
 		g_last_exit_code = 1;
+		// exit(g_last_exit_code);
 	}
 	// return (1); // 앞에는 실행 가능하다는 cmd 전제
 }
@@ -90,6 +93,7 @@ void	envp_errno(char *err_value)
 {
 	printf("export: %s: not a valid identifier\n", err_value);
 	g_last_exit_code = 1;
+	// exit(g_last_exit_code);
 }
 
 void	exit_errno(int arg_status, char *cmd, int res)
@@ -98,11 +102,13 @@ void	exit_errno(int arg_status, char *cmd, int res)
 	{
 		printf("Nakishell$: %s: too many arguments\n", cmd);
 		g_last_exit_code = 1;
+		// exit(g_last_exit_code);
 	}
 	else
 	{
 		printf("Nakishell$: exit: %s: numeric argument required\n", cmd);
 		g_last_exit_code = 255;
+		// exit(g_last_exit_code);
 	}
 }
 
@@ -110,9 +116,11 @@ void	syntax_errno(char *cmd)
 {
 	printf("syntax error near unexpected token `%s'\n", cmd);
 	g_last_exit_code = 258;
+	// exit(g_last_exit_code);
 }
 
 void	badpath_errno(char *str, int res)
 {
 	printf("%s\n", strerror(res));
+	// exit(g_last_exit_code);
 }

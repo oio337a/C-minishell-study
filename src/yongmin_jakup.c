@@ -6,20 +6,20 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/15 15:44:55 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 21:03:34 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_whitespace2(char line)
+int	is_whitespace2(char line)
 {
 	if (line != 32 && !(line >= 9 && line <= 13))
 		return (1);
 	return (0);
 }
 
-static char	*quote_bulk(char *line, char c)
+char	*quote_bulk(char *line, char c)
 {
 	int		i;
 	char	*bulk;
@@ -36,7 +36,7 @@ static char	*quote_bulk(char *line, char c)
 	return (bulk);
 }
 
-static char	*get_after_quote(char *line, char *bulk)
+char	*get_after_quote(char *line, char *bulk)
 {
 	char	*tmp;
 	char	*real_bulk;
@@ -77,48 +77,6 @@ static void	redir_check(t_info *info, char **line)
 	}
 }
 
-void	quote_process(t_info *info, char **line)
-{
-	char	*bulk;
-	char	*tmp;
-
-	bulk = quote_bulk(*line, **line);
-	if (!ft_strlen(bulk))
-	{
-		*line += 2;
-		while (**line == '\"' && **line != '\0' && **line != ' ')
-		{
-			if (**(line + 1) != '\"')
-				break ;
-			*line += 2;
-		}
-	}
-	else
-		*line += ft_strlen(bulk);
-	tmp = bulk;
-	if (**line != ' ')
-	{
-		bulk = get_after_quote(*line, tmp);
-		*line += (ft_strlen(bulk) - ft_strlen(tmp));
-	}
-	insert_list(info, bulk, WORD);
-	free(tmp);
-}
-
-void	remainder(t_info *info, char **line)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	while ((*line)[i] && is_whitespace2((*line)[i]))
-		i++;
-	tmp = ft_substr(*line, 0, i);
-	insert_list(info, tmp, WORD);
-	*line += ft_strlen(tmp);
-	free(tmp);
-}
-
 void	str_tokenize(t_info *info, char *line)
 {
 	while (*line)
@@ -128,7 +86,7 @@ void	str_tokenize(t_info *info, char *line)
 		else if (*line == '\"' || *line == '\'')
 			quote_process(info, &line);
 		else if (*line != '>' && *line != '<' && *line != '|' && *line != ' ')
-			remainder(info, &line);
+			ft_remainder(info, &line);
 		if (*line == '\0')
 			break ;
 		line++;

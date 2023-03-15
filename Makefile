@@ -6,7 +6,7 @@
 #    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/15 20:06:55 by yongmipa         ###   ########seoul.kr   #
+#    Updated: 2023/03/15 21:01:13 by yongmipa         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ LIB_NAME	= ./libft/libft.a
 
 INCS		= -I includes
 
-SRC			=	list_utils.c path_utils.c delete_quote.c main_test.c yongmin_jakup.c \
+SRC			=	list_utils.c path_utils.c delete_quote.c main_test.c yongmin_jakup.c tokenize_utils.c\
 				init_envp.c shell_utils.c err_print.c dollar.c find_dollar.c \
 				token_access.c syntax.c delete_quote_util.c heredoc.c signal.c
 BUILTIN		=	ft_export.c ft_unset.c ft_builtin.c ft_cd.c ft_echo.c ft_env.c \

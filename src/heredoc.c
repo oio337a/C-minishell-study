@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 20:32:08 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 20:36:15 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	here_doc(char *limiter)
 	int		fd;
 	char	*line;
 	char	*limiter_tmp;
-	
+
 	limiter_tmp = ft_strjoin(limiter, "\n");
 	fd = open(".here_doc", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)

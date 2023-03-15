@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 17:25:22 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 20:44:56 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ exit값 인자 자체는 long long 범위까지 처리가 가능함 long long을
 
 int	g_last_exit_code;
 
-int	check_sec(t_info *arg)
+static int	check_sec(t_info *arg)
 {
 	t_info	*temp;
 	int		digit_idx;
@@ -45,7 +45,7 @@ int	check_sec(t_info *arg)
 	return (digit_idx == cmd_len);
 }
 
-int	list_get_size(t_info *lst)
+static int	list_get_size(t_info *lst)
 {
 	int		i;
 	t_info	*temp;
@@ -74,7 +74,7 @@ static void	one_arg(int check_arg, t_info *arg)
 	}
 }
 
-long long	ft_exit(t_info *arg)
+void	ft_exit(t_info *arg)
 {
 	int	check_arg;
 	int	arg_size;
@@ -83,7 +83,6 @@ long long	ft_exit(t_info *arg)
 	write(1, "exit\n", 5);
 	if (arg_size == 1)
 	{
-		printf("exit here!!\n");
 		g_last_exit_code = 0;
 		exit(g_last_exit_code);
 	}
@@ -100,7 +99,6 @@ long long	ft_exit(t_info *arg)
 	}
 	else // 인자 1개 들어왓을 때
 		one_arg(check_arg, arg);
-	return (g_last_exit_code);
 }
 
 // int main()

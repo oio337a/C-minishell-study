@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 20:15:35 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 22:30:04 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_info	*get_token(t_info **token)
 		}
 		if ((*token)->type == REDIR_OUT)
 		{
+			printf("%s\n", (*token)->cmd);
 			(*token) = (*token)->next;
 			open_fd = open((*token)->cmd, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			if (open_fd == -1)
@@ -96,14 +97,53 @@ static void	execve_token(t_info *token, t_envp *env)
 		}
 		cmd[i] = 0;
 		if (execve(get_cmd(cmd[0], env), cmd, set_path(env)) == -1)
-		{
-			g_last_exit_code = 1;
 			exit(g_last_exit_code);
-		}
 		ft_free(cmd);
 	}
 }
+// 히어독 찾기
+static	int	list_count_heredoc(t_info *token)
+{
+	t_info	*head;
+	int		cnt;
 
+	head = token;
+	cnt = 0;
+	while (head)
+	{
+		// printf("%s\n", head->cmd);
+		if (head->type == HEREDOC_IN)
+			return (cnt) ;
+		cnt++;
+		head = head->next;
+	}
+	return (0);
+}
+
+static int	get_heredoc_pipe(t_info *token, int cnt)
+{
+	t_info	*head;
+	int		pipe;
+
+	pipe = 0;
+	head = token;
+	while (cnt--)
+	{
+		if (head->type == PIPE)
+			pipe++;
+		head = head->next;
+	}
+	return (pipe);
+}
+static void	move_heredoc(t_info **token, int pipe)
+{
+	while (pipe)
+	{
+		if ((*token)->type == PIPE)
+			pipe--;
+		(*token) = (*token)->next;
+	}
+}
 void	pipex(t_info *token, t_envp *env)
 {
 	pid_t	pid;
@@ -111,13 +151,27 @@ void	pipex(t_info *token, t_envp *env)
 	int		fd[4];
 	t_info	*splited_token;
 	t_info	*head;
+	int		total_pipe;
+	int		heredoc_pos;
+	int		heredoc_cnt;
+	int		status;
 
 	i = 0;
 	head = token;
 	fd[2] = dup(STDIN_FILENO);
 	fd[3] = dup(STDOUT_FILENO);
-	while (i < get_pipe_count(token) + 1)
+	heredoc_pos = list_count_heredoc(head);
+	heredoc_cnt = get_heredoc_pipe(head, heredoc_pos);
+	// printf("%d %d\n", heredoc_pos, heredoc_cnt);
+	if (heredoc_cnt > 0)
+		move_heredoc(&head, heredoc_cnt);
+	total_pipe = get_pipe_count(token) - heredoc_cnt + 1;
+	// printf("%s\n", head->cmd);
+	// printf("%d\n", total_pipe);
+	while (i < total_pipe)
 	{
+		// printf("11111111\n");
+		// find_redir(&head);
 		splited_token = get_token(&head);
 		if (pipe(fd) == -1)
 			common_errno("pipe error", 1, NULL);
@@ -125,7 +179,7 @@ void	pipex(t_info *token, t_envp *env)
 		if (pid == 0)
 		{
 			set_signal(CHILD);
-			if (i == get_pipe_count(token))
+			if (i == total_pipe - 1)
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1]));
 			else
 				(dup2(fd[1], STDOUT_FILENO), close(fd[1])); // STDOUT -> 출력부 복사, 파이프 출력부 닫기.
@@ -135,9 +189,11 @@ void	pipex(t_info *token, t_envp *env)
 		else
 		{
 			set_signal(WAITING);
-			waitpid(pid, NULL, 0);
 			dup2(fd[0], STDIN_FILENO);
 			(close(fd[0]), close(fd[1]));
+			waitpid(pid, &status, 0);
+			g_last_exit_code = status >> 8;
+			// printf("now g_last : %d\n", status >> 8);
 		}
 		i++;
 	}

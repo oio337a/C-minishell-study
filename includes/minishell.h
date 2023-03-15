@@ -67,6 +67,15 @@ void		str_tokenize(t_info *info, char *line);
 int			is_dollar(char *token);
 char		*parse_dollar(char *str, t_envp *head);
 void		clear_quote_in_token(t_info *token);
+void		quote_process(t_info *info, char **line);
+void		ft_remainder(t_info *info, char **line);
+char		*quote_bulk(char *line, char c);
+int			is_whitespace2(char line);
+char		*get_after_quote(char *line, char *bulk);
+
+
+
+
 
 /*signal*/
 void		handler(int signum);
@@ -106,7 +115,7 @@ void		ft_export(t_info *arg, t_envp *head);
 void		ft_unset(t_info *arg, t_envp **envp);
 void		ft_cd(t_info *arg, t_envp *envp);
 void		ft_echo(t_info *arg);
-long long	ft_exit(t_info *arg);
+void	ft_exit(t_info *arg);
 
 /*pipex*/
 void		pipex(t_info *token, t_envp *env);

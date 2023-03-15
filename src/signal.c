@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 20:32:53 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 21:31:27 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,35 +37,34 @@ static void	heredoc_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		
+		write(1, NULL, 0);
 	}
 }
 */
 void	set_signal(t_signal mode)
 {
-	signal(SIGINT, handler);
-	signal(SIGQUIT, SIG_IGN);
-	// if (mode == CHILD) // 자식프로세스
-	// {
-	// 	signal(SIGINT, SIG_DFL);
-	// 	signal(SIGQUIT, SIG_DFL); // SIG_DFL는 원래 설정된 시그널 동작
-	// }
-	// else if (mode == WAITING) // 자식 기다리는 부모 프로세스
-	// {
-	// 	signal(SIGINT, SIG_IGN);
-	// 	signal(SIGQUIT, SIG_IGN);
-	// }
-	// else if (mode == HEREDOC)
-	// {
-	// 	signal(SIGINT, SIG_DFL);
-	// 	// signal(SIGINT, handler);
-	// 	signal(SIGQUIT, SIG_IGN);
-	// }
-	// else if (mode == GENERAL)
-	// {
-	// 	signal(SIGINT, handler);
-	// 	signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시
-	// }
+	if (mode == CHILD) // 자식프로세스
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL); // SIG_DFL는 원래 설정된 시그널 동작
+	}
+	else if (mode == WAITING) // 자식 기다리는 부모 프로세스
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == HEREDOC)
+	{
+		// signal(SIGINT, heredoc_handler);
+		// signal(SIGINT, handler);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == GENERAL)
+	{
+		signal(SIGINT, handler);
+		signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시
+	}
 }
 
 /*

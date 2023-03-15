@@ -1,6 +1,5 @@
 # C-minishell-study
 나만의 작은 minishell 만들기 레포입니다.
-ㅇㅕ러분~
 
 ## 파싱 방법 (토큰화)
 1. 리다이렉션 (<, <<, >>, >) 뒤 : 무조건 파일네임 -> 뒤에 명령어 이어질 수도 있음
@@ -60,10 +59,8 @@ ex)
 ex) delete quote norm 을 맞췄따 -> commit 메세지를 file : delete_quote norm check 이런 식으로요~~~~~~
 
 ### norm 처리 해야할 파일들
-- main.c
 - heredoc.c
 - token_access.c
-- tokenize.c -> yongmin_jakup.c
 
 ### warning 뜨는 함수들
 - src/err_print.c:90:38: warning: unused parameter 'res' [-Wunused-parameter]
@@ -120,3 +117,12 @@ STDIN를 부모 파이프 입력부로 지정해둔다
 수행한 후에는 STDOUT, IN을 원래 부모의 값 상태로 되돌려야한다.
 ---
 cat -e | ls -al
+
+
+### test_case.zip
+
+1. [미니쉘수동테스트](https://yeosong1.github.io/%EB%AF%B8%EB%8B%88%EC%89%98%EC%88%98%EB%8F%99%ED%85%8C%EC%8A%A4%ED%8A%B8)
+2. [minishell-평가표-해석](https://velog.io/@hey-chocopie/minishell-%ED%8F%89%EA%B0%80%ED%91%9C-%ED%95%B4%EC%84%9D)
+3. [minishell-tester # 1](https://github.com/cacharle/minishell_test)
+4. [minishell-tester # 2](https://github.com/mcombeau/minitester-minishell-tester)
+5. [minishell-tester # 3](https://github.com/LucasKuhn/minishell_tester)
