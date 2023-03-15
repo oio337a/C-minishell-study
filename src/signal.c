@@ -21,17 +21,17 @@
 
 int	g_exit_status;
 
-// void	handler(int signum)
-// {
-// 	if (signum == SIGINT) //ctrl + c
-// 	{
-// 		write(1, "\n", 1);
-// 		rl_on_new_line(); //개행문자 출력 시 newline으로 이동한 것을 업데이트 해주는 함수
-// 		rl_replace_line("", 1); //내부 버퍼를 ""로 바꾸는 함수
-// 		rl_redisplay(); //버퍼와 프롬포트 재출력
-// 		g_exit_status = 1;
-// 	}
-// }
+void	handler(int signum)
+{
+	if (signum == SIGINT) //ctrl + c
+	{
+		write(1, "\n", 1);
+		rl_on_new_line(); //개행문자 출력 시 newline으로 이동한 것을 업데이트 해주는 함수
+		rl_replace_line("", 1); //내부 버퍼를 ""로 바꾸는 함수
+		rl_redisplay(); //버퍼와 프롬포트 재출력
+		g_exit_status = 1;
+	}
+}
 /*
 static void	heredoc_handler(int signum)
 {
@@ -41,31 +41,31 @@ static void	heredoc_handler(int signum)
 	}
 }
 */
-// void	set_signal(t_signal mode)
-// {
-// 	if (mode == CHILD) // 자식프로세스
-// 	{
-// 		signal(SIGINT, SIG_DFL);
-// 		signal(SIGQUIT, SIG_DFL); // SIG_DFL는 원래 설정된 시그널 동작
-// 	}
-// 	else if (mode == WAITING) // 자식 기다리는 부모 프로세스
-// 	{
-// 		signal(SIGINT, SIG_IGN);
-// 		signal(SIGQUIT, SIG_IGN);
-// 	}
-// 	else if (mode == HEREDOC)
-// 	{
-// 		// signal(SIGINT, heredoc_handler);
-// 		// signal(SIGINT, handler);
-// 		signal(SIGINT, SIG_DFL);
-// 		signal(SIGQUIT, SIG_IGN);
-// 	}
-// 	else if (mode == GENERAL)
-// 	{
-// 		signal(SIGINT, handler);
-// 		signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시
-// 	}
-// }
+void	set_signal(t_signal mode)
+{
+	if (mode == CHILD) // 자식프로세스
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL); // SIG_DFL는 원래 설정된 시그널 동작
+	}
+	else if (mode == WAITING) // 자식 기다리는 부모 프로세스
+	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == HEREDOC)
+	{
+		// signal(SIGINT, heredoc_handler);
+		// signal(SIGINT, handler);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == GENERAL)
+	{
+		signal(SIGINT, handler);
+		signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시
+	}
+}
 
 /*
 기본 상태

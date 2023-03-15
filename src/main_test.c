@@ -55,7 +55,7 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac != 1 && av)
 		return (0);
-	// set_signal(GENERAL);
+	set_signal(GENERAL);
 	envp_head = set_envp(envp);
 	show_naki();
 	while (1)

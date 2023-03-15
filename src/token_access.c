@@ -180,7 +180,7 @@ void	pipex(t_info *token, t_envp *env)
 		pid = fork();
 		if (pid == 0)
 		{
-			// set_signal(CHILD);
+			set_signal(CHILD);
 			if (i == total_pipe - 1)
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1]));
 			else
@@ -190,7 +190,7 @@ void	pipex(t_info *token, t_envp *env)
 		}
 		else
 		{
-			// set_signal(WAITING);
+			set_signal(WAITING);
 			dup2(fd[0], STDIN_FILENO);
 			(close(fd[0]), close(fd[1]));
 			waitpid(pid, &status, 0);
@@ -199,7 +199,7 @@ void	pipex(t_info *token, t_envp *env)
 		}
 		i++;
 	}
-	// set_signal(GENERAL);
+	set_signal(GENERAL);
 	dup2(fd[2], STDIN_FILENO);
 	dup2(fd[3], STDOUT_FILENO);
 	// return (g_last_exit_code);
