@@ -69,8 +69,8 @@ char		*parse_dollar(char *str, t_envp *head);
 void		clear_quote_in_token(t_info *token);
 
 /*signal*/
-// void		handler(int signum);
-// void		set_signal(t_signal mode);
+void		handler(int signum);
+void		set_signal(t_signal mode);
 
 /*shell_utils*/
 void		print_error(char *errmsg, int errnum);
@@ -131,7 +131,7 @@ int			find_next_quote(char *line, char quote, int quote_idx);
 
 /*err*/
 void		exit_errno(int arg_status, char *cmd, int res);
-void		envp_errno(char *err_value, int res);
+void		envp_errno(char *err_value);
 void		common_errno(char *cmd, int res, char *next_arg);
 void		syntax_errno(char *cmd);
 void		badpath_errno(char *str, int res);

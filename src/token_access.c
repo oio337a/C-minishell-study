@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 21:48:23 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 20:15:35 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ t_info	*get_token(t_info **token)
 	new = init_list();
 	while (*token)
 	{
-		if ((*token)->type == REDIR_IN)
+		if ((*token)->type == REDIR_IN)  // < a > b
 		{
-			printf("redir : %s, type : %d\n", (*token)->cmd, (*token)->type);
 			(*token) = (*token)->next;
 			open_fd = open((*token)->cmd, O_RDONLY);
 			if (open_fd == -1)
 				common_errno((*token)->cmd, 2, NULL);
-			(dup2(open_fd, STDIN_FILENO), close(open_fd));
+			(dup2(open_fd, STDIN_FILENO), close(open_fd)); // STDIN -> 자식 파이프 가리키기
 			(*token) = (*token)->next;
+			continue ;
 		}
 		if ((*token)->type == REDIR_OUT)
 		{
@@ -42,14 +42,15 @@ t_info	*get_token(t_info **token)
 			if (!(*token)->next)
 				break ;
 			(*token) = (*token)->next;
+			continue ;
 		}
-		if ((*token)->type == HEREDOC_IN)
+		if ((*token)->type == HEREDOC_IN) // cat << EOF 이러면 걍 파이프에 쓰인거 출력
 		{
-			printf("redir %s, type : %d\n", (*token)->cmd, (*token)->type);
-			// set_signal(HEREDOC);
+			set_signal(HEREDOC);
 			(*token) = (*token)->next;
-			here_doc((*token)->cmd);
+			here_doc((*token)->cmd); // 자식 프로세스 STDIN -> 내부 생성 ./heredoc 가리킴
 			(*token) = (*token)->next;
+			continue ;
 		}
 		if ((*token)->type == HEREDOC_OUT)
 		{
@@ -61,13 +62,13 @@ t_info	*get_token(t_info **token)
 			if (!(*token)->next)
 				break ;
 			(*token) = (*token)->next;
+			continue ;
 		}
 		if ((*token)->type == PIPE)
 		{
 			(*token) = (*token)->next;
 			break ;
 		}
-		printf("cmd : %s, type : %d\n", (*token)->cmd, (*token)->type);
 		insert_list(new, (*token)->cmd, (*token)->type);
 		(*token) = (*token)->next;
 	}
@@ -82,24 +83,25 @@ static void	execve_token(t_info *token, t_envp *env)
 	t_info	*head;
 
 	len = list_size(token);
-	cmd = (char **)malloc(sizeof(char *) * (len + 1));
 	head = token;
 	i = 0;
-
-	/*
-	if (빌트인이 아니면 밑에 실행)
-	*/
-	while (head)
+	if (!builtin(token, env))
 	{
-		cmd[i] = ft_strdup(head->cmd);
-		// printf("%s\n", cmd[i]);
-		i++;
-		head = head->next;
+		cmd = (char **)malloc(sizeof(char *) * (len + 1));
+		while (head)
+		{
+			cmd[i] = ft_strdup(head->cmd);
+			i++;
+			head = head->next;
+		}
+		cmd[i] = 0;
+		if (execve(get_cmd(cmd[0], env), cmd, set_path(env)) == -1)
+		{
+			g_last_exit_code = 1;
+			exit(g_last_exit_code);
+		}
+		ft_free(cmd);
 	}
-	cmd[i] = 0;
-	if (execve(get_cmd(cmd[0], env), cmd, set_path(env)) == -1)
-		g_last_exit_code = -1;
-	ft_free(cmd);
 }
 
 void	pipex(t_info *token, t_envp *env)
@@ -114,7 +116,6 @@ void	pipex(t_info *token, t_envp *env)
 	head = token;
 	fd[2] = dup(STDIN_FILENO);
 	fd[3] = dup(STDOUT_FILENO);
-	g_last_exit_code = 0;
 	while (i < get_pipe_count(token) + 1)
 	{
 		splited_token = get_token(&head);
@@ -123,23 +124,24 @@ void	pipex(t_info *token, t_envp *env)
 		pid = fork();
 		if (pid == 0)
 		{
-			// set_signal(CHILD);
+			set_signal(CHILD);
 			if (i == get_pipe_count(token))
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1]));
 			else
-				(dup2(fd[1], STDOUT_FILENO), close(fd[1]));
+				(dup2(fd[1], STDOUT_FILENO), close(fd[1])); // STDOUT -> 출력부 복사, 파이프 출력부 닫기.
 			execve_token(splited_token, env);
 			list_delete(&splited_token);
 		}
 		else
 		{
-			// set_signal(WAITING);
+			set_signal(WAITING);
 			waitpid(pid, NULL, 0);
 			dup2(fd[0], STDIN_FILENO);
 			(close(fd[0]), close(fd[1]));
 		}
 		i++;
 	}
+	set_signal(GENERAL);
 	dup2(fd[2], STDIN_FILENO);
 	dup2(fd[3], STDOUT_FILENO);
 	// return (g_last_exit_code);

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 21:24:29 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 20:32:53 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,15 @@
 //ctrl + d == 시그널이 아니라, 아스키코드 4번 EOT임
 //따라서 따로 시그널 처리할 필요 없이, char == 4 && idx == 0일 때 exit 출력 후 종료하면 됨
 
+/*
+^C 제어문자 반향 출력 안 하는 거 배쉬 버전마다 달라서 처리 안 했습니 다람쥐
+*/
+
 int	g_exit_status;
 
 void	handler(int signum)
 {
-	if (signum == SIGINT) //ctrl + c 
+	if (signum == SIGINT) //ctrl + c
 	{
 		write(1, "\n", 1);
 		rl_on_new_line(); //개행문자 출력 시 newline으로 이동한 것을 업데이트 해주는 함수
@@ -28,24 +32,40 @@ void	handler(int signum)
 		g_exit_status = 1;
 	}
 }
-
+/*
+static void	heredoc_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		
+	}
+}
+*/
 void	set_signal(t_signal mode)
 {
-	if (mode == CHILD) // 자식프로세스
-	{
-		signal(SIGINT, SIG_DFL); // SIG_DFL는 원래 설정된 시그널 동작
-		signal(SIGQUIT, SIG_DFL);
-	}
-	else if (mode == WAITING) // 자식 기다리는 부모 프로세스
-	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else //if (mode == HEREDOC || mode == GENERAL)
-	{
-		signal(SIGINT, handler);
-		signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시
-	}
+	signal(SIGINT, handler);
+	signal(SIGQUIT, SIG_IGN);
+	// if (mode == CHILD) // 자식프로세스
+	// {
+	// 	signal(SIGINT, SIG_DFL);
+	// 	signal(SIGQUIT, SIG_DFL); // SIG_DFL는 원래 설정된 시그널 동작
+	// }
+	// else if (mode == WAITING) // 자식 기다리는 부모 프로세스
+	// {
+	// 	signal(SIGINT, SIG_IGN);
+	// 	signal(SIGQUIT, SIG_IGN);
+	// }
+	// else if (mode == HEREDOC)
+	// {
+	// 	signal(SIGINT, SIG_DFL);
+	// 	// signal(SIGINT, handler);
+	// 	signal(SIGQUIT, SIG_IGN);
+	// }
+	// else if (mode == GENERAL)
+	// {
+	// 	signal(SIGINT, handler);
+	// 	signal(SIGQUIT, SIG_IGN); // SIG_IGN는 시그널 무시
+	// }
 }
 
 /*

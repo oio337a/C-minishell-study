@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:32 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 22:25:44 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 17:09:05 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ void	ft_unset(t_info *arg, t_envp **envp)
 	{
 		if (!validate_key(arg_tmp->cmd))
 		{
-			printf("Nakishell: unset '%s': not a valid identifier\n", \
-			arg_tmp->cmd);
+			envp_errno(arg_tmp->cmd);
 			arg_tmp = arg_tmp->next;
 			continue ;
 		}

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 19:31:25 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 17:17:33 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ exit은 예외 인자가 3개일 때
 	두번 째에서 터졌다
 		bash: exit: too many arg
 	
-
 환경변수
 	value만 들어왔다
 		export TEST =2244
@@ -70,7 +69,7 @@ void	common_errno(char *cmd, int res, char *next_arg)
 {
 	if (res == 127) // command not found  errno에 등록 안돼있어여
 	{
-		printf("%s: command not found\n", cmd);
+		printf("Nakishell$: %s: command not found\n", cmd);
 		g_last_exit_code = 127;
 		return ;
 	}
@@ -87,7 +86,7 @@ void	common_errno(char *cmd, int res, char *next_arg)
 	// return (1); // 앞에는 실행 가능하다는 cmd 전제
 }
 
-void	envp_errno(char *err_value, int res)
+void	envp_errno(char *err_value)
 {
 	printf("export: %s: not a valid identifier\n", err_value);
 	g_last_exit_code = 1;

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 20:15:47 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 15:59:47 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void	add_envp(char *argv, t_envp *head)
 		return ;
 	if (!check_argv(argv))
 	{
-		printf("minishell: export: '%s' : not a valid identifier\n", argv);
+		envp_errno(argv);
 		return ;
 	}
 	i = ft_strchr_int(argv, '=');

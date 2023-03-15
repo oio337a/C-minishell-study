@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 21:58:29 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 15:44:55 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,11 @@ static void	redir_check(t_info *info, char **line)
 	int		type;
 
 	type = HEREDOC_IN;
-	write(1, **line, 1);
-	write(1, **(line + 1), 1);
-	printf("line first : %c\n", **line);
-	printf("line second: %c\n", *(*line + 1));
-	write(1, "temp : ", 7);
-	//당신의 무심함이 한 파서를 죽였습니다.. 당신을 기억할 것입니다.. 미친사람 아니야 이거
-	// 니가죽엿어 니가죽엿다고 니가죽여
-	// 용민아 이거 주소 옮기는거 내일 다시 봐야 한단다?? 넌 충분히 잘했어 괜찮아 ...
-	// 용민아 65번째 줄은 신경 쓰지 않ㅅ아도 ㄷ ㅋㅋㅋ괜찮아 사람들이 널 물고 뜯어도 괜찮 단다??
-	// 내일 이거 line 받아오는거 테스트 하면서 주소 옮기렴 파이팅ㄹ!!!!!
-	if (**(line + 1) == **line)
+	if (*(*line + 1) == **line)
 	{
-		if (**(line + 1) == '>')
+		if (*(*line + 1) == '>')
 			type = HEREDOC_OUT;
 		temp = ft_substr(*line, 0, 2);
-		write(1, temp, 2);
 		insert_list(info, temp, type);
 		free(temp);
 		*line += 2;

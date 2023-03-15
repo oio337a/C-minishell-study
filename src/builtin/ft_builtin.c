@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:01:16 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 19:58:47 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/15 16:56:18 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ unset PATH -> envp 위치 없어져서 env 명령어 터짐,
 이후 PATH를 사용하는 모든 명령어들 사용(export도) 불가능함
 */
 
-int	builtin(t_info *cmd, t_envp *head) // 전체 cmd 모두 들어옴 -> 빌트인 실행하면 1, 아니면 0 리턴
+int	g_last_exit_code;
+
+int	builtin(t_info *cmd, t_envp *head) // 전체 cmd 모두 들어옴
 {
-	printf("builtin cmd : %s\n", cmd->cmd);
 	if (cmd->cmd[0] == '\0')
 		return (0);
 	else if (ft_strcmp(cmd->cmd, "env") == 0)
@@ -41,5 +42,5 @@ int	builtin(t_info *cmd, t_envp *head) // 전체 cmd 모두 들어옴 -> 빌트�
 		ft_exit(cmd);
 	else //위의 경우에서 전부 해당 안되면, 0 리턴
 		return (0);
-	return (1); //builtin 해당 시 1리턴
+	exit(g_last_exit_code); //builtin 해당 시 실행 후 자식 프로세스 종료
 }
