@@ -51,7 +51,6 @@ char	*get_cmd(char *cmd, t_envp *envp)
 		}
 		free(tmp);
 	}
-	printf("!111111111\n");
 	common_errno(cmd, 127, NULL); // command not found 출력 후, 상태를 127로 저장합니다.
 	return (NULL);
 }

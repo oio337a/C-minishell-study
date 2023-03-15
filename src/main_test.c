@@ -55,7 +55,7 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac != 1 && av)
 		return (0);
-	set_signal(GENERAL);
+	// set_signal(GENERAL);
 	envp_head = set_envp(envp);
 	show_naki();
 	while (1)
@@ -66,7 +66,7 @@ int	main(int ac, char **av, char **envp)
 			exit(0);
 		if (*str == '\0')
 			continue ;
-		add_history(str);
+		add_history(str);	
 		execute(str, info, envp_head);
 	}
 	delete_envp_all(&envp_head);

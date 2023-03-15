@@ -50,6 +50,16 @@ char	*get_after_quote(char *line, char *bulk)
 	free(tmp);
 	return (real_bulk);
 }
+// 줄수 때매 뻇어요
+static void	only_redir(t_info *info, char **line)
+{
+	if (**line == '>')
+		insert_list(info, ">", REDIR_OUT);
+	else if (**line == '<')
+		insert_list(info, "<", REDIR_IN);
+	else
+		insert_list(info, "|", PIPE);
+}
 
 static void	redir_check(t_info *info, char **line)
 {
@@ -64,16 +74,21 @@ static void	redir_check(t_info *info, char **line)
 		temp = ft_substr(*line, 0, 2);
 		insert_list(info, temp, type);
 		free(temp);
-		*line += 2;
+		// <<a 를 <<로만 판단해서 넣어놨습니다!
+		if (*(*line + 2) != ' ' || *(*line + 2) != '\0')
+			*line += 1;
+		else
+			*line += 2;
 	}
 	else
 	{
-		if (**line == '>')
-			insert_list(info, ">", REDIR_OUT);
-		else if (**line == '<')
-			insert_list(info, "<", REDIR_IN);
-		else
-			insert_list(info, "|", PIPE);
+		// if (**line == '>')
+		// 	insert_list(info, ">", REDIR_OUT);
+		// else if (**line == '<')
+		// 	insert_list(info, "<", REDIR_IN);
+		// else
+		// 	insert_list(info, "|", PIPE);
+		only_redir(info, line);
 	}
 }
 

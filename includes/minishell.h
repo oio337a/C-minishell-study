@@ -74,7 +74,7 @@ int			is_whitespace2(char line);
 char		*get_after_quote(char *line, char *bulk);
 
 
-
+int	is_builtin(t_info *cmd, t_envp *head);
 
 
 /*signal*/
@@ -108,7 +108,7 @@ int			check_edges_unset(t_info *arg, t_envp **envp);
 void		free_envp(t_envp *envp);
 
 /*builtin*/
-int			builtin(t_info *cmd, t_envp *head);
+int			builtin(t_info *cmd, t_envp *head, pid_t pid);
 void		ft_pwd(void);
 void		ft_env(t_info *cmd, t_envp *head);
 void		ft_export(t_info *arg, t_envp *head);

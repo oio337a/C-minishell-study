@@ -47,7 +47,7 @@ t_info	*get_token(t_info **token)
 		}
 		if ((*token)->type == HEREDOC_IN) // cat << EOF 이러면 걍 파이프에 쓰인거 출력
 		{
-			set_signal(HEREDOC);
+			// set_signal(HEREDOC);
 			(*token) = (*token)->next;
 			here_doc((*token)->cmd); // 자식 프로세스 STDIN -> 내부 생성 ./heredoc 가리킴
 			(*token) = (*token)->next;
@@ -76,7 +76,7 @@ t_info	*get_token(t_info **token)
 	return (new);
 }
 
-static void	execve_token(t_info *token, t_envp *env)
+static void	execve_token(t_info *token, t_envp *env, pid_t pid)
 {
 	char	**cmd;
 	int		len;
@@ -86,7 +86,7 @@ static void	execve_token(t_info *token, t_envp *env)
 	len = list_size(token);
 	head = token;
 	i = 0;
-	if (!builtin(token, env))
+	if (!builtin(token, env, pid))
 	{
 		cmd = (char **)malloc(sizeof(char *) * (len + 1));
 		while (head)
@@ -162,33 +162,34 @@ void	pipex(t_info *token, t_envp *env)
 	fd[3] = dup(STDOUT_FILENO);
 	heredoc_pos = list_count_heredoc(head);
 	heredoc_cnt = get_heredoc_pipe(head, heredoc_pos);
-	// printf("%d %d\n", heredoc_pos, heredoc_cnt);
 	if (heredoc_cnt > 0)
 		move_heredoc(&head, heredoc_cnt);
 	total_pipe = get_pipe_count(token) - heredoc_cnt + 1;
-	// printf("%s\n", head->cmd);
-	// printf("%d\n", total_pipe);
+	//빌트인 해보자!
+	if (total_pipe == 1 && is_builtin(head, env))
+	{
+		builtin(head, env, 12);
+		return ;
+	}
 	while (i < total_pipe)
 	{
-		// printf("11111111\n");
-		// find_redir(&head);
 		splited_token = get_token(&head);
 		if (pipe(fd) == -1)
 			common_errno("pipe error", 1, NULL);
 		pid = fork();
 		if (pid == 0)
 		{
-			set_signal(CHILD);
+			// set_signal(CHILD);
 			if (i == total_pipe - 1)
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1]));
 			else
 				(dup2(fd[1], STDOUT_FILENO), close(fd[1])); // STDOUT -> 출력부 복사, 파이프 출력부 닫기.
-			execve_token(splited_token, env);
+			execve_token(splited_token, env, pid);
 			list_delete(&splited_token);
 		}
 		else
 		{
-			set_signal(WAITING);
+			// set_signal(WAITING);
 			dup2(fd[0], STDIN_FILENO);
 			(close(fd[0]), close(fd[1]));
 			waitpid(pid, &status, 0);
@@ -197,7 +198,7 @@ void	pipex(t_info *token, t_envp *env)
 		}
 		i++;
 	}
-	set_signal(GENERAL);
+	// set_signal(GENERAL);
 	dup2(fd[2], STDIN_FILENO);
 	dup2(fd[3], STDOUT_FILENO);
 	// return (g_last_exit_code);

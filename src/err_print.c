@@ -76,7 +76,6 @@ void	common_errno(char *cmd, int res, char *next_arg)
 	}
 	if (next_arg == NULL)
 	{
-		printf("%s: %s\n", cmd, strerror(res)); // No such~ errno == 2
 		g_last_exit_code = 1;
 		// exit(g_last_exit_code);
 	}
