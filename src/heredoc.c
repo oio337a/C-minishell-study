@@ -6,7 +6,7 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 19:43:08 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/16 20:32:33 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	here_doc(char *limiter, int origin_fd) // << a
 			free(line);
 			break ;
 		}
-		if (g_last_exit_code == 1000)
-			break ;
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
@@ -48,5 +46,4 @@ void	here_doc(char *limiter, int origin_fd) // << a
 	dup2(fd, STDIN_FILENO); // 자식 프로세스의 STDIN -> ./heredoc
 	close(fd);
 	unlink(".here_doc");
-	// exit(g_last_exit_code);
 }

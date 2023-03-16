@@ -6,7 +6,7 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 19:45:04 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/16 20:32:42 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_info	*get_token(t_info **token, int fd)
 		}
 		if ((*token)->type == HEREDOC_IN) // cat << EOF 이러면 걍 파이프에 쓰인거 출력   //  << a
 		{
-			// heredoc_handler((*token)->next->cmd, GENERAL);
 			set_signal(HEREDOC);
 			(*token) = (*token)->next;
 			here_doc((*token)->cmd, fd); // 자식 프로세스 STDIN -> 내부 생성 ./heredoc 가리킴

@@ -6,21 +6,22 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 19:24:53 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/16 20:28:45 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 /*
-
 	첫번째 인자만 확인하고 동작하는걸로 ! ! 첫번째만 정상이면 그 뒤로 이상한거 붙어도 노상관
 
 	1. PWD / OLDPWD 환경변수 업뎃 !
 	2. 없는 디렉토리 인자로 넣었을 때 에러메시지
 	3. unset HOME 후 cd ~ 시 에러메시지
 	4. cd $env 시 해당 경로로 이동 -> 환경변수 파싱에서 끝나야 하는 거 아닌가? 마즘
-	5.
+
+	cf. cd "" 시 배쉬에선 현재 디렉토리에 가만히 있는데,
+	나키쉘에서는 없는 환경변수 입력한 것과 마찬가지로 동작해서, 홈으로 갑니다 ..
 
 	cd ~ 일때 = 그냥 cd = cd $없는 환경변수 = cd ~ 인자
 	-> HOME 경로 찾아서 path에 저장 후 이동
@@ -30,8 +31,6 @@
 
 	cd -
 	-> OLDPWD로 이동
-
-	cf. cd "" 시 아무 동작 x . . . ㅋㅋ
 */
 
 static char	*get_home(t_envp *envp)
@@ -112,7 +111,8 @@ void	ft_cd(t_info *arg, t_envp *envp)
 		return ;
 	if (chdir(path) == 0) // 경로 이동 성공
 		set_newpwd(envp, old_pwd);
-	else // 이상한 경로
+	else // 1. 해당 이름을 가진 디렉토리가 없는 경우 2. 해당 이름이 디렉토리가 아니라 파일인 경우
+	// -> 두 경우의 에러메시지가 배쉬에서는 다르지만, 여기서는 구별할 방법이 없는 것 같아용
 		cd_errno(path);
 	free(old_pwd);
 	free(path);
