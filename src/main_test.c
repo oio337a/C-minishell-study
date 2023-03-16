@@ -6,7 +6,7 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 18:35:54 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/16 22:14:35 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,12 @@ void	execute(char *str, t_info *info, t_envp *envp_head)
 		if (check_syntax(info))
 			pipex(info, envp_head);
 	}
-	else
-		common_errno(info->cmd, 1, NULL);
+	else // quote 개수 오류 -> 에러메시지 출력 ?
+	{
+		g_last_exit_code = 1;
+		printf("Nakishell: %s: quotes count error\n", info->cmd);
+	}
+		// common_errno(info->cmd, 1, NULL);
 	list_delete(&info);
 }
 

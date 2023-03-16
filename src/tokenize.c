@@ -3,53 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/16 15:33:51 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/16 21:56:04 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	is_whitespace2(char line)
-{
-	if (line != 32 && !(line >= 9 && line <= 13))
-		return (1);
-	return (0);
-}
+// static int	is_whitespace2(char line)
+// {
+// 	if (line != 32 && !(line >= 9 && line <= 13))
+// 		return (1);
+// 	return (0);
+// }
 
-static char	*quote_bulk(char *line, char c)
-{
-	int		i;
-	char	*bulk;
+// static char	*quote_bulk(char *line, char c)
+// {
+// 	int		i;
+// 	char	*bulk;
 
-	i = 1;
-	if (line[i] == c)
-	{
-		bulk = ft_strdup("");
-		return (bulk);
-	}
-	while (line[i] != c)
-		i++;
-	bulk = ft_substr(line, 0, i + 1);
-	return (bulk);
-}
+// 	i = 1;
+// 	if (line[i] == c)
+// 	{
+// 		bulk = ft_strdup("");
+// 		return (bulk);
+// 	}
+// 	while (line[i] != c)
+// 		i++;
+// 	bulk = ft_substr(line, 0, i + 1);
+// 	return (bulk);
+// }
 
-static char	*get_after_quote(char *line, char *bulk)
-{
-	char	*tmp;
-	char	*real_bulk;
-	int		i;
+// static char	*get_after_quote(char *line, char *bulk)
+// {
+// 	char	*tmp;
+// 	char	*real_bulk;
+// 	int		i;
 
-	i = 0;
-	while (line[i] && is_whitespace2(line[i]))
-		i++;
-	tmp = ft_substr(line, 0, i);
-	real_bulk = ft_strjoin(bulk, tmp);
-	free(tmp);
-	return (real_bulk);
-}
+// 	i = 0;
+// 	while (line[i] && is_whitespace2(line[i]))
+// 		i++;
+// 	tmp = ft_substr(line, 0, i);
+// 	real_bulk = ft_strjoin(bulk, tmp);
+// 	free(tmp);
+// 	return (real_bulk);
+// }
 
 // void	str_tokenize(t_info *info, char *line)
 // {

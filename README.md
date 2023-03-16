@@ -100,25 +100,6 @@ void            syntax_errno(char *cmd);
 - src/../includes/minishell.h:136:26: note: passing argument to parameter 'cmd' here
 void            syntax_errno(char *cmd);
 
-
-### heredoc, pipe
-수행 전
-STDOUT을 자식 파이프 출력부로 지정해놓는다
-!! 마지막 부분이라면
-자식 파이프 출력부를 STDOUT으로 되돌려 놓는다
-
-부모 프로세스
-STDIN를 부모 파이프 입력부로 지정해둔다
-
-
-< a > out
-자식 프로세스 STIN -> a의 fd로
-자식 프로세스의 STDOUT -> out의 fd를 가리키도록 한다.
-수행한 후에는 STDOUT, IN을 원래 부모의 값 상태로 되돌려야한다.
----
-cat -e | ls -al
-
-
 ### test_case.zip
 
 1. [미니쉘수동테스트](https://yeosong1.github.io/%EB%AF%B8%EB%8B%88%EC%89%98%EC%88%98%EB%8F%99%ED%85%8C%EC%8A%A4%ED%8A%B8)
@@ -126,3 +107,52 @@ cat -e | ls -al
 3. [minishell-tester # 1](https://github.com/cacharle/minishell_test)
 4. [minishell-tester # 2](https://github.com/mcombeau/minitester-minishell-tester)
 5. [minishell-tester # 3](https://github.com/LucasKuhn/minishell_tester)
+6. [미니쉘 평가지] https://kkim-blog.tistory.com/119#toc-Mandatory%20Part%20%ED%95%84%EC%88%98%20%ED%8C%8C%ED%8A%B8
+
+
+### heredoc을 자식 프로세스에서 실행하기
+1. path를 따는 부분, redir 처리 부분, execve 부분을 모두 분리해야함
+진짜 잊어버리지마
+ls -al | cat -e를 실행했을 때 발생하는 문제는
+ls -al을 시행하고 자식이 죽어버린 후에 spliltted_token을 받아와서
+다시 ls -al을 받아서 문제임
+그렇다면??
+execve 함수가 돌기 전에 새로운 리스트를 만들고
+ls -al | cat -e를 복제 해놓고 얘를 주소값으로 넘긴 다음에 시행해서
+다음 시행 때는 cat -e를 실행시키는거임!!!!
+
+/*
+
+execve_token(t_info *token, t_envp *env, pid_t pid)
+{
+	char	**cmd;
+	int		len;
+	int		i;
+	t_info	*head;
+	t_info	*new_token;
+
+	printf("cmd : %s\n", token->cmd);
+	len = list_size(token);
+	head = token;
+	i = 0;
+	if (!builtin(token, env, pid))
+	{
+		new_token = list_duplicate(token); // 원본 리스트를 복사한 새로운 리스트 생성
+		cmd = (char **)malloc(sizeof(char *) * (len + 1));
+		while (new_token)
+		{
+			cmd[i] = ft_strdup(new_token->cmd); // 새로운 리스트에서 값을 가져옴
+			i++;
+			new_token = new_token->next;
+		}
+		cmd[i] = 0;
+		if (execve(get_cmd(cmd[0], env), cmd, set_path(env)) == -1)
+			exit(g_last_exit_code);
+		ft_free(cmd);
+	}
+}
+
+*/
+export a="  qjq js " 문제 잇어여
+tokenize 시 a="   qjw jjs" 통째로 들어와야함
+reminder 이후에 quote가 들어오면 quote를 재검사 하게 만들면댈듯?

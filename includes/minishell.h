@@ -47,6 +47,12 @@ typedef struct s_info
 	struct s_info	*next;
 }	t_info;
 
+typedef struct s_dup
+{
+	void			*content;
+	struct s_dup	*next;
+}	t_dup;
+
 typedef struct s_envp
 {
 	char			*key;
@@ -73,9 +79,7 @@ char		*quote_bulk(char *line, char c);
 int			is_whitespace2(char line);
 char		*get_after_quote(char *line, char *bulk);
 
-
 int	is_builtin(t_info *cmd);
-
 
 /*signal*/
 void		handler(int signum);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/16 17:45:51 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/16 22:34:57 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 // 	if (cmd != NULL && char == NULL)
 // 		printf("%s: %s", cmd, strerror(errno));
 // }
-// errno 대충 
+// errno 대충
 /*
-	0	: It indicates successful execution.	
+	0	: It indicates successful execution.
 	1	: It is used to catch all general errors.	“Divide by zero”, “Operation not permitted” etc. can be the error messages of this code.
 	2	: It indicates the abuse of shell built-ins.	“Missing keyword”, “No such file or directory” etc. can be the error messages of this code.
 	126	: It generates when the any command is unable to execute.	Permission problem or required key not available can generate this status code
@@ -47,7 +47,7 @@ exit은 예외 인자가 3개일 때
 		bash: exit: cmd1: numeric arg ~ (인자가 두개일 때도 동일하다.)
 	두번 째에서 터졌다
 		bash: exit: too many arg
-	
+
 환경변수
 	value만 들어왔다
 		export TEST =2244
@@ -74,17 +74,19 @@ void	common_errno(char *cmd, int res, char *next_arg)
 		// exit(g_last_exit_code);
 		return ;
 	}
-	if (next_arg == NULL)
+	if (next_arg == NULL) //cmd부터 틀린 경우
 	{
 		g_last_exit_code = 1;
 		// exit(g_last_exit_code);
 	}
-	else
+	/*
+	else //cmd는 맞는데 인자가 틀린 경우
 	{
 		printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
 		g_last_exit_code = 1;
 		// exit(g_last_exit_code);
 	}
+	*/
 	// return (1); // 앞에는 실행 가능하다는 cmd 전제
 }
 

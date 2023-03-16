@@ -6,20 +6,30 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 20:21:29 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/16 20:55:54 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_exit_status;
+int	g_last_exit_code;
 
 //ctrl + d == 시그널이 아니라, 아스키코드 4번 EOT임
 //따라서 따로 시그널 처리할 필요 없이, char == 4 && idx == 0일 때 exit 출력 후 종료하면 됨
 
 /*
 ^C 제어문자 반향 출력 안 하는 거 배쉬 버전마다 달라서 처리 안 했습니 다람쥐
+
+g_last_exit_code 변경법 안 되는 이유 : 컨트롤 씨 누르고 엔터 눌러야 작동함 ; ;
 */
+
+void	heredoc_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		return ;
+	}
+}
 
 void	handler(int signum)
 {
@@ -29,7 +39,7 @@ void	handler(int signum)
 		rl_on_new_line(); //개행문자 출력 시 newline으로 이동한 것을 업데이트 해주는 함수
 		rl_replace_line("", 1); //내부 버퍼를 ""로 바꾸는 함수
 		rl_redisplay(); //버퍼와 프롬포트 재출력
-		g_exit_status = 1;
+		g_last_exit_code = 1;
 	}
 }
 

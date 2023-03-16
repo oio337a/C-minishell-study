@@ -6,7 +6,7 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 20:32:42 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/16 21:46:01 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_info	*get_token(t_info **token, int fd)
 		}
 		if ((*token)->type == HEREDOC_IN) // cat << EOF 이러면 걍 파이프에 쓰인거 출력   //  << a
 		{
-			set_signal(HEREDOC);
+			set_signal(CHILD);
 			(*token) = (*token)->next;
 			here_doc((*token)->cmd, fd); // 자식 프로세스 STDIN -> 내부 생성 ./heredoc 가리킴
 			(*token) = (*token)->next;
@@ -165,6 +165,14 @@ void	pipex(t_info *token, t_envp *env) //heredoc 자식으로 넣을게여~~~~
 	int		heredoc_cnt;
 	int		status;
 
+
+	t_info	*test;
+	test = token;
+	while (test)
+	{
+		printf("all_token : %s\n", test->cmd);
+		test = test->next;
+	}
 	i = 0;
 	head = token;
 	fd[2] = dup(STDIN_FILENO);
@@ -182,7 +190,7 @@ void	pipex(t_info *token, t_envp *env) //heredoc 자식으로 넣을게여~~~~
 	}
 	while (i < total_pipe)
 	{
-		splited_token = get_token(&head, fd[2]);
+		splited_token = get_token(&head, fd[2]); // ls -al | cat -e
 		if (pipe(fd) == -1)
 			common_errno("pipe error", 1, NULL);
 		pid = fork();
@@ -190,15 +198,9 @@ void	pipex(t_info *token, t_envp *env) //heredoc 자식으로 넣을게여~~~~
 		{
 			set_signal(CHILD);
 			if (i == total_pipe - 1)
-			{
-				printf("last : %s\n", splited_token->cmd);
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1])); // STDIN ->heredoc, 파이프 출력->STDOUT
-			}
 			else
-			{
-				printf("not last : %s\n", splited_token->cmd);
 				(dup2(fd[1], STDOUT_FILENO), close(fd[1])); // STDOUT -> 출력부 복사, 파이프 출력부 닫기.
-			}
 			execve_token(splited_token, env, pid);
 			list_delete(&splited_token);
 		}
