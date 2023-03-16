@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/15 15:30:37 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 15:33:51 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,106 +51,106 @@ static char	*get_after_quote(char *line, char *bulk)
 	return (real_bulk);
 }
 
-void	str_tokenize(t_info *info, char *line)
-{
-	int		i;
-	char	*tmp;
-	char	*bulk;
-	char	*tmp2;
+// void	str_tokenize(t_info *info, char *line)
+// {
+// 	int		i;
+// 	char	*tmp;
+// 	char	*bulk;
+// 	char	*tmp2;
 
-	i = 0;
-	while (*line)
-	{
-		if (*line == '>')
-		{
-			if (*(line + 1) == '>')
-			{
-				insert_list(info, ">>", HEREDOC_OUT);
-				line++;
-			}
-			else
-				insert_list(info, ">", REDIR_OUT);
-		}
-		else if (*line == '<')
-		{
-			if (*(line + 1) == '<')
-			{
-				insert_list(info, "<<", HEREDOC_IN);
-				line++;
-			}
-			else
-				insert_list(info, "<", REDIR_IN);
-		}
-		else if (*line == '|')
-			insert_list(info, "|", PIPE);
-		else if (*line == '\"')
-		{
-			bulk = quote_bulk(line, '\"');
-			if (!ft_strlen(bulk))
-			{
-				line += 2;
-				while (*line == '\"' && *line != '\0' && *line != ' ')
-				{
-					if (*(line + 1) != '\"')
-						break ;
-					line += 2;
-				}
-			}
-			else
-				line += ft_strlen(bulk);
-			tmp = bulk;
-			if (*line != ' ')
-			{
-				bulk = get_after_quote(line, tmp);
-				line += (ft_strlen(bulk) - ft_strlen(tmp));
-			}
-			insert_list(info, bulk, WORD);
-			free(tmp);
-			// free(bulk);
-			if (*line == '\0')
-				break ;
-		}
-		else if (*line == '\'')
-		{
-			bulk = quote_bulk(line, '\'');
-			if (!ft_strlen(bulk))
-			{
-				line += 2;
-				while (*line == '\'' && *line != '\0' && *line != ' ')
-				{
-					if (*(line + 1) != '\'')
-						break ;
-					line += 2;
-				}
-			}
-			else
-				line += ft_strlen(bulk);
-			tmp = bulk;
-			if (*line != ' ')
-			{
-				bulk = get_after_quote(line, tmp);
-				line += (ft_strlen(bulk) - ft_strlen(tmp));
-			}
-			insert_list(info, bulk, WORD);
-			free(tmp);
-			if (*line == '\0')
-				break ;
-		}
-		else if (*line != '>' && *line != '<' && *line != '|' && *line != ' ')
-		{
-			i = 0;
-			while (line[i] && is_whitespace2(line[i]))
-				i++;
-			tmp = ft_substr(line, 0, i);
-			insert_list(info, tmp, WORD);
-			line += ft_strlen(tmp);
-			free(tmp);
-			if (*line == '\0')
-				break ;
-		}
-		line++;
-	}
-}
+// 	i = 0;
+// 	while (*line)
+// 	{
+// 		if (*line == '>')
+// 		{
+// 			if (*(line + 1) == '>')
+// 			{
+// 				insert_list(info, ">>", HEREDOC_OUT);
+// 				line++;
+// 			}
+// 			else
+// 				insert_list(info, ">", REDIR_OUT);
+// 		}
+// 		else if (*line == '<')
+// 		{
+// 			if (*(line + 1) == '<')
+// 			{
+// 				insert_list(info, "<<", HEREDOC_IN);
+// 				line++;
+// 			}
+// 			else
+// 				insert_list(info, "<", REDIR_IN);
+// 		}
+// 		else if (*line == '|')
+// 			insert_list(info, "|", PIPE);
+// 		else if (*line == '\"')
+// 		{
+// 			bulk = quote_bulk(line, '\"');
+// 			if (!ft_strlen(bulk))
+// 			{
+// 				line += 2;
+// 				while (*line == '\"' && *line != '\0' && *line != ' ')
+// 				{
+// 					if (*(line + 1) != '\"')
+// 						break ;
+// 					line += 2;
+// 				}
+// 			}
+// 			else
+// 				line += ft_strlen(bulk);
+// 			tmp = bulk;
+// 			if (*line != ' ')
+// 			{
+// 				bulk = get_after_quote(line, tmp);
+// 				line += (ft_strlen(bulk) - ft_strlen(tmp));
+// 			}
+// 			insert_list(info, bulk, WORD);
+// 			free(tmp);
+// 			// free(bulk);
+// 			if (*line == '\0')
+// 				break ;
+// 		}
+// 		else if (*line == '\'')
+// 		{
+// 			bulk = quote_bulk(line, '\'');
+// 			if (!ft_strlen(bulk))
+// 			{
+// 				line += 2;
+// 				while (*line == '\'' && *line != '\0' && *line != ' ')
+// 				{
+// 					if (*(line + 1) != '\'')
+// 						break ;
+// 					line += 2;
+// 				}
+// 			}
+// 			else
+// 				line += ft_strlen(bulk);
+// 			tmp = bulk;
+// 			if (*line != ' ')
+// 			{
+// 				bulk = get_after_quote(line, tmp);
+// 				line += (ft_strlen(bulk) - ft_strlen(tmp));
+// 			}
+// 			insert_list(info, bulk, WORD);
+// 			free(tmp);
+// 			if (*line == '\0')
+// 				break ;
+// 		}
+// 		else if (*line != '>' && *line != '<' && *line != '|' && *line != ' ')
+// 		{
+// 			i = 0;
+// 			while (line[i] && is_whitespace2(line[i]))
+// 				i++;
+// 			tmp = ft_substr(line, 0, i);
+// 			insert_list(info, tmp, WORD);
+// 			line += ft_strlen(tmp);
+// 			free(tmp);
+// 			if (*line == '\0')
+// 				break ;
+// 		}
+// 		line++;
+// 	}
+// }
 
 // int main()
 // {

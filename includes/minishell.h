@@ -74,7 +74,7 @@ int			is_whitespace2(char line);
 char		*get_after_quote(char *line, char *bulk);
 
 
-int	is_builtin(t_info *cmd, t_envp *head);
+int	is_builtin(t_info *cmd);
 
 
 /*signal*/
@@ -121,9 +121,9 @@ void	ft_exit(t_info *arg);
 void		pipex(t_info *token, t_envp *env);
 int			get_pipe_count(t_info *token);
 int			list_size(t_info *info);
-t_info		*get_token(t_info **token);
-void		here_doc(char *limiter);
-
+t_info		*get_token(t_info **token, int fd);
+void		here_doc(char *limiter, int origin_fd);
+int	check_syntax(t_info *token);
 /*dollar*/
 void		find_dollar(t_info *token, t_envp *_env);
 char		*parse_dollar(char *str, t_envp *head);
@@ -141,6 +141,7 @@ int			find_next_quote(char *line, char quote, int quote_idx);
 /*err*/
 void		exit_errno(int arg_status, char *cmd, int res);
 void		envp_errno(char *err_value);
+void		cd_errno(char *err_value);
 void		common_errno(char *cmd, int res, char *next_arg);
 void		syntax_errno(char *cmd);
 void		badpath_errno(char *str, int res);

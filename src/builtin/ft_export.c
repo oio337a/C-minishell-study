@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 15:59:47 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 15:19:25 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,71 +48,71 @@
 	작은, 큰 따옴표 제거하고 환경변수 목록에 추가되어야 함.
 */
 
-// static int	size_envp(t_envp *lst)
-// {
-// 	int		i;
-// 	t_envp	*temp;
+static int	size_envp(t_envp *lst)
+{
+	int		i;
+	t_envp	*temp;
 
-// 	i = 0;
-// 	temp = lst;
-// 	while (temp)
-// 	{
-// 		temp = temp->next;
-// 		i++;
-// 	}
-// 	return (i);
-// }
+	i = 0;
+	temp = lst;
+	while (temp)
+	{
+		temp = temp->next;
+		i++;
+	}
+	return (i);
+}
 
-// char	**dup_envp(t_envp *head) //정렬하기 위한 배열 만들기
-// {
-// 	t_envp	*tmp;
-// 	char	**ret;
-// 	int		i;
+static char	**dup_envp(t_envp *head) //정렬하기 위한 배열 만들기
+{
+	t_envp	*tmp;
+	char	**ret;
+	int		i;
 
-// 	tmp = head;
-// 	ret = (char **)ft_safe_malloc(sizeof(char *) * (size_envp(head) + 1));
-// 	i = 0;
-// 	while (tmp)
-// 	{
-// 		ret[i] = ft_strdup(tmp->key);
-// 		if (tmp->value)
-// 		{
-// 			ret[i] = ft_strjoin_free(ret[i], "=\"");
-// 			ret[i] = ft_strjoin_free(ret[i], tmp->value);
-// 			ret[i] = ft_strjoin_free(ret[i], "\"");
-// 		}
-// 		tmp = tmp->next;
-// 		i++;
-// 	}
-// 	ret[i] = NULL;
-// 	return (ret);
-// }
+	tmp = head;
+	ret = (char **)ft_safe_malloc(sizeof(char *) * (size_envp(head) + 1));
+	i = 0;
+	while (tmp)
+	{
+		ret[i] = ft_strdup(tmp->key);
+		if (tmp->value)
+		{
+			ret[i] = ft_strjoin_free(ret[i], "=\"");
+			ret[i] = ft_strjoin_free(ret[i], tmp->value);
+			ret[i] = ft_strjoin_free(ret[i], "\"");
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	ret[i] = NULL;
+	return (ret);
+}
 
-// void	sort_arr(char **arr) //strcmp 사용해서 문자열 정렬
-// {
-// 	char	*tmp;
-// 	int		i;
-// 	int		j;
-// 	int		len;
+static void	sort_arr(char **arr) //strcmp 사용해서 문자열 정렬
+{
+	char	*tmp;
+	int		i;
+	int		j;
+	int		len;
 
-// 	len = ft_arrlen(arr);
-// 	i = 0;
-// 	while (i < len - 1)
-// 	{
-// 		j = 0;
-// 		while (j < len - 1)
-// 		{
-// 			if (ft_strcmp(*(arr + i), *(arr + j)) < 0)
-// 			{
-// 				tmp = *(arr + j);
-// 				*(arr + j) = *(arr + i);
-// 				*(arr + i) = tmp;
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
+	len = ft_arrlen(arr);
+	i = 0;
+	while (i < len)
+	{
+		j = 0;
+		while (j < len - 1)
+		{
+			if (ft_strcmp(*(arr + i), *(arr + j)) < 0)
+			{
+				tmp = *(arr + j);
+				*(arr + j) = *(arr + i);
+				*(arr + i) = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
 int	check_argv(char *argv)
 {
@@ -179,27 +179,27 @@ void	ft_export(t_info *arg, t_envp *head)
 {
 	t_info	*arg_tmp;
 	t_envp	*env_tmp;
-	// char	**arr;
-	// int		i;
+	char	**arr;
+	int		i;
 
 	arg_tmp = arg;
 	env_tmp = head;
 	if (arg_tmp->next == NULL)
 	{
-		// arr = dup_envp(head);
-		// sort_arr(arr);
-		// i = 0;
-		// while (arr[i])
-		// {
-		// 	printf("declare -x %s\n", arr[i]);
-		// 	i++;
-		// }
-		// ft_free(arr);
-		while (env_tmp)
+		arr = dup_envp(head);
+		sort_arr(arr);
+		i = 0;
+		while (arr[i])
 		{
-			printf("declare -x %s=\"%s\"\n", env_tmp->key, env_tmp->value);
-			env_tmp = env_tmp->next;
+			printf("declare -x %s\n", arr[i]);
+			i++;
 		}
+		ft_free(arr);
+		// while (env_tmp)
+		// {
+		// 	printf("declare -x %s=\"%s\"\n", env_tmp->key, env_tmp->value);
+		// 	env_tmp = env_tmp->next;
+		// }
 	}
 	arg_tmp = arg_tmp->next;
 	while (arg_tmp)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/15 21:01:13 by yongmipa         ###   ########seoul.kr   #
+#    Updated: 2023/03/16 17:35:10 by suhwpark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

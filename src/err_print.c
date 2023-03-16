@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/15 22:00:00 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 17:45:51 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	common_errno(char *cmd, int res, char *next_arg)
 {
 	if (res == 127) // command not found  errno에 등록 안돼있어여
 	{
-		printf("Nakishell$: %s: command not found\n", cmd);
+		printf("Nakishell: %s: command not found\n", cmd);
 		g_last_exit_code = 127;
 		// exit(g_last_exit_code);
 		return ;
@@ -90,9 +90,15 @@ void	common_errno(char *cmd, int res, char *next_arg)
 
 void	envp_errno(char *err_value)
 {
-	printf("export: %s: not a valid identifier\n", err_value);
+	printf("Nakishell: export: %s: not a valid identifier\n", err_value);
 	g_last_exit_code = 1;
 	// exit(g_last_exit_code);
+}
+
+void	cd_errno(char *err_value) // file or
+{
+	printf("Nakishell$: cd: %s: No such directory\n", err_value);
+	g_last_exit_code = 1;
 }
 
 void	exit_errno(int arg_status, char *cmd, int res)

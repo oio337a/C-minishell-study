@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:01:16 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 16:56:18 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 18:00:09 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ unset PATH -> envp 위치 없어져서 env 명령어 터짐,
 
 int	g_last_exit_code;
 //새로운거
-int	is_builtin(t_info *cmd, t_envp *head)
+int	is_builtin(t_info *cmd)
 {
 	if (ft_strcmp(cmd->cmd, "env") == 0)
 		return (1);
@@ -38,7 +38,7 @@ int	is_builtin(t_info *cmd, t_envp *head)
 		return (1);
 	else if (ft_strcmp(cmd->cmd, "exit") == 0)
 		return (1);
-	else							//위의 경우에서 전부 해당 안되면, 0 리턴
+	else //위의 경우에서 전부 해당 안되면, 0 리턴
 		return (0);
 }
 // 이거 필요함
@@ -54,14 +54,15 @@ int	builtin(t_info *cmd, t_envp *head, pid_t pid) // 전체 cmd 모두 들어옴
 		ft_export(cmd, head);
 	else if (ft_strcmp(cmd->cmd, "unset") == 0)
 		ft_unset(cmd, &head);
-	else if (ft_strcmp(cmd->cmd, "cd") == 0) //인자로 dir !
+	else if (ft_strcmp(cmd->cmd, "cd") == 0)
 		ft_cd(cmd, head);
 	else if (ft_strcmp(cmd->cmd, "echo") == 0)
 		ft_echo(cmd);
 	else if (ft_strcmp(cmd->cmd, "exit") == 0)
 		ft_exit(cmd);
-	else //위의 경우에서 전부 해당 안되면, 0 리턴
+	else
 		return (0);
 	if (pid == 0)
 		exit(g_last_exit_code); //builtin 해당 시 실행 후 자식 프로세스 종료
+	return (0);
 }

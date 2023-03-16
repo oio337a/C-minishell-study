@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:59:28 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 21:18:48 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 18:04:55 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,15 @@ void	ft_remainder(t_info *info, char **line)
 {
 	char	*tmp;
 	int		i;
+	int		next_q;
 
 	i = 0;
-	while ((*line)[i] && is_whitespace2((*line)[i]))
+	next_q = -1;
+	while ((*line)[i] && is_whitespace2((*line)[i]) && (*line)[i] != '>'
+		&& (*line)[i] != '<')
 		i++;
 	tmp = ft_substr(*line, 0, i);
+	*line += ft_strlen(tmp) - 1;
 	insert_list(info, tmp, WORD);
-	*line += ft_strlen(tmp);
 	free(tmp);
 }

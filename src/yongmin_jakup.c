@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   yongmin_jakup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/15 21:03:34 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 17:37:05 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*get_after_quote(char *line, char *bulk)
 	return (real_bulk);
 }
 // 줄수 때매 뻇어요
+
 static void	only_redir(t_info *info, char **line)
 {
 	if (**line == '>')
@@ -75,7 +76,7 @@ static void	redir_check(t_info *info, char **line)
 		insert_list(info, temp, type);
 		free(temp);
 		// <<a 를 <<로만 판단해서 넣어놨습니다!
-		if (*(*line + 2) != ' ' || *(*line + 2) != '\0')
+		if (*(*line + 2) != ' ' || *(*line + 2) != '\0' || *(*line + 2) != '<' || *(*line + 2) != '>')
 			*line += 1;
 		else
 			*line += 2;

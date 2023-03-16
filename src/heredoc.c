@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 20:36:15 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 18:17:49 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	here_doc(char *limiter)
+int	g_last_exit_code;
+
+void	here_doc(char *limiter, int origin_fd) // << a
 {
 	int		fd;
 	char	*line;
@@ -25,7 +27,7 @@ void	here_doc(char *limiter)
 	while (1)
 	{
 		write(1, "\033[38:5:141m" "Nadocki 🐶 ⍩ " COMMAND_COLOR, 33);
-		line = get_next_line(STDIN_FILENO);
+		line = get_next_line(origin_fd);
 		if (!line || !ft_strncmp(line, limiter_tmp, ft_strlen(limiter_tmp)))
 		{
 			free(line);
@@ -34,13 +36,15 @@ void	here_doc(char *limiter)
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
-	fd = open(".here_doc", O_RDONLY);
+	fd = open(".here_doc", O_RDONLY); // << a
 	if (fd == -1)
 	{
 		unlink(".here_doc");
 		common_errno("fd", 2 ,NULL);
 	}
 	free(limiter_tmp);
-	dup2(fd, STDIN_FILENO);
+	dup2(fd, STDIN_FILENO); // 자식 프로세스의 STDIN -> ./heredoc
+	close(fd);
 	unlink(".here_doc");
+	// exit(g_last_exit_code);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:05:00 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/15 20:50:42 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 18:31:25 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,57 @@
 	before가 있으면 좋을거 같은 생각
 */
 
+static int	check_grammar(t_info *token)
+{
+	if ((token->type == PIPE
+			&& ((token->next)->type != WORD || token->next == NULL))
+		|| (token->type == HEREDOC_IN
+			&& (((token->next)->type != WORD) || token->next->cmd == NULL)))
+		return (0);
+	if (token->type == REDIR_IN
+		&& (((token->next) == NULL || (token->next)->type != WORD)))
+		return (0);
+	return (1);
+}
+
 int	check_syntax(t_info *token)
 {
 	t_info	*head;
 
 	head = token;
 	if (head->type == PIPE)
-		syntax_errno((head->type));
-	head = head->next; // 처음에 pipe 등장했을때 
+	{
+		syntax_errno((head->cmd));
+		return (0);
+	}
 	while (head)
 	{
-		if ((head->type == PIPE && ((head->next)->type != WORD || head->next == NULL))
-			|| (head->type == HEREDOC_IN && ((head->next)->type != WORD) || head->next == NULL))
+		printf("!!!!!!!!!!!!!!!!!\n");
+		if ((head->type == PIPE
+				&& ((head->next)->type != WORD || head->next == NULL))
+			|| (head->type == HEREDOC_IN
+				&& (((head->next)->type != WORD) || head->next->cmd == NULL)))
 		{
-			syntax_errno((head->next)->type);
+			syntax_errno((head->next)->cmd);
 			return (0);
 		}
-		else if (head->type == REDIR_IN && ((head->next)->type == NULL || (head->next)->type != WORD))
+		else if (head->type == REDIR_IN
+			&& (((head->next)->cmd == NULL || (head->next)->type != WORD)))
 		{
-			syntax_errno((head->next)->type);
+			syntax_errno((head->next)->cmd);
 			return (0);
 		}
+		// printf("%d %s\n", head->type, head->cmd);
+		// if (!check_grammar(head))
+		// {
+		// 	syntax_errno((head->next)->cmd);
+		// 	return (0);
+		// }
 		else
 			head = head->next;
 	}
 	return (1);
-} // 얘 돌고 나와서 rdir 처리하면 댈듯한디 버어억
-//버억
+}
 
 int	get_pipe_count(t_info *token)
 {

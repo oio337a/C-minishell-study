@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 22:27:14 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 18:31:46 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,20 @@ static void	show_naki(void)
 void	execute(char *str, t_info *info, t_envp *envp_head)
 {
 	str_tokenize(info, str);
+	t_info *a;
+	a = info;
+		while (a)
+		{
+			printf("############ %d %s\n", a->type, a->cmd);
+			a = a->next;
+		}
+	// exit(1);
 	if (validate_quote_all(info))
 	{
 		find_dollar(info, envp_head);
 		clear_quote_in_token(info);
-		pipex(info, envp_head);
+		if (check_syntax(info))
+			pipex(info, envp_head);
 	}
 	else
 		common_errno(info->cmd, 1, NULL);
@@ -66,8 +75,9 @@ int	main(int ac, char **av, char **envp)
 			exit(0);
 		if (*str == '\0')
 			continue ;
-		add_history(str);	
+		add_history(str);
 		execute(str, info, envp_head);
+		unlink(".here_doc");
 	}
 	delete_envp_all(&envp_head);
 	return (0);

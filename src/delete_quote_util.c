@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote_util.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:02:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 21:38:19 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 17:34:46 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

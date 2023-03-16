@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 21:31:27 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/16 15:59:07 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	g_exit_status;
 
 //ctrl + d == 시그널이 아니라, 아스키코드 4번 EOT임
 //따라서 따로 시그널 처리할 필요 없이, char == 4 && idx == 0일 때 exit 출력 후 종료하면 됨
@@ -18,8 +20,6 @@
 /*
 ^C 제어문자 반향 출력 안 하는 거 배쉬 버전마다 달라서 처리 안 했습니 다람쥐
 */
-
-int	g_exit_status;
 
 void	handler(int signum)
 {
@@ -32,15 +32,7 @@ void	handler(int signum)
 		g_exit_status = 1;
 	}
 }
-/*
-static void	heredoc_handler(int signum)
-{
-	if (signum == SIGINT)
-	{
-		write(1, NULL, 0);
-	}
-}
-*/
+
 void	set_signal(t_signal mode)
 {
 	if (mode == CHILD) // 자식프로세스
@@ -55,8 +47,6 @@ void	set_signal(t_signal mode)
 	}
 	else if (mode == HEREDOC)
 	{
-		// signal(SIGINT, heredoc_handler);
-		// signal(SIGINT, handler);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);
 	}
