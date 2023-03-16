@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 18:31:59 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/16 19:24:53 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 	2. 없는 디렉토리 인자로 넣었을 때 에러메시지
 	3. unset HOME 후 cd ~ 시 에러메시지
 	4. cd $env 시 해당 경로로 이동 -> 환경변수 파싱에서 끝나야 하는 거 아닌가? 마즘
-	5. 
-	
+	5.
+
 	cd ~ 일때 = 그냥 cd = cd $없는 환경변수 = cd ~ 인자
 	-> HOME 경로 찾아서 path에 저장 후 이동
 
@@ -34,7 +34,7 @@
 	cf. cd "" 시 아무 동작 x . . . ㅋㅋ
 */
 
-static char	*set_home(t_envp *envp)
+static char	*get_home(t_envp *envp)
 {
 	int		i;
 	char	*path;
@@ -55,52 +55,67 @@ static char	*set_home(t_envp *envp)
 	return (NULL);
 }
 
+static char	*get_oldpwd(t_envp *envp)
+{
+	int		i;
+	char	*path;
+	t_envp	*envp_tmp;
+
+	envp_tmp = envp;
+	i = 0;
+	while (envp_tmp)
+	{
+		if (ft_strcmp("OLDPWD", envp_tmp->key) == 0)
+		{
+			path = ft_strdup(envp_tmp->value);
+			return (path);
+		}
+		envp_tmp = envp_tmp->next;
+	}
+	printf("Nakishell$: cd: OLDPWD not set\n");
+	g_last_exit_code = 1;
+	return (NULL);
+}
+
+static void	set_newpwd(t_envp *envp, char *old_pwd)
+{
+	char	*new_pwd;
+
+	new_pwd = getcwd(NULL, 0);
+	insert_envp(envp, "PWD", new_pwd);
+	insert_envp(envp, "OLDPWD", old_pwd);
+	free(new_pwd);
+}
+
 /*
 	int	chdir(const char *dirname(path))
 	-> dirname(path)로 경로를 변경함
 	성공 시  0, 실패 시  -1
-	char	*getcwd(char *buf, size_t size)
-	-> buff에 현재 디렉토리 path 따옴
 */
 
 void	ft_cd(t_info *arg, t_envp *envp)
 {
 	char	*path;
 	char	*old_pwd;
-	char	*new_pwd;
 	t_info	*tmp;
-	t_envp	*head;
 
 	tmp = arg;
-	head = envp;
 	old_pwd = getcwd(NULL, 0);
-	if (tmp->next == NULL || ft_strcmp(tmp->next->cmd, "~") == 0) //인자 없거나 ~면
-		path = set_home(envp);
+	if (tmp->next == NULL || ft_strcmp(tmp->next->cmd, "~") == 0 || \
+	ft_strcmp(tmp->next->cmd, "") == 0) //인자 없거나 ~ 나 없는 환경변수면
+		path = get_home(envp);
+	else if (ft_strcmp(tmp->next->cmd, "-") == 0)
+		path = get_oldpwd(envp);
 	else //인자 있으면
 		path = ft_strdup(tmp->next->cmd);
-//ft_strjoin(ft_strjoin(pwd, "/"), tmp->next->cmd);
 	if (!path)
 		return ;
-	if (chdir(path) == 0)
-	{
-		new_pwd = getcwd(NULL, 0);
-		insert_envp(envp, "PWD", new_pwd);
-		insert_envp(envp, "OLDPWD", old_pwd);
-		while (head != NULL)
-		{
-			if (ft_strcmp(head->key, "PWD") == 0)
-			{
-				free(head->value);
-				head->value = new_pwd;
-				break ;
-			}
-			head = head->next;
-		}
-		free(new_pwd);
-		free(old_pwd);
-	}
-	else // 함수 종료 후 뉴라인 띄우기
-		common_errno("cd", 2, NULL); //2는 머죠 ? ?
+	if (chdir(path) == 0) // 경로 이동 성공
+		set_newpwd(envp, old_pwd);
+	else // 이상한 경로
+		cd_errno(path);
+	free(old_pwd);
+	free(path);
 }
 
 // int	main()

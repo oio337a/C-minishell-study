@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 18:31:46 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/16 18:35:54 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,6 @@ static void	show_naki(void)
 void	execute(char *str, t_info *info, t_envp *envp_head)
 {
 	str_tokenize(info, str);
-	t_info *a;
-	a = info;
-		while (a)
-		{
-			printf("############ %d %s\n", a->type, a->cmd);
-			a = a->next;
-		}
-	// exit(1);
 	if (validate_quote_all(info))
 	{
 		find_dollar(info, envp_head);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 18:17:49 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/16 19:43:08 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	here_doc(char *limiter, int origin_fd) // << a
 			free(line);
 			break ;
 		}
+		if (g_last_exit_code == 1000)
+			break ;
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}

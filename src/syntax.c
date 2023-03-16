@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:05:00 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/16 18:31:25 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/16 18:35:37 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 	err 유형
 	1. < 하나만 들어왔을 때
 	2. << word 2개 word 아니면 오류
-	3. | 뒤에는 | 오면 안되고, NULL 이면 오류 < << 이면 오류 | 앞에도 word 필요 
+	3. | 뒤에는 | 오면 안되고, NULL 이면 오류 < << 이면 오류 | 앞에도 word 필요
 	4. > 뒤에는 word 1(trunc) , >> 뒤에 word 1(append)
 	5. <<< 케이스도 < <<로 생각돼서 걸러지긴 할듯
 
@@ -53,7 +53,6 @@ int	check_syntax(t_info *token)
 	}
 	while (head)
 	{
-		printf("!!!!!!!!!!!!!!!!!\n");
 		if ((head->type == PIPE
 				&& ((head->next)->type != WORD || head->next == NULL))
 			|| (head->type == HEREDOC_IN

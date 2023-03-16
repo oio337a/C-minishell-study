@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 15:59:07 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/16 19:44:09 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@ int	g_exit_status;
 /*
 ^C 제어문자 반향 출력 안 하는 거 배쉬 버전마다 달라서 처리 안 했습니 다람쥐
 */
+
+void	heredoc_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		g_last_exit_code = 1000;
+		// write(1, "\n", 1);
+		// unlink(".here_doc");
+		// rl_on_new_line();
+		// rl_replace_line("", 1);
+		// rl_redisplay();
+	}
+}
 
 void	handler(int signum)
 {
@@ -47,7 +60,8 @@ void	set_signal(t_signal mode)
 	}
 	else if (mode == HEREDOC)
 	{
-		signal(SIGINT, SIG_DFL);
+		signal(SIGINT, heredoc_handler);
+		// signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_IGN);
 	}
 	else if (mode == GENERAL)

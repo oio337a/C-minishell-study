@@ -80,6 +80,7 @@ int	is_builtin(t_info *cmd);
 /*signal*/
 void		handler(int signum);
 void		set_signal(t_signal mode);
+void	heredoc_handler(int signum);
 
 /*shell_utils*/
 void		print_error(char *errmsg, int errnum);

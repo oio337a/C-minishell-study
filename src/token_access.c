@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_access.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 18:16:05 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/16 19:45:04 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ t_info	*get_token(t_info **token, int fd)
 		}
 		if ((*token)->type == HEREDOC_IN) // cat << EOF 이러면 걍 파이프에 쓰인거 출력   //  << a
 		{
-			set_signal(CHILD);
+			// heredoc_handler((*token)->next->cmd, GENERAL);
+			set_signal(HEREDOC);
 			(*token) = (*token)->next;
 			here_doc((*token)->cmd, fd); // 자식 프로세스 STDIN -> 내부 생성 ./heredoc 가리킴
 			(*token) = (*token)->next;
@@ -69,9 +70,16 @@ t_info	*get_token(t_info **token, int fd)
 			(*token) = (*token)->next;
 			break ;
 		}
+		printf("before insert : %s\n", (*token)->cmd);
 		insert_list(new, (*token)->cmd, (*token)->type);
 		(*token) = (*token)->next;
 	}
+	// while (new)
+	// {
+	// 	printf("new : %s\n", new->cmd);
+	// 	new = new->next;
+	// }
+	// exit(1);
 	return (new);
 }
 
@@ -82,6 +90,7 @@ static void	execve_token(t_info *token, t_envp *env, pid_t pid)
 	int		i;
 	t_info	*head;
 
+	printf("cmd : %s\n", token->cmd);
 	len = list_size(token);
 	head = token;
 	i = 0;
@@ -172,23 +181,25 @@ void	pipex(t_info *token, t_envp *env) //heredoc 자식으로 넣을게여~~~~
 		builtin(head, env, 12);
 		return ;
 	}
-	// printf("%d\n", total_pipe);
-	// 고침
 	while (i < total_pipe)
 	{
+		splited_token = get_token(&head, fd[2]);
 		if (pipe(fd) == -1)
 			common_errno("pipe error", 1, NULL);
 		pid = fork();
 		if (pid == 0)
 		{
-			splited_token = get_token(&head, fd[2]); // 여기서 바로 heredoc 실행 -> 자식에서 실행
 			set_signal(CHILD);
 			if (i == total_pipe - 1)
 			{
+				printf("last : %s\n", splited_token->cmd);
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1])); // STDIN ->heredoc, 파이프 출력->STDOUT
 			}
 			else
+			{
+				printf("not last : %s\n", splited_token->cmd);
 				(dup2(fd[1], STDOUT_FILENO), close(fd[1])); // STDOUT -> 출력부 복사, 파이프 출력부 닫기.
+			}
 			execve_token(splited_token, env, pid);
 			list_delete(&splited_token);
 		}
