@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/16 22:34:57 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/18 21:57:15 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 // 	if (cmd != NULL && char == NULL)
 // 		printf("%s: %s", cmd, strerror(errno));
 // }
-// errno 대충
+// errno 대충 
 /*
-	0	: It indicates successful execution.
+	0	: It indicates successful execution.	
 	1	: It is used to catch all general errors.	“Divide by zero”, “Operation not permitted” etc. can be the error messages of this code.
 	2	: It indicates the abuse of shell built-ins.	“Missing keyword”, “No such file or directory” etc. can be the error messages of this code.
 	126	: It generates when the any command is unable to execute.	Permission problem or required key not available can generate this status code
@@ -47,7 +47,7 @@ exit은 예외 인자가 3개일 때
 		bash: exit: cmd1: numeric arg ~ (인자가 두개일 때도 동일하다.)
 	두번 째에서 터졌다
 		bash: exit: too many arg
-
+	
 환경변수
 	value만 들어왔다
 		export TEST =2244
@@ -65,69 +65,106 @@ int	g_last_exit_code;
 // 추후에 errno를 사용하지 않는 케이스는 테스트 후 perror로 바꾸겠읍니다
 // 우리 쉘에서 될지 안될지 몰라서 일단 printf..
 // +) 여기서 뉴라인 띄우도록 기능 추가 필요
-void	common_errno(char *cmd, int res, char *next_arg)
+
+static void	common_errnos(char *cmd, char *next_arg, int fd, int type)
 {
-	if (res == 127) // command not found  errno에 등록 안돼있어여
+	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	if (type != 3)
+		ft_putstr_fd("Nakishell: ", fd);
+	ft_putstr_fd(cmd, fd);
+	if (type == 1)
+		ft_putstr_fd(": command not found", fd);
+	else if (type == 2)
 	{
-		printf("Nakishell: %s: command not found\n", cmd);
+		ft_putstr_fd(": ", fd);
+		ft_putstr_fd(strerror(errno), fd);
+	}
+	else if (type == 3)
+	{
+		ft_putstr_fd(next_arg, fd);
+		ft_putstr_fd(strerror(errno), fd);
+	}
+	ft_putstr_fd("\n", fd);
+}
+
+void	common_errno(char *cmd, int res, char *next_arg, int fd)
+{
+	if (res == 127) // 커맨드 한개 넣었는데 개소리
+	{
 		g_last_exit_code = 127;
+		common_errnos(cmd, next_arg, fd, 1);
 		// exit(g_last_exit_code);
 		return ;
 	}
-	if (next_arg == NULL) //cmd부터 틀린 경우
+	if (next_arg == NULL) // 앞에 커맨드는 맞는데 뒤에 개소리
 	{
+		common_errnos(cmd, next_arg, fd, 2);
 		g_last_exit_code = 1;
 		// exit(g_last_exit_code);
 	}
-	/*
-	else //cmd는 맞는데 인자가 틀린 경우
+	else // 걍 커맨드 여러개 갈겨서 다 개소리
 	{
-		printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
+		// printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
+		common_errnos(cmd, next_arg, fd, 3);
 		g_last_exit_code = 1;
 		// exit(g_last_exit_code);
 	}
-	*/
-	// return (1); // 앞에는 실행 가능하다는 cmd 전제
 }
 
-void	envp_errno(char *err_value)
+void	envp_errno(char *err_value, int fd)
 {
-	printf("Nakishell: export: %s: not a valid identifier\n", err_value);
+	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	ft_putstr_fd("Nakishell$: export: ", fd);
+	ft_putstr_fd(err_value, fd);
+	ft_putstr_fd(": not a valid identifier\n", fd);
 	g_last_exit_code = 1;
 	// exit(g_last_exit_code);
 }
 
-void	cd_errno(char *err_value) // file or
+void	cd_errno(char *err_value, int fd) // file or
 {
-	printf("Nakishell$: cd: %s: No such directory\n", err_value);
+	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	ft_putstr_fd("Nakishell$: cd: ", fd);
+	ft_putstr_fd(err_value, fd);
+	ft_putstr_fd(": No such directory\n", fd);
 	g_last_exit_code = 1;
 }
 
-void	exit_errno(int arg_status, char *cmd, int res)
+void	exit_errno(int arg_status, char *cmd, int res, int fd)
 {
+	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
 	if (arg_status != 0)
 	{
-		printf("Nakishell$: %s: too many arguments\n", cmd);
+		ft_putstr_fd("Nakishell$: ", fd);
+		ft_putstr_fd(cmd, fd);
+		ft_putstr_fd(": too many arguments\n", fd);
 		g_last_exit_code = 1;
 		// exit(g_last_exit_code);
 	}
 	else
 	{
-		printf("Nakishell$: exit: %s: numeric argument required\n", cmd);
+		ft_putstr_fd("Nakishell$: exit: ", fd);
+		ft_putstr_fd(cmd, fd);
+		ft_putstr_fd(": numeric argument required\n", fd);
 		g_last_exit_code = 255;
 		// exit(g_last_exit_code);
 	}
 }
 
-void	syntax_errno(char *cmd)
+void	syntax_errno(char *cmd, int fd)
 {
-	printf("syntax error near unexpected token `%s'\n", cmd);
+	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	ft_putstr_fd("syntax error near unexpected token '", fd);
+	ft_putstr_fd(cmd, fd);
+	ft_putstr_fd("'\n", fd);
 	g_last_exit_code = 258;
 	// exit(g_last_exit_code);
 }
 
-void	badpath_errno(char *str, int res)
+void	badpath_errno(char *str, int res, int fd)
 {
-	printf("%s\n", strerror(res));
+	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	ft_putstr_fd(strerror(res), fd);
+	ft_putstr_fd("\n", fd);
 	// exit(g_last_exit_code);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_envp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:37 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 20:18:51 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/18 21:16:15 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,30 @@ t_envp	*set_envp(char **envp)
 		i++;
 	}
 	return (head);
+}
+
+char	**envp_to_arr(t_envp *head) //execve에 넣을 envp 2차원 배열 생성
+{
+	t_envp	*tmp;
+	char	**ret;
+	int		i;
+
+	tmp = head;
+	ret = (char **)ft_safe_malloc(sizeof(char *) * (size_envp(head) + 1));
+	i = 0;
+	while (tmp)
+	{
+		ret[i] = ft_strdup(tmp->key);
+		if (tmp->value)
+		{
+			ret[i] = ft_strjoin_free(ret[i], "=");
+			ret[i] = ft_strjoin_free(ret[i], tmp->value);
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	ret[i] = NULL;
+	return (ret);
 }
 
 // int	main(int ac, char **av, char **envp) //test 메인문

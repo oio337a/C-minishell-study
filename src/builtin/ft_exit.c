@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 20:44:56 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/18 21:11:15 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	one_arg(int check_arg, t_info *arg)
 	}
 	else
 	{
-		exit_errno(check_arg, (arg->next)->cmd, 255);
+		// exit_errno(check_arg, (arg->next)->cmd, 255);
 		exit(g_last_exit_code);
 	}
 }
@@ -90,10 +90,11 @@ void	ft_exit(t_info *arg)
 	if (arg_size >= 3)
 	{
 		if (check_arg)
-			exit_errno(check_arg, arg->cmd, 1);
-		else if (!check_arg)
+			printf("sdf\n");
+			// exit_errno(check_arg, arg->cmd, 1);
+		else //if (!check_arg)
 		{
-			exit_errno(check_arg, (arg->next)->cmd, 255);
+			// exit_errno(check_arg, (arg->next)->cmd, 255);
 			exit(g_last_exit_code);
 		}
 	}

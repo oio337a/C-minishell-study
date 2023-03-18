@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:54 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/14 20:16:24 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/19 00:58:11 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_env(t_info *cmd, t_envp *head) //exit status 성공시 0, 에러시 0 �
 	tmp = head;
 	if (cmd->next != NULL)
 	{
-		printf("env: %s: No such file or directory\n", cmd->next->cmd);
+		printf("env: %s: No such file or directory\n", cmd->next->cmd); // write로 고쳐야 하나요
 		g_exit_status = 127;
 		return ;
 	}
@@ -32,5 +32,6 @@ void	ft_env(t_info *cmd, t_envp *head) //exit status 성공시 0, 에러시 0 �
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
+	g_last_exit_code = 0;
 	return ;
 }

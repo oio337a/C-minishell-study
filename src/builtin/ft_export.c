@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 15:19:25 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/19 01:39:37 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 	작은, 큰 따옴표 제거하고 환경변수 목록에 추가되어야 함.
 */
 
-static int	size_envp(t_envp *lst)
+int	size_envp(t_envp *lst)
 {
 	int		i;
 	t_envp	*temp;
@@ -63,7 +63,7 @@ static int	size_envp(t_envp *lst)
 	return (i);
 }
 
-static char	**dup_envp(t_envp *head) //정렬하기 위한 배열 만들기
+char	**dup_envp(t_envp *head) //정렬하기 위한 배열 만들기
 {
 	t_envp	*tmp;
 	char	**ret;
@@ -140,7 +140,7 @@ void	set_key_value(t_envp *head, char *argv, int i, int plus)
 {
 	char	*key;
 	char	*value;
-	
+
 	value = ft_substr(argv, i + 1, ft_strlen(argv) - i + 1);
 	if (plus == i - 1) // +=인 경우 뒤에 덧붙이기
 	{
@@ -152,6 +152,8 @@ void	set_key_value(t_envp *head, char *argv, int i, int plus)
 		key = ft_substr(argv, 0, i);
 		insert_envp(head, key, value);
 	}
+	free(key);
+	free(value);
 }
 
 void	add_envp(char *argv, t_envp *head)
@@ -163,7 +165,7 @@ void	add_envp(char *argv, t_envp *head)
 		return ;
 	if (!check_argv(argv))
 	{
-		envp_errno(argv);
+		// envp_errno(argv);
 		return ;
 	}
 	i = ft_strchr_int(argv, '=');
@@ -195,11 +197,6 @@ void	ft_export(t_info *arg, t_envp *head)
 			i++;
 		}
 		ft_free(arr);
-		// while (env_tmp)
-		// {
-		// 	printf("declare -x %s=\"%s\"\n", env_tmp->key, env_tmp->value);
-		// 	env_tmp = env_tmp->next;
-		// }
 	}
 	arg_tmp = arg_tmp->next;
 	while (arg_tmp)
@@ -207,6 +204,7 @@ void	ft_export(t_info *arg, t_envp *head)
 		add_envp(arg_tmp->cmd, head);
 		arg_tmp = arg_tmp->next;
 	}
+	g_last_exit_code = 0;
 }
 
 // int main(int ac, char **av, char **env) //테스트 메인문

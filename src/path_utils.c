@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:06 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 22:02:42 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/18 21:54:18 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ char	**set_path(t_envp *envp) // string 들어가서 ':' 기준으로 split 합�
 	return (ft_split(path, ':'));
 }
 
+// static void	nan_mounga_dollar_dollar_yeah()
+// {
+// 		이 함수명 너무 아깝다... ㅠㅠ
+// }
+
 char	*get_cmd(char *cmd, t_envp *envp)
 // ls, echo 형식으로 들어온 cmd가 실행 가능하다면 execve의 path_cmd 형식 (/bin/ls)로 변환
 {
@@ -35,7 +40,7 @@ char	*get_cmd(char *cmd, t_envp *envp)
 	char	**envp_in_list;
 
 	if (!ft_strlen(cmd))
-		common_errno(cmd, 127, NULL);
+		common_errno(cmd, 127, NULL, STDOUT_FILENO);
 	envp_in_list = set_path(envp);
 	if (access(cmd, X_OK) != -1)
 		return (cmd);
@@ -51,6 +56,12 @@ char	*get_cmd(char *cmd, t_envp *envp)
 		}
 		free(tmp);
 	}
-	common_errno(cmd, 127, NULL); // command not found 출력 후, 상태를 127로 저장합니다.
+	if (!ft_strncmp(cmd, "$?", 2))
+	{
+		printf("Nakishell: %d%s: command not found\n", g_last_exit_code, (cmd + 2));
+		return (NULL);
+	}
+	else
+		common_errno(cmd, 127, NULL, STDOUT_FILENO);
 	return (NULL);
 }

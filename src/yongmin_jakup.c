@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   yongmin_jakup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/16 17:37:05 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/18 15:54:10 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,15 +82,7 @@ static void	redir_check(t_info *info, char **line)
 			*line += 2;
 	}
 	else
-	{
-		// if (**line == '>')
-		// 	insert_list(info, ">", REDIR_OUT);
-		// else if (**line == '<')
-		// 	insert_list(info, "<", REDIR_IN);
-		// else
-		// 	insert_list(info, "|", PIPE);
 		only_redir(info, line);
-	}
 }
 
 void	str_tokenize(t_info *info, char *line)

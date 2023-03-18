@@ -6,13 +6,13 @@
 /*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 22:14:35 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/19 01:46:15 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_last_exit_code = 0;
+int	g_last_exit_code;
 
 static void	show_naki(void)
 {
@@ -33,22 +33,25 @@ static void	show_naki(void)
 	close(fd);
 }
 
-void	execute(char *str, t_info *info, t_envp *envp_head)
+void	execute(char *str, t_info *info, t_envp *envp_head, char **envp)
 {
 	str_tokenize(info, str);
 	if (validate_quote_all(info))
 	{
 		find_dollar(info, envp_head);
 		clear_quote_in_token(info);
+		// t_info *a;
+		// a= info;
+		// while (a)
+		// {
+		// 	printf("parse cmd : %s, type : %d\n", a->cmd, a->type);
+		// 	a = a->next;
+		// }
 		if (check_syntax(info))
 			pipex(info, envp_head);
 	}
-	else // quote 개수 오류 -> 에러메시지 출력 ?
-	{
-		g_last_exit_code = 1;
-		printf("Nakishell: %s: quotes count error\n", info->cmd);
-	}
-		// common_errno(info->cmd, 1, NULL);
+	else
+		common_errno(info->cmd, 1, NULL, STDOUT_FILENO);
 	list_delete(&info);
 }
 
@@ -72,7 +75,8 @@ int	main(int ac, char **av, char **envp)
 		if (*str == '\0')
 			continue ;
 		add_history(str);
-		execute(str, info, envp_head);
+		// g_last_exit_code = 0;
+		execute(str, info, envp_head, envp);
 		unlink(".here_doc");
 	}
 	delete_envp_all(&envp_head);

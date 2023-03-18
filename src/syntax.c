@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:05:00 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/16 18:35:37 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/18 21:31:36 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,6 @@
 	before가 있으면 좋을거 같은 생각
 */
 
-static int	check_grammar(t_info *token)
-{
-	if ((token->type == PIPE
-			&& ((token->next)->type != WORD || token->next == NULL))
-		|| (token->type == HEREDOC_IN
-			&& (((token->next)->type != WORD) || token->next->cmd == NULL)))
-		return (0);
-	if (token->type == REDIR_IN
-		&& (((token->next) == NULL || (token->next)->type != WORD)))
-		return (0);
-	return (1);
-}
-
 int	check_syntax(t_info *token)
 {
 	t_info	*head;
@@ -48,33 +35,43 @@ int	check_syntax(t_info *token)
 	head = token;
 	if (head->type == PIPE)
 	{
-		syntax_errno((head->cmd));
+		syntax_errno((head->cmd), STDOUT_FILENO);
 		return (0);
 	}
 	while (head)
 	{
-		if ((head->type == PIPE
-				&& ((head->next)->type != WORD || head->next == NULL))
-			|| (head->type == HEREDOC_IN
-				&& (((head->next)->type != WORD) || head->next->cmd == NULL)))
+		if ((head->type == PIPE && ((head->next) == NULL)))
 		{
-			syntax_errno((head->next)->cmd);
+			syntax_errno("|", STDOUT_FILENO);
 			return (0);
 		}
-		else if (head->type == REDIR_IN
-			&& (((head->next)->cmd == NULL || (head->next)->type != WORD)))
+		else if (head->type == HEREDOC_IN)
 		{
-			syntax_errno((head->next)->cmd);
-			return (0);
+			if ((head->next) == NULL)
+			{
+				syntax_errno("<<", STDOUT_FILENO);
+				return (0);
+			}
+			else if ((head->next)->type != WORD)
+			{
+				syntax_errno(head->next->cmd, STDOUT_FILENO);
+				return (0);
+			}
 		}
-		// printf("%d %s\n", head->type, head->cmd);
-		// if (!check_grammar(head))
-		// {
-		// 	syntax_errno((head->next)->cmd);
-		// 	return (0);
-		// }
-		else
-			head = head->next;
+		else if (head->type == REDIR_IN)
+		{
+			if ((head->next) == NULL)
+			{
+				syntax_errno("<", STDOUT_FILENO);
+				return (0);
+			}
+			else if ((head->next)->type != WORD)
+			{
+				syntax_errno(head->next->cmd, STDOUT_FILENO);
+				return (0);
+			}
+		}
+		head = head->next;
 	}
 	return (1);
 }

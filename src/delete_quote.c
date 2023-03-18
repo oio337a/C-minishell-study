@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/16 17:34:14 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/18 16:02:33 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	quotes_case(t_info *list, char *cmd, int i, char quote)
 		clear_token = ft_substr(cmd, i + 1, next_idx - i - 1);
 		insert_list(list, clear_token, WORD);
 		free(clear_token);
-		i += next_idx - 1;
+		i += next_idx;
 	}
 	return (i);
 }
@@ -37,7 +37,7 @@ static int	not_quotes(t_info *list, char *cmd, int i)
 	clear_token = ft_substr(cmd, i, here_quote(cmd + i));
 	insert_list(list, clear_token, WORD);
 	free(clear_token);
-	i += here_quote(cmd + i) - 1;
+	i += here_quote(cmd + i);
 	return (i);
 }
 

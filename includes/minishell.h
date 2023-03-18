@@ -19,6 +19,7 @@
 # define PROMPT_COLOR "\033[38:5:111m"
 # define COMMAND_COLOR "\033[0m"
 # define WELCOME_COLOR "\033[38:5:225m"
+# define ERROR_COLOR "\033[38:5:196m"
 
 extern int	g_last_exit_code;
 
@@ -47,12 +48,6 @@ typedef struct s_info
 	struct s_info	*next;
 }	t_info;
 
-typedef struct s_dup
-{
-	void			*content;
-	struct s_dup	*next;
-}	t_dup;
-
 typedef struct s_envp
 {
 	char			*key;
@@ -79,12 +74,15 @@ char		*quote_bulk(char *line, char c);
 int			is_whitespace2(char line);
 char		*get_after_quote(char *line, char *bulk);
 
+
 int	is_builtin(t_info *cmd);
+
 
 /*signal*/
 void		handler(int signum);
 void		set_signal(t_signal mode);
-void	heredoc_handler(int signum);
+void	child_handler(int signum);
+void	why(int signum);
 
 /*shell_utils*/
 void		print_error(char *errmsg, int errnum);
@@ -99,9 +97,11 @@ void		insert_envp(t_envp *envp, char *key, char *value);
 void		append_envp(t_envp *envp, char *key, char *value);
 void		delete_envp_all(t_envp **envp);
 t_envp		*set_envp(char **envp);
+char		**envp_to_arr(t_envp *head);
 
 /*export*/
-// int			size_envp(t_envp *lst);
+int			size_envp(t_envp *lst);
+char		**dup_envp(t_envp *head);
 // void		sort_arr(char **arr);
 int			check_argv(char *argv);
 void		set_key_value(t_envp *head, char *argv, int i, int plus);
@@ -120,15 +120,15 @@ void		ft_export(t_info *arg, t_envp *head);
 void		ft_unset(t_info *arg, t_envp **envp);
 void		ft_cd(t_info *arg, t_envp *envp);
 void		ft_echo(t_info *arg);
-void	ft_exit(t_info *arg);
+void		ft_exit(t_info *arg);
 
 /*pipex*/
 void		pipex(t_info *token, t_envp *env);
 int			get_pipe_count(t_info *token);
 int			list_size(t_info *info);
-t_info		*get_token(t_info **token, int fd);
-void		here_doc(char *limiter, int origin_fd);
-int	check_syntax(t_info *token);
+t_info	*get_token(t_info **token, t_envp *envp, int fd);
+void	here_doc(char *limiter, t_envp *envp, int origin_fd);
+int			check_syntax(t_info *token);
 /*dollar*/
 void		find_dollar(t_info *token, t_envp *_env);
 char		*parse_dollar(char *str, t_envp *head);
@@ -144,11 +144,13 @@ void		clear_quote_in_token(t_info *token);
 int			find_next_quote(char *line, char quote, int quote_idx);
 
 /*err*/
-void		exit_errno(int arg_status, char *cmd, int res);
-void		envp_errno(char *err_value);
-void		cd_errno(char *err_value);
-void		common_errno(char *cmd, int res, char *next_arg);
-void		syntax_errno(char *cmd);
-void		badpath_errno(char *str, int res);
+void		exit_errno(int arg_status, char *cmd, int res, int fd);
+void		envp_errno(char *err_value, int fd);
+void		cd_errno(char *err_value, int fd);
+void		common_errno(char *cmd, int res, char *next_arg, int fd);
+void		syntax_errno(char *cmd, int fd);
+void		badpath_errno(char *str, int res, int fd);
+char		*common_child_errno(char *cmd, int res);
+
 
 #endif

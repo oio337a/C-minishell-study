@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/15 17:21:47 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/19 01:41:02 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 	echo
 	echo hello
 	echo -n hello
-	echo hello -n 
+	echo hello -n
 	echo -nnn hello
 	echo -n-n hello
-	echo -nnn hello -n 
+	echo -nnn hello -n
 	echo -nnn -n hello
 	echo -
 	echo - -
@@ -85,8 +85,9 @@ static void	ft_pcmd(t_info *temp)
 				printf("%s", temp->cmd);
 			printf(" ");
 		}
-			temp = temp->next;
+		temp = temp->next;
 	}
+	g_last_exit_code = 0;
 }
 
 void	ft_echo(t_info *arg)
@@ -94,11 +95,11 @@ void	ft_echo(t_info *arg)
 	int		option;
 	int		i;
 	t_info	*temp;
-	t_info	*test;
+	// t_info	*test;
 
 	option = find_option(arg);
 	temp = arg->next;
-	test = arg->next;
+	// test = arg->next;
 	// while (test)
 	// {
 	// 	printf("echo cmd : %s\n", test->cmd);

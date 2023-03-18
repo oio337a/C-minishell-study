@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 22:34:46 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/14 20:12:28 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	is_dollar(char *token)
 	return (i);
 }
 
-static char	*find_value(char *dollar, t_envp *envp, int *idx)
+static char	*find_value(char *dollar, t_envp *envp, int *idx) //find_key랑 합침
 {
 	t_envp	*head;
 	char	*key;
@@ -109,11 +109,11 @@ char	*parse_dollar(char *str, t_envp *head)
 
 /*
 	1. str[i] == $
-		$뒤에를 판별하자!
+		$뒤에를 판별하자! 
 		$(뒤가 스페이스나 '\0'), $$, $!, $?, $num => 하드코딩  ${} => 끝이 특수문자 이기 전까지 '_' 제외 substring(str + i, 0, len)
 	2. str[i] == 달러가 아닌경우
 		$ 나 '\0'을 만날때 까지  인덱스 늘려서 substring 실행
-	이렇게 크게 생각하면 될듯
+	이렇게 크게 생각하면 될듯 
 */
 
 // int	main(int ac, char **av, char **envp) //test 메인문

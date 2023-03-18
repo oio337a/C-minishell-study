@@ -11,7 +11,7 @@ void	type_in(t_info **token)
 		(*token) = (*token)->next;
 		open_fd = open((*token)->cmd, O_RDONLY);
 		if (open_fd == -1)
-			common_errno((*token)->cmd, 2, NULL);
+			common_errno((*token)->cmd, 2, NULL); // printf fd값 수정
 		(dup2(open_fd, STDIN_FILENO), close(open_fd));
 		(*token) = (*token)->next;
 		printf("when < cmd : %s\n", (*token)->cmd);
