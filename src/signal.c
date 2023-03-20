@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 20:54:30 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 22:30:09 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	wait_handler(int signum)
 {
 	if (signum == SIGINT)
 		write(1, "\n", 1);
-	else if (signum == SIGQUIT)
-		write(1, "Quit : 3\n", 9);
 }
 
 void	set_signal(t_signal mode)

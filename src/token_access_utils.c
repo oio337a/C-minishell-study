@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 20:39:57 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 20:40:00 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 22:17:48 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	list_count_heredoc(t_info *token)
 	while (head)
 	{
 		if (head->type == HEREDOC_IN)
-			return (cnt);
+			return (++cnt);
 		cnt++;
 		head = head->next;
 	}

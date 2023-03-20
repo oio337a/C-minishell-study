@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 20:51:50 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 22:28:56 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,9 +110,20 @@ void	pipex(t_info *token, t_envp *env)
 			(close(fd[0]), close(fd[1]));
 			waitpid(pid, &status, 0);
 			if (status == 2)
-				g_last_exit_code = 130;
+			{
+				if (!heredoc_pos)
+					g_last_exit_code = 130;
+				else
+					g_last_exit_code = 1;
+				break ;
+			}
 			else if (status == 3)
+			{
+				if (!heredoc_pos)
+					write(1, "Quit : 3\n", 9);
 				g_last_exit_code = 131;
+				break ;
+			}
 			else
 				g_last_exit_code = status >> 8;
 		}

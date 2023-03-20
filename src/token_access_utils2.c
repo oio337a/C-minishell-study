@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 20:40:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 20:57:27 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 22:33:57 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	type_heredoc_in(t_info **token, int fd, t_envp *envp)
 	here_doc((*token)->cmd, envp, fd);
 	(*token) = (*token)->next;	
 }
-
 
 void	type_heredoc_out(t_info **token, int fd)
 {

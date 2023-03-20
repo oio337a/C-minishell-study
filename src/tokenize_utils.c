@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:59:28 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 20:42:44 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 21:00:29 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	ft_remainder(t_info *info, char **line)
 
 	i = 0;
 	while ((*line)[i] && is_whitespace((*line)[i]) && (*line)[i] != '>'
-		&& (*line)[i] != '<')
+		&& (*line)[i] != '<' && (*line)[i] != '|')
 		i = reminder_in_quote((*line)[i], i, *line) + 1;
 	tmp = ft_substr(*line, 0, i);
 	*line += ft_strlen(tmp) - 1;

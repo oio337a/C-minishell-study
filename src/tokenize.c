@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/20 20:59:28 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 20:59:48 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ static void	redir_check(t_info *info, char **line)
 		else
 			*line += 2;
 	}
-	else 
 	else
 		only_redir(info, line);
 }

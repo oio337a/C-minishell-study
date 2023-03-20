@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 20:50:21 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 21:57:48 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ typedef struct s_envp
 	char			*value;
 	struct s_envp	*next;
 }	t_envp;
+
+void	exit_handler(int signum);
 
 /*main.c*/
 void		execute(char *str, t_info *info, t_envp *envp_head);
