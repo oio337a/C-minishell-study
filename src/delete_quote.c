@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/20 15:31:21 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 18:13:21 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,19 @@ static int	quotes_case(t_info *list, char *cmd, int i, char quote)
 	int		next_idx;
 
 	next_idx = find_next_quote(cmd, quote, i);
+	printf("pp %d", i);
+	printf("after next : %d, %c\n", next_idx, cmd[next_idx]);
+	// exit(1);
 	if (next_idx == i + 1)
 		i++;
 	else
 	{
 		clear_token = ft_substr(cmd, i + 1, next_idx - i - 1);
+		printf("clear token : %s\n", clear_token);
+		// exit(1);
 		insert_list(list, clear_token, WORD);
 		free(clear_token);
-		i += next_idx;
+		i = next_idx;
 	}
 	return (i);
 }
@@ -37,7 +42,8 @@ static int	not_quotes(t_info *list, char *cmd, int i)
 	clear_token = ft_substr(cmd, i, here_quote(cmd + i));
 	insert_list(list, clear_token, WORD);
 	free(clear_token);
-	i += here_quote(cmd + i);
+	printf("not quote idx %d, here_q :%d \n", i, here_quote(cmd + i));
+	i += here_quote(cmd + i) - 1;
 	return (i);
 }
 
@@ -65,9 +71,9 @@ static void	delete_quote(t_info *token)
 	while (token->cmd[i])
 	{
 		if (token->cmd[i] == '\'')
-			i = quotes_case(cmd, token->cmd, i, '\'') - 1;
+			i = quotes_case(cmd, token->cmd, i, '\'');
 		else if (token->cmd[i] == '\"')
-			i = quotes_case(cmd, token->cmd, i, '\"') - 1;
+			i = quotes_case(cmd, token->cmd, i, '\"');
 		else
 			i = not_quotes(cmd, token->cmd, i);
 		i++;

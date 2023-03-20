@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 15:56:11 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 18:06:20 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,12 @@ void	wait_handler(int signum)
 	if (signum == SIGINT)
 	{
 		write(1, "\n", 1);
-		g_last_exit_code = 130;
-		// exit(g_last_exit_code);
+		g_last_exit_code = 33280;
 	}
 	else if (signum == SIGQUIT)
 	{
-		write(1, "Quit : 3\n", 8);
+		write(1, "Quit : 3\n", 9);
 		g_last_exit_code = 131;
-		// exit(g_last_exit_code);
 	}
 }
 
@@ -71,24 +69,24 @@ void	child_handler(int signum)
 
 void	set_signal(t_signal mode)
 {
-	// if (mode == CHILD) // 자식프로세스
-	// { // SIG_DFL는 원래 설정된 시그널 동작
-	// 	signal(SIGINT, child_handler); // (^C\n띄우며 표준입력 종료) -> exit code 130
-	// 	signal(SIGQUIT, child_handler); // (^\Quit: 3\n띄우며 표준입력 종료) -> exit code 131
-	// }
-	// else if (mode == WAITING) // 자식 기다리는 부모 프로세스
-	// {
-	// 	signal(SIGINT, wait_handler); // SIG_IGN는 시그널 무시
-	// 	signal(SIGQUIT, wait_handler);
-	// }
-	// else if (mode == HEREDOC)
-	// {
-	// 	signal(SIGINT, SIG_DFL);
-	// 	signal(SIGQUIT, SIG_IGN);
-	// }
-	// else if (mode == GENERAL) // 기본 상태
-	// {
-	// 	signal(SIGINT, handler); // exit code 1
-	// 	signal(SIGQUIT, SIG_IGN);
-	// }
+	if (mode == CHILD) // 자식프로세스
+	{ // SIG_DFL는 원래 설정된 시그널 동작
+		signal(SIGINT, SIG_DFL); // (^C\n띄우며 표준입력 종료) -> exit code 130
+		signal(SIGQUIT, SIG_DFL); // (^\Quit: 3\n띄우며 표준입력 종료) -> exit code 131
+	}
+	else if (mode == WAITING) // 자식 기다리는 부모 프로세스
+	{
+		signal(SIGINT, SIG_IGN); // SIG_IGN는 시그널 무시
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == HEREDOC)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
+	}
+	else if (mode == GENERAL) // 기본 상태
+	{
+		signal(SIGINT, handler); // exit code 1
+		signal(SIGQUIT, SIG_IGN);
+	}
 }

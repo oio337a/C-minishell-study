@@ -6,49 +6,12 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 15:21:35 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 17:27:58 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-/*
-	------------------------------
-	이거 테스트 해봐야함
-	echo
-	echo hello
-	echo -n hello
-	echo hello -n
-	echo -nnn hello
-	echo -n-n hello
-	echo -nnn hello -n
-	echo -nnn -n hello
-	echo -
-	echo - -
-	echo --
-	echo -n -n -nhjk hello
-	echo -n -n -n -n -n hello
-	echo "hello World"
-	echo "hello            World"
-	echo \\\"\'''\"
-	------------------------------
-	option 플래그가 0이면 \n 개행 출력.
 
-	싱글쿼트일 때 환경변수 치환하지않고 그대로 출력.
-
-	/Users/daelee/Desktop/42cursus/minishell $ echo '$PWD'
-	> $PWD
-	/Users/daelee/Desktop/42cursus/minishell $ echo "$PWD"
-	> /Users/daelee/Desktop/42cursus/minishell
-
-	echo $?
-	g_exit_status 값 출력.
-
-	echo -nnnnnn hello
-	-> echo -n hello 와 동일
-
-	echo hello ; ; 혹은 echo hello | |
-	-> syntax error near unexpected token ;'` (258)
-*/
 int	g_last_exit_code;
 
 static int	find_option(t_info *arg)
@@ -111,35 +74,3 @@ void	ft_echo(t_info *arg)
 		printf("\n");
 	}
 }
-
-// int main()
-// {
-// 	t_info	*arg;
-
-// 	arg = malloc(sizeof(t_info));
-// 	arg->next = NULL;
-
-// 	t_info	*node1 = malloc(sizeof(t_info));
-// 	node1->next = arg->next;
-// 	node1->cmd = "echo";
-// 	arg->next = node1;
-
-// 	t_info	*node2 = malloc(sizeof(t_info));
-// 	node2->next = node1->next;
-// 	node2->cmd = "-naa";
-// 	node1->next = node2;
-
-// 	t_info	*node3 = malloc(sizeof(t_info));
-// 	node3->next = node2->next;
-// 	node3->cmd = "hello";
-// 	node2->next = node3;
-
-// 	t_info	*node4 = malloc(sizeof(t_info));
-// 	node4->next = node3->next;
-// 	node4->cmd = "-n";
-// 	node3->next = node4;
-
-// 	t_info *curr = arg->next;
-// 	ft_echo(curr);
-// 	return (0);
-// }

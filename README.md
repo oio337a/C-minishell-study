@@ -62,8 +62,6 @@ ex) delete quote norm 을 맞췄따 -> commit 메세지를 file : delete_quote n
 - heredoc.c
 - token_access.c
 
-### warning 뜨는 함수들
-
 ### heredoc, pipe
 수행 전
 STDOUT을 자식 파이프 출력부로 지정해놓는다
@@ -73,14 +71,12 @@ STDOUT을 자식 파이프 출력부로 지정해놓는다
 부모 프로세스
 STDIN를 부모 파이프 입력부로 지정해둔다
 
-
 < a > out
 자식 프로세스 STIN -> a의 fd로
 자식 프로세스의 STDOUT -> out의 fd를 가리키도록 한다.
 수행한 후에는 STDOUT, IN을 원래 부모의 값 상태로 되돌려야한다.
 ---
 cat -e | ls -al
-
 
 ### test_case.zip
 
@@ -131,13 +127,19 @@ reminder 이후에 quote가 들어오면 quote를 재검사 하게 만들면댈�
 3. leak 잡기 -> while true; do leaks [pid]; sleep 0.5; done
 4. 테스트 종합적인 테스트
 5. 미니쉘에서 미니쉘 켤 때마다 $SHLVL ++ 해야 함
-6. unset PATH 시 빌트인도 안되게 해야한다 vs 빌트인은 놔둬야 한다
-7. errno 검색해서 주석처리 되어있는 것들 fd 추가 해주시고, 
-8. 에러문 전부 write로 출력해야하나요 ? 그렇다면 ft_env, ft_cd 에러문 수정필요
+
 9. cat << a > a.txt | cat << b > b.txt 시 a.txt에는 아무것도 저장되지 않는 이슈
 10. echo에서 따옴표처리된 인자만 릭 발생 -> 쿼트 문제 인가 ?
 
+6. unset PATH 시 빌트인도 안되게 해야한다 vs 빌트인은 놔둬야 한다 -> 후자로 하는거얻대요..
+7. errno 검색해서 주석처리 되어있는 것들 fd 추가 해주시고, -> 완료 ?
+8. 에러문 전부 write로 출력해야하나요 ? 그렇다면 ft_env, ft_cd 에러문 수정필요 -> 완료 ?
 11. 중복 및 안 쓰는 파일 다 지웁시다 ! ! -> 완료
 12. e"ch"o나 e"cho"하고 인자 입력 시 왜 command not found 뜨죠 ? ?ㅠ -> 쿼트 파싱 해결
 13. export aa=123 시 aa, 123 leak -> 해결
 14. exit은 성공시 g_last_exit_code = 0; 하는지 확인해주세요 ! 다른 빌트인은 전부 수정 완료 -> 완료
+
+### moyeora_issue
+- // 프로그램 시작할 때 oldpwd값 받아온다는 이슈
+- cd "" 시 아무 동작 x여야 하는데, cd $[아무말]과 동일하게 취급해서 홈으로 이동하는 이슈
+- exit 뒤에 있는 리다이렉션을 REDIR가 아닌 옵션으로 인식하는 이 슈

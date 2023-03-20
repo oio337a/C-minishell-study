@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_envp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:37 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/18 21:16:15 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:37:59 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,35 +69,21 @@ void	append_envp(t_envp *envp, char *key, char *value)
 	t_envp	*head;
 
 	head = envp;
-	while (head->next) //envp 탐색하면서 마지막 도달하거나, 동일 key 찾으면 나옴
+	while (head->next)
 	{
 		if (ft_strcmp(head->key, key) == 0)
 			break ;
 		head = head->next;
 	}
-	if (head->next == NULL) // 마지막까지 동일 key 못 찾은 경우
+	if (head->next == NULL)
 	{
-		if (ft_strcmp(head->key, key) == 0) // 마지막이 동일 key인 경우
+		if (ft_strcmp(head->key, key) == 0)
 			head->value = ft_strjoin_free(head->value, value);
-		else // 끝까지 없는 경우, 그냥 insert
+		else
 			insert_envp(envp, key, value);
 	}
-	else //동일 key 있는 경우 현재 value 뒤에 append
+	else
 		head->value = ft_strjoin_free(head->value, value);
-}
-
-void	delete_envp_all(t_envp **envp)
-{
-	t_envp	*tmp;
-
-	while (*envp)
-	{
-		tmp = (*envp)->next;
-		free((*envp)->key);
-		free((*envp)->value);
-		free(*envp);
-		*envp = tmp;
-	}
 }
 
 t_envp	*set_envp(char **envp)
@@ -123,46 +109,3 @@ t_envp	*set_envp(char **envp)
 	}
 	return (head);
 }
-
-char	**envp_to_arr(t_envp *head) //execve에 넣을 envp 2차원 배열 생성
-{
-	t_envp	*tmp;
-	char	**ret;
-	int		i;
-
-	tmp = head;
-	ret = (char **)ft_safe_malloc(sizeof(char *) * (size_envp(head) + 1));
-	i = 0;
-	while (tmp)
-	{
-		ret[i] = ft_strdup(tmp->key);
-		if (tmp->value)
-		{
-			ret[i] = ft_strjoin_free(ret[i], "=");
-			ret[i] = ft_strjoin_free(ret[i], tmp->value);
-		}
-		tmp = tmp->next;
-		i++;
-	}
-	ret[i] = NULL;
-	return (ret);
-}
-
-// int	main(int ac, char **av, char **envp) //test 메인문
-// {
-// 	int i = 0;
-// 	t_envp	*head;
-
-// 	head = set_envp(envp);
-// 	printf("////////////////////////\n");
-// 	printf("original output\n");
-// 	while (envp[i])
-// 	{
-// 		printf("%s\n", envp[i]);
-// 		i++;
-// 	}
-// 	printf("////////////////////////\n");
-// 	printf("ft_env output\n");
-// 	ft_env(head);
-// 	return 0;
-// }

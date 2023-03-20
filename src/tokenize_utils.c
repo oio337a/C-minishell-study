@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:59:28 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 15:53:39 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 18:12:27 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,25 @@ void	quote_process(t_info *info, char **line)
 	free(tmp);
 }
 
+static int	reminder_in_quote(char quote, int i, char *line)
+{
+	if (quote == '\"')
+	{
+		if (find_next_quote(line, '\"', i) == -1)
+			i++;
+		else
+			i = find_next_quote(line, '\"', i);
+	}
+	else if (quote == '\'')
+	{
+		if (find_next_quote(line, '\'', i) == -1)
+			i++;
+		else
+			i = find_next_quote(line, '\'', i);
+	}
+	return (i);
+}
+
 void	ft_remainder(t_info *info, char **line)
 {
 	char	*tmp;
@@ -66,16 +85,9 @@ void	ft_remainder(t_info *info, char **line)
 	i = 0;
 	while ((*line)[i] && is_whitespace((*line)[i]) && (*line)[i] != '>'
 		&& (*line)[i] != '<')
-	{
-		if ((*line)[i] == '\"')
-			i += find_next_quote(*line, '\"', i) - 1;
-		if ((*line)[i] == '\'')
-			i += find_next_quote(*line, '\'', i) - 1;
-		i++;
-	}
+		i = reminder_in_quote((*line)[i], i, *line) + 1;
 	tmp = ft_substr(*line, 0, i);
 	*line += ft_strlen(tmp) - 1;
-	printf("re = %s\n", tmp);
 	insert_list(info, tmp, WORD);
 	free(tmp);
 }

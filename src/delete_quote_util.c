@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:02:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 15:06:59 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 18:13:26 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ char	*get_full_token(t_info *cmd)
 	{
 		tmp = full_token;
 		full_token = ft_strjoin(full_token, head->cmd);
-		printf("full_token : %s\n", full_token);
 		free(tmp);
 		head = head->next;
 	}

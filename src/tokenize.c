@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   yongmin_jakup.c                                    :+:      :+:    :+:   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/20 15:55:13 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 18:13:03 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,23 @@ char	*get_after_quote(char *line, char *bulk)
 
 	i = 0;
 	while (line[i] && is_whitespace(line[i]))
+	{
+		if (line[i] == '\"')
+		{	
+			if (find_next_quote(line, '\"', i) == -1)
+				i++;
+			else
+				i = find_next_quote(line, '\"', i);
+		}
+		if (line[i] == '\'')
+		{
+			if (find_next_quote(line, '\'', i) == -1)
+				i++;
+			else
+				i = find_next_quote(line, '\'', i);
+		}
 		i++;
+	}
 	tmp = ft_substr(line, 0, i);
 	real_bulk = ft_strjoin(bulk, tmp);
 	free(tmp);
@@ -93,31 +109,3 @@ void	str_tokenize(t_info *info, char *line)
 		line++;
 	}
 }
-
-// int main()
-// {
-// 	t_info *test;
-// 	t_info *head1;
-// 	t_info *head2;
-
-// 	char *str = "cat \"$USER\" | ls -al | cat '-e' | 'w'c -l > a";
-
-// 	printf("line : %s\n", str);
-// 	test = init_list();
-// 	str_tokenize(test, str);
-// 	head1 = test;
-// 	while(head1 != NULL)
-// 	{
-// 		write(1, "1", 1);
-// 		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
-// 		head1 = head1->next;
-// 	}
-// 	clear_quote_in_token(test);
-// 	head2 = test;
-// 	while (head2 != NULL)
-// 	{
-// 		printf("a-fter cmd : %s, type : %d\n", head2->cmd, head2->type);
-// 		head2 = head2->next;
-// 	}
-// 	// system("leaks a.out");
-// }

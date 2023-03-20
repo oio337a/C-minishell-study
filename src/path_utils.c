@@ -6,13 +6,13 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:06 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 14:53:45 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 17:38:19 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**set_path(t_envp *envp) // string 들어가서 ':' 기준으로 split 합니다.
+char	**set_path(t_envp *envp)
 {
 	int		i;
 	char	*path;
@@ -26,13 +26,7 @@ char	**set_path(t_envp *envp) // string 들어가서 ':' 기준으로 split 합�
 	return (ft_split(path, ':'));
 }
 
-// static void	nan_mounga_dollar_dollar_yeah()
-// {
-// 		이 함수명 너무 아깝다... ㅠㅠ
-// }
-
 char	*get_cmd(char *cmd, t_envp *envp)
-// ls, echo 형식으로 들어온 cmd가 실행 가능하다면 execve의 path_cmd 형식 (/bin/ls)로 변환
 {
 	int		i;
 	char	*cmd_path;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_test.c                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 15:12:15 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 17:57:39 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	show_naki(void)
 	close(fd);
 }
 
-void	execute(char *str, t_info *info, t_envp *envp_head, char **envp)
+void	execute(char *str, t_info *info, t_envp *envp_head)
 {
 	str_tokenize(info, str);
 	if (validate_quote_all(info))
@@ -68,7 +68,7 @@ int	main(int ac, char **av, char **envp)
 		if (*str == '\0' || !modu_spacebarya(str))
 			continue ;
 		add_history(str);
-		execute(str, info, envp_head, envp);
+		execute(str, info, envp_head);
 		unlink(".here_doc");
 	}
 	delete_envp_all(&envp_head);

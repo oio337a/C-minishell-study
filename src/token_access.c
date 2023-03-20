@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 15:15:31 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 18:02:39 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ static void	execve_token(t_info *token, t_envp *env, pid_t pid, int fd)
 		ft_free(cmd);
 	}
 }
-// 히어독 찾기
+
 static	int	list_count_heredoc(t_info *token)
 {
 	t_info	*head;
@@ -166,7 +166,7 @@ static void	move_list(t_info **token)
 		(*token) = (*token)->next;
 }
 
-void	pipex(t_info *token, t_envp *env) //heredoc 자식으로 넣을게여~~~~
+void	pipex(t_info *token, t_envp *env)
 {
 	pid_t	pid;
 	int		i;

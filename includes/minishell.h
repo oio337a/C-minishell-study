@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
+/*   Updated: 2023/03/20 17:57:46 by yongmipa         ###   ########seoul.kr  */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -33,11 +45,11 @@ typedef enum e_signal
 
 typedef enum e_type
 {
-	HEREDOC_IN, // <<
-	HEREDOC_OUT, // >> append
-	REDIR_IN, // <
-	REDIR_OUT, // >
-	PIPE, // |
+	HEREDOC_IN,
+	HEREDOC_OUT,
+	REDIR_IN,
+	REDIR_OUT,
+	PIPE,
 	WORD
 }	t_type;
 
@@ -55,34 +67,53 @@ typedef struct s_envp
 	struct s_envp	*next;
 }	t_envp;
 
-//제발 만들고 헤더에 추가좀 할사람
-t_info		*init_list(void);
-char		**set_path(t_envp *envp);
-char		*get_cmd(char *cmd, t_envp *envp);
-// void	here_doc(t_arg *arg); // 이전 과제 가져온거라 인자 바꿔야대여
-void		insert_list(t_info *info, char *cmd, int tpye);
-void		list_delete(t_info **info);
-int			validate_quote_all(t_info *token);
+/*main.c*/
+void		execute(char *str, t_info *info, t_envp *envp_head);
+
+/*tokenize.c*/
+char		*quote_bulk(char *line, char c);
+char		*get_after_quote(char *line, char *bulk);
 void		str_tokenize(t_info *info, char *line);
+
+/*find_dollar.c*/
+int			validate_quote_all(t_info *token);
+void		find_dollar(t_info *token, t_envp *_env);
+
+/*dollar.c*/
 int			is_dollar(char *token);
 char		*parse_dollar(char *str, t_envp *head);
+
+/*delete_quote.c*/
 void		clear_quote_in_token(t_info *token);
-void		quote_process(t_info *info, char **line);
-void		ft_remainder(t_info *info, char **line);
-char		*quote_bulk(char *line, char c);
+
+/*delete_quote_util.c*/
+int			find_next_quote(char *line, char quote, int quote_idx);
+int			*count_q(char *munja);
+int			here_quote(char *line);
+char		*get_full_token(t_info *cmd);
+int			is_quote(char *s);
+
+/*tokenize_utils.c*/
 int			is_whitespace(char line);
 int			modu_spacebarya(char *line);
-char		*get_after_quote(char *line, char *bulk);
+void		quote_process(t_info *info, char **line);
+void		ft_remainder(t_info *info, char **line);
 
+/*token_access.c*/
+t_info		*get_token(t_info **token, t_envp *envp, int fd);
+void		pipex(t_info *token, t_envp *env);
 
-int	is_builtin(t_info *cmd);
+/*heredoc.c*/
+void		here_doc(char *limiter, t_envp *envp, int origin_fd);
 
+/*path_utils.c*/
+char		**set_path(t_envp *envp);
+char		*get_cmd(char *cmd, t_envp *envp);
 
-/*signal*/
-void		handler(int signum);
-void		set_signal(t_signal mode);
-void	wait_handler(int signum);
-void	child_handler(int signum);
+/*syntax.c*/
+void		syntax_errno(char *cmd, int fd);
+int			check_syntax(t_info *token);
+int			get_pipe_count(t_info *token);
 
 /*shell_utils*/
 void		print_error(char *errmsg, int errnum);
@@ -90,67 +121,47 @@ int			ft_arrlen(char **arr);
 int			ft_strchr_int(const char *s, char c);
 char		*ft_strjoin_free(char *s1, char const *s2);
 
-/*envp_utils*/
+/*list_utils.c*/
+t_info		*init_list(void);
+void		insert_list(t_info *info, char *cmd, int tpye);
+void		list_delete(t_info **info);
+int			list_size(t_info *info);
+
+/*init_envp.c*/
 t_envp		*init_envp(void);
 int			check_dupkey(t_envp *envp, char *key);
 void		insert_envp(t_envp *envp, char *key, char *value);
 void		append_envp(t_envp *envp, char *key, char *value);
-void		delete_envp_all(t_envp **envp);
 t_envp		*set_envp(char **envp);
-char		**envp_to_arr(t_envp *head);
 
-/*export*/
+/*envp_utils.c*/
 int			size_envp(t_envp *lst);
+void		delete_envp_all(t_envp **envp);
+char		**envp_to_arr(t_envp *head);
 char		**dup_envp(t_envp *head);
-// void		sort_arr(char **arr);
-int			check_argv(char *argv);
-void		set_key_value(t_envp *head, char *argv, int i, int plus);
-void		add_envp(char *argv, t_envp *head);
-
-/*unset*/
-int			validate_key(char *str);
-int			check_edges_unset(t_info *arg, t_envp **envp);
-void		free_envp(t_envp *envp);
 
 /*builtin*/
+int			is_builtin(t_info *cmd);
 int			builtin(t_info *cmd, t_envp *head, pid_t pid);
 void		ft_pwd(void);
 void		ft_env(t_info *cmd, t_envp *head);
 void		ft_export(t_info *arg, t_envp *head);
 void		ft_unset(t_info *arg, t_envp **envp);
+int			validate_key(char *str);
 void		ft_cd(t_info *arg, t_envp *envp);
 void		ft_echo(t_info *arg);
 void		ft_exit(t_info *arg);
 
-/*pipex*/
-void		pipex(t_info *token, t_envp *env);
-int			get_pipe_count(t_info *token);
-int			list_size(t_info *info);
-t_info	*get_token(t_info **token, t_envp *envp, int fd);
-void	here_doc(char *limiter, t_envp *envp, int origin_fd);
-int			check_syntax(t_info *token);
-/*dollar*/
-void		find_dollar(t_info *token, t_envp *_env);
-char		*parse_dollar(char *str, t_envp *head);
+/*signal*/
+void		handler(int signum);
+void		set_signal(t_signal mode);
+void		wait_handler(int signum);
+void		child_handler(int signum);
 
-/*quotes*/
-int			is_quote(char *s);
-int			*count_q(char *munja);
-int			here_quote(char *line);
-char		*parse_dollar(char *str, t_envp *head);
-char		*get_full_token(t_info *cmd);
-void		clear_quote_in_token(t_info *token);
-// void		delete_quote(t_info *token);
-int			find_next_quote(char *line, char quote, int quote_idx);
-
-/*err*/
-void		exit_errno(int arg_status, char *cmd, int res, int fd);
-void		envp_errno(char *err_value, int fd);
-void		cd_errno(char *err_value, int fd);
+/*err_print.c*/
 void		common_errno(char *cmd, int res, char *next_arg, int fd);
-void		syntax_errno(char *cmd, int fd);
-void		badpath_errno(char *str, int res, int fd);
-char		*common_child_errno(char *cmd, int res);
-
+int			envp_errno(char *err_value, int fd);
+void		cd_errno(char *err_value, int fd);
+void		exit_errno(int arg_status, char *cmd, int fd);
 
 #endif

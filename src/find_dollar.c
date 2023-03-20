@@ -6,17 +6,11 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/14 21:52:34 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 17:36:38 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-/*
-	"$ENVPNAME" -> $ENVPNAME 변수 내부 value를 출력
-	없으면 걍 빈줄
-	'$~` -> 걍 문자열 취급
-*/
 
 static int	is_single_quote(char *token)
 {
@@ -73,8 +67,8 @@ static int	check_envp(char *token)
 	return (0);
 }
 
-static int	check_quote_couple(char *token) // quote_quote -> find_quote_couple
-{ //쿼터 발견 시 다음 쿼터 찾으면서 짝 맞는지 확인
+static int	check_quote_couple(char *token)
+{
 	int	i;
 	int	next;
 
@@ -101,8 +95,8 @@ static int	check_quote_couple(char *token) // quote_quote -> find_quote_couple
 	return (1);
 }
 
-int	validate_quote_all(t_info *token) // validate_quote_line -> validate_quote_all
-{ // 전체 명령어 토큰 돌면서 쿼터 짝 맞는지 확인
+int	validate_quote_all(t_info *token)
+{
 	t_info	*head;
 
 	head = token;
@@ -132,36 +126,3 @@ void	find_dollar(t_info *token, t_envp *_env)
 		head = head->next;
 	}
 }
-
-// int main(int ac, char **av, char **envp)
-// {
-// 	t_info *test;
-// 	t_info *head1;
-// 	t_info *head2;
-// 	t_envp	*env;
-// 	char *str = "cat \"\"\"$USER\"\"\" | ls -al | cat '-e' | 'w'c -l > a";
-
-// 	// printf("line : %s\n", str);
-// 	test = init_list();
-// 	str_tokenize(test, str);
-// 	head1 = test;
-// 	env = set_envp(envp);
-// 	//쿼터 짝 맞는지 확인
-// 	while(head1 != NULL)
-// 	{
-// 		printf("cmd : %s, type : %d\n", head1->cmd, head1->type);
-// 		head1 = head1->next;
-// 	}
-// 	if (validate_quote_all(test))
-// 	{
-// 		find_dollar(test, env);
-// 		clear_quote_in_token(test);
-// 	}
-// 	head2 = test;
-// 	while (head2 != NULL)
-// 	{
-// 		printf("a-fter cmd : %s, type : %d\n", head2->cmd, head2->type);
-// 		head2 = head2->next;
-// 	}
-	// system("leaks a.out");
-// }

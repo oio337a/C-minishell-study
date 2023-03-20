@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:05:00 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/18 21:31:36 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/20 17:21:28 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,33 @@
 	before가 있으면 좋을거 같은 생각
 */
 
+void	syntax_errno(char *cmd, int fd)
+{
+	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	ft_putstr_fd("syntax error near unexpected token '", fd);
+	ft_putstr_fd(cmd, fd);
+	ft_putstr_fd("'\n", fd);
+	g_last_exit_code = 258;
+}
+
+static int	error_case(t_info *head)
+{
+	if ((head->next) == NULL)
+	{
+		if (head->type == HEREDOC_IN)
+			syntax_errno("<<", STDOUT_FILENO);
+		else if (head->type == REDIR_IN)
+			syntax_errno("<", STDOUT_FILENO);
+		return (0);
+	}
+	else if ((head->next)->type != WORD)
+	{
+		syntax_errno(head->next->cmd, STDOUT_FILENO);
+		return (0);
+	}
+	return (1);
+}
+
 int	check_syntax(t_info *token)
 {
 	t_info	*head;
@@ -45,32 +72,9 @@ int	check_syntax(t_info *token)
 			syntax_errno("|", STDOUT_FILENO);
 			return (0);
 		}
-		else if (head->type == HEREDOC_IN)
-		{
-			if ((head->next) == NULL)
-			{
-				syntax_errno("<<", STDOUT_FILENO);
+		else if (head->type == HEREDOC_IN || head->type == REDIR_IN) // 이거 리팩토링 했는데 heredoc 이랑 redir 테스트좀 부탁해여~! (소현, 수환님)
+			if (!error_case(head))
 				return (0);
-			}
-			else if ((head->next)->type != WORD)
-			{
-				syntax_errno(head->next->cmd, STDOUT_FILENO);
-				return (0);
-			}
-		}
-		else if (head->type == REDIR_IN)
-		{
-			if ((head->next) == NULL)
-			{
-				syntax_errno("<", STDOUT_FILENO);
-				return (0);
-			}
-			else if ((head->next)->type != WORD)
-			{
-				syntax_errno(head->next->cmd, STDOUT_FILENO);
-				return (0);
-			}
-		}
 		head = head->next;
 	}
 	return (1);
