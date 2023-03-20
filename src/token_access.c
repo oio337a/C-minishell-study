@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_access.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 19:21:59 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/20 20:51:50 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,18 @@ int	g_last_exit_code;
 t_info	*get_token(t_info **token, t_envp *envp, int fd)
 {
 	t_info	*new;
-	int		open_fd;
 
 	new = init_list();
 	while (*token)
 	{
 		if ((*token)->type == REDIR_IN)
 		{
-			(*token) = (*token)->next;
-			open_fd = open((*token)->cmd, O_RDONLY);
-			if (open_fd == -1)
-			{
-				common_errno((*token)->cmd, 2, NULL, fd);
-				exit(127);
-			}
-			(dup2(open_fd, STDIN_FILENO), close(open_fd));
-			(*token) = (*token)->next;
+			type_redir_in(token, fd);
 			continue ;
 		}
 		if ((*token)->type == REDIR_OUT)
 		{
-			(*token) = (*token)->next;
-			open_fd = open((*token)->cmd, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			if (open_fd == -1)
-			{
-				common_errno((*token)->cmd, 2, NULL, fd);
-				exit(127);
-			}
-			(dup2(open_fd, STDOUT_FILENO), close(open_fd));
+			type_redir_out(token, fd);
 			if (!(*token)->next)
 				break ;
 			(*token) = (*token)->next;
@@ -52,22 +36,12 @@ t_info	*get_token(t_info **token, t_envp *envp, int fd)
 		}
 		if ((*token)->type == HEREDOC_IN)
 		{
-			set_signal(HEREDOC);
-			(*token) = (*token)->next;
-			here_doc((*token)->cmd, envp, fd);
-			(*token) = (*token)->next;
+			type_heredoc_in(token, fd, envp);
 			continue ;
 		}
 		if ((*token)->type == HEREDOC_OUT)
 		{
-			(*token) = (*token)->next;
-			open_fd = open((*token)->cmd, O_WRONLY | O_APPEND | O_CREAT, 0644);
-			if (open_fd == -1)
-			{
-				common_errno((*token)->cmd, 2, NULL, fd);
-				exit(127);
-			}
-			(dup2(open_fd, STDOUT_FILENO), close(open_fd));
+			type_heredoc_out(token, fd);
 			if (!(*token)->next)
 				break ;
 			(*token) = (*token)->next;
@@ -84,93 +58,11 @@ t_info	*get_token(t_info **token, t_envp *envp, int fd)
 	return (new);
 }
 
-static void	execve_token(t_info *token, t_envp *env, pid_t pid, int fd)
-{
-	char	**cmd;
-	int		len;
-	int		i;
-	t_info	*head;
-	char	**envp_arr;
-
-	len = list_size(token);
-	head = token;
-	i = 0;
-	envp_arr = envp_to_arr(env);
-	if (!builtin(token, env, pid))
-	{
-		cmd = (char **)malloc(sizeof(char *) * (len + 1));
-		while (head)
-		{
-			cmd[i] = ft_strdup(head->cmd);
-			i++;
-			head = head->next;
-		}
-		cmd[i] = 0;
-		if (execve(get_cmd(cmd[0], env), cmd, envp_arr) == -1)
-			exit(g_last_exit_code);
-		ft_free(cmd);
-	}
-}
-
-static	int	list_count_heredoc(t_info *token)
-{
-	t_info	*head;
-	int		cnt;
-
-	head = token;
-	cnt = 0;
-	while (head)
-	{
-		if (head->type == HEREDOC_IN)
-			return (cnt);
-		cnt++;
-		head = head->next;
-	}
-	return (0);
-}
-
-static int	get_heredoc_pipe(t_info *token, int cnt)
-{
-	t_info	*head;
-	int		pipe;
-
-	pipe = 0;
-	head = token;
-	while (cnt--)
-	{
-		if (head->type == PIPE)
-			pipe++;
-		head = head->next;
-	}
-	return (pipe);
-}
-
-static void	move_heredoc(t_info **token, int pipe)
-{
-	while (pipe)
-	{
-		if ((*token)->type == PIPE)
-			pipe--;
-		(*token) = (*token)->next;
-	}
-}
-static void	move_list(t_info **token)
-{
-	while (*token)
-	{
-		if ((*token)->type == PIPE)
-			break ;
-		(*token) = (*token)->next;
-	}
-	if ((*token) != NULL)
-		(*token) = (*token)->next;
-}
-
 void	pipex(t_info *token, t_envp *env)
 {
 	pid_t	pid;
 	int		i;
-	int		fd[5];
+	int		fd[4];
 	t_info	*splited_token;
 	t_info	*head;
 	int		total_pipe;
@@ -206,10 +98,8 @@ void	pipex(t_info *token, t_envp *env)
 			if (i == total_pipe - 1)
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1]));
 			else
-			{
 				if (!heredoc_pos)
 					(dup2(fd[1], STDOUT_FILENO), close(fd[1]));
-			}
 			execve_token(splited_token, env, pid, fd[2]);
 			list_delete(&splited_token);
 		}
@@ -219,7 +109,12 @@ void	pipex(t_info *token, t_envp *env)
 			dup2(fd[0], STDIN_FILENO);
 			(close(fd[0]), close(fd[1]));
 			waitpid(pid, &status, 0);
-			g_last_exit_code = status >> 8;
+			if (status == 2)
+				g_last_exit_code = 130;
+			else if (status == 3)
+				g_last_exit_code = 131;
+			else
+				g_last_exit_code = status >> 8;
 		}
 		i++;
 	}

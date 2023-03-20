@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:54 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:29:00 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 18:29:35 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ void	ft_env(t_info *cmd, t_envp *head)
 	tmp = head;
 	if (cmd->next != NULL)
 	{
-		printf("env: %s: No such file or directory\n", cmd->next->cmd);
+		ft_putstr_fd("env: ", STDOUT_FILENO);
+		ft_putstr_fd(cmd->next->cmd, STDOUT_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDOUT_FILENO);
 		g_exit_status = 127;
 		return ;
 	}

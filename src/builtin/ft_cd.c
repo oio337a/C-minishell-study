@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:28:30 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 18:28:29 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*get_oldpwd(t_envp *envp)
 		}
 		envp_tmp = envp_tmp->next;
 	}
-	printf("Nakishell$: cd: OLDPWD not set\n");
+	ft_putstr_fd("Nakishell$: cd: OLDPWD not set\n", STDOUT_FILENO);
 	g_last_exit_code = 1;
 	return (NULL);
 }

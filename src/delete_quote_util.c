@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:02:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 18:13:26 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 20:20:15 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	here_quote(char *line)
 			break ;
 		len++;
 	}
-	return (len); // -1 이면 오류 처리 해보자
+	return (len);
 }
 
 char	*get_full_token(t_info *cmd)

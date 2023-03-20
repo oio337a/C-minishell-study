@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:57:39 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 20:42:44 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	main(int ac, char **av, char **envp)
 		str = readline(PROMPT_COLOR "Nakishell$: " COMMAND_COLOR);
 		if (!str)
 			exit(0);
-		if (*str == '\0' || !modu_spacebarya(str))
+		if (*str == '\0' || !modu_spacebar_ya(str))
 			continue ;
 		add_history(str);
 		execute(str, info, envp_head);

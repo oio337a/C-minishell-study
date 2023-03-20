@@ -6,13 +6,25 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:36:51 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 20:37:27 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	g_last_exit_code;
+
+static void	after_here_doc(int fd, int origin_fd)
+{
+	if (fd == -1)
+	{
+		unlink(".here_doc");
+		common_errno("fd", 2, NULL, origin_fd);
+	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	unlink(".here_doc");
+}
 
 void	here_doc(char *limiter, t_envp *envp, int origin_fd)
 {
@@ -39,12 +51,5 @@ void	here_doc(char *limiter, t_envp *envp, int origin_fd)
 		free(ret);
 	}
 	fd = open(".here_doc", O_RDONLY);
-	if (fd == -1)
-	{
-		unlink(".here_doc");
-		common_errno("fd", 2, NULL, origin_fd);
-	}
-	dup2(fd, STDIN_FILENO); // 자식 프로세스의 STDIN -> ./heredoc
-	close(fd);
-	unlink(".here_doc");
+	after_here_doc(fd, origin_fd);
 }

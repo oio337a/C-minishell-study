@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/20 18:13:03 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 20:59:28 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,7 @@ char	*get_after_quote(char *line, char *bulk)
 	i = 0;
 	while (line[i] && is_whitespace(line[i]))
 	{
-		if (line[i] == '\"')
-		{	
-			if (find_next_quote(line, '\"', i) == -1)
-				i++;
-			else
-				i = find_next_quote(line, '\"', i);
-		}
-		if (line[i] == '\'')
-		{
-			if (find_next_quote(line, '\'', i) == -1)
-				i++;
-			else
-				i = find_next_quote(line, '\'', i);
-		}
+		i = reminder_in_quote(line[i], i, line);
 		i++;
 	}
 	tmp = ft_substr(line, 0, i);
@@ -59,7 +46,6 @@ char	*get_after_quote(char *line, char *bulk)
 	free(tmp);
 	return (real_bulk);
 }
-// 줄수 때매 뻇어요
 
 static void	only_redir(t_info *info, char **line)
 {
@@ -84,12 +70,13 @@ static void	redir_check(t_info *info, char **line)
 		temp = ft_substr(*line, 0, 2);
 		insert_list(info, temp, type);
 		free(temp);
-		// <<a 를 <<로만 판단해서 넣어놨습니다!
-		if (*(*line + 2) != ' ' || *(*line + 2) != '\0' || *(*line + 2) != '<' || *(*line + 2) != '>')
+		if (*(*line + 2) != ' ' || *(*line + 2) != '\0' \
+		|| *(*line + 2) != '<' || *(*line + 2) != '>')
 			*line += 1;
 		else
 			*line += 2;
 	}
+	else 
 	else
 		only_redir(info, line);
 }

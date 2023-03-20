@@ -113,31 +113,23 @@ execve_token(t_info *token, t_envp *env, pid_t pid)
         ft_free(cmd);
     }
 }
-*/
-export a="  qjq js " 문제 잇어여
-tokenize 시 a="   qjw jjs" 통째로 들어와야함
-reminder 이후에 quote가 들어오면 quote를 재검사 하게 만들면댈듯?
-
-나키 수정 내역 : 히어독에서 환경변수 입력하면 value로 치환돼서 저장
-              빌트인 성공할때마다 exit code 0으로 설정
-    수정할 것 : 시그널 시 엑싯코드 .. 왜안되징
 
 1. $? ㅇㅣ새키 잘 만들어보자
 2. 리팩토링
 3. leak 잡기 -> while true; do leaks [pid]; sleep 0.5; done
 4. 테스트 종합적인 테스트
-5. 미니쉘에서 미니쉘 켤 때마다 $SHLVL ++ 해야 함
 
+5. 미니쉘에서 미니쉘 켤 때마다 $SHLVL ++ 해야 함
 9. cat << a > a.txt | cat << b > b.txt 시 a.txt에는 아무것도 저장되지 않는 이슈
 10. echo에서 따옴표처리된 인자만 릭 발생 -> 쿼트 문제 인가 ?
 
 6. unset PATH 시 빌트인도 안되게 해야한다 vs 빌트인은 놔둬야 한다 -> 후자로 하는거얻대요..
-7. errno 검색해서 주석처리 되어있는 것들 fd 추가 해주시고, -> 완료 ?
-8. 에러문 전부 write로 출력해야하나요 ? 그렇다면 ft_env, ft_cd 에러문 수정필요 -> 완료 ?
+7. errno 검색해서 주석처리 되어있는 것들 fd 추가 -> 완료 ?
+8. ft_env, ft_cd 에러문 fd 추가 -> 완료
 11. 중복 및 안 쓰는 파일 다 지웁시다 ! ! -> 완료
 12. e"ch"o나 e"cho"하고 인자 입력 시 왜 command not found 뜨죠 ? ?ㅠ -> 쿼트 파싱 해결
 13. export aa=123 시 aa, 123 leak -> 해결
-14. exit은 성공시 g_last_exit_code = 0; 하는지 확인해주세요 ! 다른 빌트인은 전부 수정 완료 -> 완료
+14. exit은 성공시 g_last_exit_code = 0; 하는지 확인 -> 완료
 
 ### moyeora_issue
 - // 프로그램 시작할 때 oldpwd값 받아온다는 이슈

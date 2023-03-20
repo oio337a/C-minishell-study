@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/20 17:36:38 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 20:32:18 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	check_envp(char *token)
 	return (0);
 }
 
-static int	check_quote_couple(char *token)
+int	check_quote_couple(char *token)
 {
 	int	i;
 	int	next;
@@ -91,20 +91,6 @@ static int	check_quote_couple(char *token)
 			i = next;
 		}
 		i++;
-	}
-	return (1);
-}
-
-int	validate_quote_all(t_info *token)
-{
-	t_info	*head;
-
-	head = token;
-	while (head)
-	{
-		if (!check_quote_couple(head->cmd))
-			return (0);
-		head = head->next;
 	}
 	return (1);
 }

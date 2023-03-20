@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:59:28 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 18:12:27 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 20:42:44 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_whitespace(char line)
 	return (0);
 }
 
-int	modu_spacebarya(char *line)
+int	modu_spacebar_ya(char *line)
 {
 	while (*line)
 	{
@@ -58,7 +58,7 @@ void	quote_process(t_info *info, char **line)
 	free(tmp);
 }
 
-static int	reminder_in_quote(char quote, int i, char *line)
+int	reminder_in_quote(char quote, int i, char *line)
 {
 	if (quote == '\"')
 	{
