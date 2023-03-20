@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   yongmin_jakup.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/18 15:54:10 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/20 15:55:13 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	is_whitespace2(char line)
-{
-	if (line != 32 && !(line >= 9 && line <= 13))
-		return (1);
-	return (0);
-}
 
 char	*quote_bulk(char *line, char c)
 {
@@ -43,7 +36,7 @@ char	*get_after_quote(char *line, char *bulk)
 	int		i;
 
 	i = 0;
-	while (line[i] && is_whitespace2(line[i]))
+	while (line[i] && is_whitespace(line[i]))
 		i++;
 	tmp = ft_substr(line, 0, i);
 	real_bulk = ft_strjoin(bulk, tmp);

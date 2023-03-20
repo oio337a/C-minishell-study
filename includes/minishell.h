@@ -60,7 +60,6 @@ t_info		*init_list(void);
 char		**set_path(t_envp *envp);
 char		*get_cmd(char *cmd, t_envp *envp);
 // void	here_doc(t_arg *arg); // 이전 과제 가져온거라 인자 바꿔야대여
-int			is_whitespace(char *line);
 void		insert_list(t_info *info, char *cmd, int tpye);
 void		list_delete(t_info **info);
 int			validate_quote_all(t_info *token);
@@ -71,7 +70,8 @@ void		clear_quote_in_token(t_info *token);
 void		quote_process(t_info *info, char **line);
 void		ft_remainder(t_info *info, char **line);
 char		*quote_bulk(char *line, char c);
-int			is_whitespace2(char line);
+int			is_whitespace(char line);
+int			modu_spacebarya(char *line);
 char		*get_after_quote(char *line, char *bulk);
 
 
@@ -81,8 +81,8 @@ int	is_builtin(t_info *cmd);
 /*signal*/
 void		handler(int signum);
 void		set_signal(t_signal mode);
+void	wait_handler(int signum);
 void	child_handler(int signum);
-void	why(int signum);
 
 /*shell_utils*/
 void		print_error(char *errmsg, int errnum);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:06 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/18 21:54:18 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/20 14:53:45 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,6 @@ char	*get_cmd(char *cmd, t_envp *envp)
 		}
 		free(tmp);
 	}
-	if (!ft_strncmp(cmd, "$?", 2))
-	{
-		printf("Nakishell: %d%s: command not found\n", g_last_exit_code, (cmd + 2));
-		return (NULL);
-	}
-	else
-		common_errno(cmd, 127, NULL, STDOUT_FILENO);
+	common_errno(cmd, 127, NULL, STDOUT_FILENO);
 	return (NULL);
 }

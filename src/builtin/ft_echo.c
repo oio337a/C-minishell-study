@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/19 01:41:02 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/20 15:21:35 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,9 @@ void	ft_echo(t_info *arg)
 	int		option;
 	int		i;
 	t_info	*temp;
-	// t_info	*test;
 
 	option = find_option(arg);
 	temp = arg->next;
-	// test = arg->next;
-	// while (test)
-	// {
-	// 	printf("echo cmd : %s\n", test->cmd);
-	// 	test = test->next;
-	// }
 	i = 1;
 	if (option)
 	{

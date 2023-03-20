@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:59:28 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/18 15:59:31 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/20 15:53:39 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	is_whitespace(char line)
+{
+	if (line != 32 && !(line >= 9 && line <= 13))
+		return (1);
+	return (0);
+}
+
+int	modu_spacebarya(char *line)
+{
+	while (*line)
+	{
+		if (*line != 32 && !(*line >= 9 && *line <= 13))
+			return (1);
+		line++;
+	}
+	return (0);
+}
 
 void	quote_process(t_info *info, char **line)
 {
@@ -46,17 +64,18 @@ void	ft_remainder(t_info *info, char **line)
 	int		i;
 
 	i = 0;
-	while ((*line)[i] && is_whitespace2((*line)[i]) && (*line)[i] != '>'
+	while ((*line)[i] && is_whitespace((*line)[i]) && (*line)[i] != '>'
 		&& (*line)[i] != '<')
 	{
 		if ((*line)[i] == '\"')
-			i += find_next_quote(*line, '\"', i);
-		if ((*line)[i] == '\"')
-			i += find_next_quote(*line, '\"', i);
+			i += find_next_quote(*line, '\"', i) - 1;
+		if ((*line)[i] == '\'')
+			i += find_next_quote(*line, '\'', i) - 1;
 		i++;
 	}
 	tmp = ft_substr(*line, 0, i);
 	*line += ft_strlen(tmp) - 1;
+	printf("re = %s\n", tmp);
 	insert_list(info, tmp, WORD);
 	free(tmp);
 }

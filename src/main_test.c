@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/19 01:46:15 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/20 15:12:15 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,6 @@ void	execute(char *str, t_info *info, t_envp *envp_head, char **envp)
 	{
 		find_dollar(info, envp_head);
 		clear_quote_in_token(info);
-		// t_info *a;
-		// a= info;
-		// while (a)
-		// {
-		// 	printf("parse cmd : %s, type : %d\n", a->cmd, a->type);
-		// 	a = a->next;
-		// }
 		if (check_syntax(info))
 			pipex(info, envp_head);
 	}
@@ -72,10 +65,9 @@ int	main(int ac, char **av, char **envp)
 		str = readline(PROMPT_COLOR "Nakishell$: " COMMAND_COLOR);
 		if (!str)
 			exit(0);
-		if (*str == '\0')
+		if (*str == '\0' || !modu_spacebarya(str))
 			continue ;
 		add_history(str);
-		// g_last_exit_code = 0;
 		execute(str, info, envp_head, envp);
 		unlink(".here_doc");
 	}

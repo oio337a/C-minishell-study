@@ -63,43 +63,6 @@ ex) delete quote norm 을 맞췄따 -> commit 메세지를 file : delete_quote n
 - token_access.c
 
 ### warning 뜨는 함수들
-- src/err_print.c:90:38: warning: unused parameter 'res' [-Wunused-parameter]
-	void    envp_errno(char *err_value, int res)
-                                        ^
-- src/err_print.c:96:48: warning: unused parameter 'res' [-Wunused-parameter]
-	void    exit_errno(int arg_status, char *cmd, int res)
-                                                  ^
-- src/err_print.c:116:26: warning: unused parameter 'str' [-Wunused-parameter]
-	void    badpath_errno(char *str, int res)
-
-- src/syntax.c:37:16: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
-                syntax_errno((head->type));
-                             ^~~~~~~~~~~~
-- src/../includes/minishell.h:136:26: note: passing argument to parameter 'cmd' here
-void            syntax_errno(char *cmd);
-                                   ^
-- src/syntax.c:42:33: warning: '&&' within '||' [-Wlogical-op-parentheses]
-                        || (head->type == HEREDOC_IN && ((head->next)->type != WORD) || head->next == NULL))
-                            ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~
-- src/syntax.c:42:33: note: place parentheses around the '&&' expression to silence this warning
-                        || (head->type == HEREDOC_IN && ((head->next)->type != WORD) || head->next == NULL))
-                                                     ^
-                            (                                                       )
-- src/syntax.c:44:17: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
-                        syntax_errno((head->next)->type);
-                                     ^~~~~~~~~~~~~~~~~~
-- src/../includes/minishell.h:136:26: note: passing argument to parameter 'cmd' here
-void            syntax_errno(char *cmd);
-                                   ^
-- src/syntax.c:47:58: warning: comparison between pointer and integer ('int' and 'void *') [-Wpointer-integer-compare]
-                else if (head->type == REDIR_IN && ((head->next)->type == NULL || (head->next)->type != WORD))
-                                                    ~~~~~~~~~~~~~~~~~~ ^  ~~~~
-- src/syntax.c:49:17: warning: incompatible integer to pointer conversion passing 'int' to parameter of type 'char *' [-Wint-conversion]
-                        syntax_errno((head->next)->type);
-                                     ^~~~~~~~~~~~~~~~~~
-- src/../includes/minishell.h:136:26: note: passing argument to parameter 'cmd' here
-void            syntax_errno(char *cmd);
-
 
 ### heredoc, pipe
 수행 전
@@ -169,11 +132,12 @@ reminder 이후에 quote가 들어오면 quote를 재검사 하게 만들면댈�
 4. 테스트 종합적인 테스트
 5. 미니쉘에서 미니쉘 켤 때마다 $SHLVL ++ 해야 함
 6. unset PATH 시 빌트인도 안되게 해야한다 vs 빌트인은 놔둬야 한다
-7. errno 검색해서 주석처리 되어있는 것들 fd 추가 해주시고, exit은 성공시 g_last_exit_code = 0; 하는지 확인해주세요 ! 다른 빌트인은 전부 수정 완료
+7. errno 검색해서 주석처리 되어있는 것들 fd 추가 해주시고, 
 8. 에러문 전부 write로 출력해야하나요 ? 그렇다면 ft_env, ft_cd 에러문 수정필요
 9. cat << a > a.txt | cat << b > b.txt 시 a.txt에는 아무것도 저장되지 않는 이슈
-10. 중복 및 안 쓰는 파일 다 지웁시다 ! !
+10. echo에서 따옴표처리된 인자만 릭 발생 -> 쿼트 문제 인가 ?
 
-11. echo에서 따옴표처리된 인자만 릭 발생
-12. e"ch"o나 e"cho"하고 인자 입력 시 왜 command not found 뜨죠 ? ?ㅠ
+11. 중복 및 안 쓰는 파일 다 지웁시다 ! ! -> 완료
+12. e"ch"o나 e"cho"하고 인자 입력 시 왜 command not found 뜨죠 ? ?ㅠ -> 쿼트 파싱 해결
 13. export aa=123 시 aa, 123 leak -> 해결
+14. exit은 성공시 g_last_exit_code = 0; 하는지 확인해주세요 ! 다른 빌트인은 전부 수정 완료 -> 완료

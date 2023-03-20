@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   err_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/18 21:57:15 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/20 15:51:33 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	g_last_exit_code;
 
 static void	common_errnos(char *cmd, char *next_arg, int fd, int type)
 {
-	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
 	if (type != 3)
 		ft_putstr_fd("Nakishell: ", fd);
 	ft_putstr_fd(cmd, fd);
@@ -89,25 +88,27 @@ static void	common_errnos(char *cmd, char *next_arg, int fd, int type)
 
 void	common_errno(char *cmd, int res, char *next_arg, int fd)
 {
-	if (res == 127) // 커맨드 한개 넣었는데 개소리
+	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	if (res == 127)
 	{
-		g_last_exit_code = 127;
+		if (!ft_strncmp(cmd, "$?", 2))
+		{
+			printf("Nakishell: %d%s: command not found\n", g_last_exit_code, (cmd + 2));
+			g_last_exit_code = 127;
+			return ;
+		}
 		common_errnos(cmd, next_arg, fd, 1);
-		// exit(g_last_exit_code);
 		return ;
 	}
 	if (next_arg == NULL) // 앞에 커맨드는 맞는데 뒤에 개소리
 	{
 		common_errnos(cmd, next_arg, fd, 2);
 		g_last_exit_code = 1;
-		// exit(g_last_exit_code);
 	}
 	else // 걍 커맨드 여러개 갈겨서 다 개소리
 	{
-		// printf("%s: %s: %s\n", cmd, next_arg, strerror(errno));
 		common_errnos(cmd, next_arg, fd, 3);
 		g_last_exit_code = 1;
-		// exit(g_last_exit_code);
 	}
 }
 
@@ -167,4 +168,4 @@ void	badpath_errno(char *str, int res, int fd)
 	ft_putstr_fd(strerror(res), fd);
 	ft_putstr_fd("\n", fd);
 	// exit(g_last_exit_code);
-}
+} 

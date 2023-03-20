@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote_util.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:02:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/16 17:34:46 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/20 15:06:59 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	find_next_quote(char *line, char quote, int quote_idx)
 			return (next_idx);
 		next_idx++;
 	}
-	return (-1); // 에러 출력으로 바꾸는게 나을듯염 -> main문에서 validate 실패 시 출력 ! ! 
+	return (-1);
 }
 
 int	*count_q(char *munja)
@@ -72,6 +72,7 @@ char	*get_full_token(t_info *cmd)
 	{
 		tmp = full_token;
 		full_token = ft_strjoin(full_token, head->cmd);
+		printf("full_token : %s\n", full_token);
 		free(tmp);
 		head = head->next;
 	}

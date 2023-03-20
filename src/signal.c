@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naki <naki@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/19 01:15:55 by naki             ###   ########.fr       */
+/*   Updated: 2023/03/20 15:56:11 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,41 +39,56 @@ void	handler(int signum)
 	}
 }
 
-void	child_handler(int signum)
+void	wait_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
 		write(1, "\n", 1);
 		g_last_exit_code = 130;
+		// exit(g_last_exit_code);
 	}
-	if (signum == SIGQUIT)
+	else if (signum == SIGQUIT)
 	{
 		write(1, "Quit : 3\n", 8);
 		g_last_exit_code = 131;
-		exit(1);
+		// exit(g_last_exit_code);
+	}
+}
+
+void	child_handler(int signum)
+{
+	if (signum == SIGINT)
+	{
+		g_last_exit_code = 130;
+		exit(g_last_exit_code);
+	}
+	else if (signum == SIGQUIT)
+	{
+		g_last_exit_code = 131;
+		exit(g_last_exit_code);
 	}
 }
 
 void	set_signal(t_signal mode)
 {
-	if (mode == CHILD) // 자식프로세스
-	{ // SIG_DFL는 원래 설정된 시그널 동작
-		signal(SIGINT, SIG_DFL); // (^C\n띄우며 표준입력 종료) -> exit code 130
-		signal(SIGQUIT, SIG_DFL); // (^\Quit: 3\n띄우며 표준입력 종료) -> exit code 131
-	}
-	else if (mode == WAITING) // 자식 기다리는 부모 프로세스
-	{
-		signal(SIGINT, SIG_IGN); // SIG_IGN는 시그널 무시
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (mode == HEREDOC)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else if (mode == GENERAL) // 기본 상태
-	{
-		signal(SIGINT, handler); // exit code 1
-		signal(SIGQUIT, SIG_IGN);
-	}
+	// if (mode == CHILD) // 자식프로세스
+	// { // SIG_DFL는 원래 설정된 시그널 동작
+	// 	signal(SIGINT, child_handler); // (^C\n띄우며 표준입력 종료) -> exit code 130
+	// 	signal(SIGQUIT, child_handler); // (^\Quit: 3\n띄우며 표준입력 종료) -> exit code 131
+	// }
+	// else if (mode == WAITING) // 자식 기다리는 부모 프로세스
+	// {
+	// 	signal(SIGINT, wait_handler); // SIG_IGN는 시그널 무시
+	// 	signal(SIGQUIT, wait_handler);
+	// }
+	// else if (mode == HEREDOC)
+	// {
+	// 	signal(SIGINT, SIG_DFL);
+	// 	signal(SIGQUIT, SIG_IGN);
+	// }
+	// else if (mode == GENERAL) // 기본 상태
+	// {
+	// 	signal(SIGINT, handler); // exit code 1
+	// 	signal(SIGQUIT, SIG_IGN);
+	// }
 }
