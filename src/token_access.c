@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_access.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 18:02:39 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/20 19:21:59 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void	pipex(t_info *token, t_envp *env)
 {
 	pid_t	pid;
 	int		i;
-	int		fd[4];
+	int		fd[5];
 	t_info	*splited_token;
 	t_info	*head;
 	int		total_pipe;
@@ -206,7 +206,10 @@ void	pipex(t_info *token, t_envp *env)
 			if (i == total_pipe - 1)
 				(dup2(STDOUT_FILENO, fd[1]), close(fd[1]));
 			else
-				(dup2(fd[1], STDOUT_FILENO), close(fd[1]));
+			{
+				if (!heredoc_pos)
+					(dup2(fd[1], STDOUT_FILENO), close(fd[1]));
+			}
 			execve_token(splited_token, env, pid, fd[2]);
 			list_delete(&splited_token);
 		}
