@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:01:16 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:28:17 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 19:55:06 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	builtin(t_info *cmd, t_envp *head, pid_t pid)
 	else if (ft_strcmp(cmd->cmd, "env") == 0)
 		ft_env(cmd, head);
 	else if (ft_strcmp(cmd->cmd, "pwd") == 0)
-		ft_pwd();
+		ft_pwd(head);
 	else if (ft_strcmp(cmd->cmd, "export") == 0)
 		ft_export(cmd, head);
 	else if (ft_strcmp(cmd->cmd, "unset") == 0)

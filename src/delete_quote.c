@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:33:42 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/20 20:26:34 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 20:57:03 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static void	include_nothing(char *line, t_info *token)
 static void	delete_quote(t_info *token)
 {
 	int		i;
-	char	*clear_token;
 	t_info	*cmd;
 	char	*tmp;
 

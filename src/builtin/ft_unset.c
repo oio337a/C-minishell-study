@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:32 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:34:16 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 21:32:12 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	free_envp(t_envp *envp)
 	free(envp);
 }
 
-static void	delete_envp(t_info *arg_tmp, t_envp **envp)
+void	delete_envp(t_info *arg_tmp, t_envp **envp)
 {
 	t_envp	*tmp;
 	t_envp	*before;

@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:33:31 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 16:37:32 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ static int	check_sec(t_info *arg)
 	digit_idx = 0;
 	cmd_len = ft_strlen(temp->cmd);
 	check = ft_atoi(&temp->cmd[digit_idx]);
+	if (check <= 0)
+	{
+		digit_idx++;
+		check *= -1;
+	}
 	while (check > 0)
 	{
 		check /= 10;

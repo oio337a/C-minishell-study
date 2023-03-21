@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 18:28:29 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 22:49:37 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,25 @@
 
 static char	*get_home(t_envp *envp)
 {
-	int		i;
 	char	*path;
-	t_envp	*envp_tmp;
 
-	envp_tmp = envp;
-	i = 0;
-	while (envp_tmp)
-	{
-		if (ft_strcmp("HOME", envp_tmp->key) == 0)
-		{
-			path = ft_strdup(envp_tmp->value);
-			return (path);
-		}
-		envp_tmp = envp_tmp->next;
-	}
+	path = find_envp(envp, "HOME");
+	if (path)
+		return (path);
 	return (NULL);
 }
 
 static char	*get_oldpwd(t_envp *envp)
 {
-	int		i;
 	char	*path;
-	t_envp	*envp_tmp;
 
-	envp_tmp = envp;
-	i = 0;
-	while (envp_tmp)
+	path = find_envp(envp, "OLDPWD");
+	if (path)
 	{
-		if (ft_strcmp("OLDPWD", envp_tmp->key) == 0)
-		{
-			path = ft_strdup(envp_tmp->value);
-			return (path);
-		}
-		envp_tmp = envp_tmp->next;
+		printf("%s\n", path);
+		return (path);
 	}
-	ft_putstr_fd("Nakishell$: cd: OLDPWD not set\n", STDOUT_FILENO);
-	g_last_exit_code = 1;
+	cd_errno("OLDPWD", 2);
 	return (NULL);
 }
 
@@ -75,17 +57,20 @@ void	ft_cd(t_info *arg, t_envp *envp)
 	old_pwd = getcwd(NULL, 0);
 	if (tmp->next == NULL || ft_strcmp(tmp->next->cmd, "~") == 0 || \
 	ft_strcmp(tmp->next->cmd, "") == 0)
+	{
 		path = get_home(envp);
+		if (!path)
+			cd_errno("HOME", 2);
+	}
 	else if (ft_strcmp(tmp->next->cmd, "-") == 0)
 		path = get_oldpwd(envp);
 	else
-		path = ft_strdup(tmp->next->cmd);
+		path = tmp->next->cmd;
 	if (!path)
 		return ;
 	if (chdir(path) == 0)
 		set_newpwd(envp, old_pwd);
 	else
-		cd_errno(path, STDOUT_FILENO);
+		cd_errno(path, 1);
 	free(old_pwd);
-	free(path);
 }

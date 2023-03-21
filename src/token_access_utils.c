@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 20:39:57 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 22:17:48 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 20:57:21 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	get_heredoc_pipe(t_info *token, int cnt)
 	return (pipe);
 }
 
-void	execve_token(t_info *token, t_envp *env, pid_t pid, int fd)
+void	execve_token(t_info *token, t_envp *env, pid_t pid)
 {
 	char	**cmd;
 	int		len;

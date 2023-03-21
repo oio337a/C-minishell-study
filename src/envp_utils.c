@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 17:35:18 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:37:43 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 22:30:07 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,18 @@ char	**dup_envp(t_envp *head)
 	}
 	ret[i] = NULL;
 	return (ret);
+}
+
+char	*find_envp(t_envp *envp, char *key)
+{
+	t_envp	*tmp;
+
+	tmp = envp;
+	while (tmp)
+	{
+		if (ft_strcmp(key, tmp->key) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }

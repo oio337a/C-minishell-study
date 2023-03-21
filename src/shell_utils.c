@@ -6,17 +6,11 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:33:38 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 20:33:37 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 21:18:14 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	print_error(char *errmsg, int errnum)
-{
-	printf("%s", errmsg);
-	exit(errnum);
-}
 
 int	ft_arrlen(char **arr)
 {

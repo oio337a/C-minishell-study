@@ -6,7 +6,7 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:37 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:37:59 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 22:50:59 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void	append_envp(t_envp *envp, char *key, char *value)
 t_envp	*set_envp(char **envp)
 {
 	t_envp	*head;
-	char	**arr;
+	char	*key;
+	char	*value;
 	int		i;
 	int		j;
 
@@ -98,13 +99,11 @@ t_envp	*set_envp(char **envp)
 	while (envp[i])
 	{
 		j = ft_strchr_int(envp[i], '=');
-		arr = (char **)ft_safe_malloc(2 * sizeof(char *));
-		arr[0] = ft_substr(envp[i], 0, j);
-		arr[1] = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j + 1);
-		insert_envp(head, arr[0], arr[1]);
-		free(arr[0]);
-		free(arr[1]);
-		free(arr);
+		key = ft_substr(envp[i], 0, j);
+		value = ft_substr(envp[i], j + 1, ft_strlen(envp[i]) - j + 1);
+		insert_envp(head, key, value);
+		free(key);
+		free(value);
 		i++;
 	}
 	return (head);

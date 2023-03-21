@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 15:12:47 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/21 22:51:18 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,15 @@ typedef struct s_envp
 	struct s_envp	*next;
 }	t_envp;
 
-void	exit_handler(int signum);
+typedef struct s_pipe
+{
+	int		fd[4];
+	int		total_pipe;
+	int		heredoc_pos;
+	int		heredoc_cnt;
+	int		status;
+	int		flag;
+}	t_pipe;
 
 /*main.c*/
 void		execute(char *str, t_info *info, t_envp *envp_head);
@@ -83,7 +91,6 @@ void		find_dollar(t_info *token, t_envp *_env);
 int			check_quote_couple(char *token);
 
 /*dollar.c*/
-int			is_dollar(char *token);
 char		*parse_dollar(char *str, t_envp *head);
 
 /*delete_quote.c*/
@@ -105,7 +112,7 @@ void		move_heredoc(t_info **token, int pipe);
 void		move_list(t_info **token);
 int			list_count_heredoc(t_info *token);
 int			get_heredoc_pipe(t_info *token, int cnt);
-void		execve_token(t_info *token, t_envp *env, pid_t pid, int fd);
+void		execve_token(t_info *token, t_envp *env, pid_t pid);
 
 /*token_access.c*/
 t_info		*get_token(t_info **token, t_envp *envp, int fd, int *flag);
@@ -119,7 +126,7 @@ void		type_heredoc_out(t_info **token, int fd);
 void		here_doc(char *limiter, t_envp *envp, int origin_fd);
 
 /*path_utils.c*/
-char		**set_path(t_envp *envp);
+char		**set_path(char *cmd, t_envp *envp);
 char		*get_cmd(char *cmd, t_envp *envp);
 
 /*syntax.c*/
@@ -128,8 +135,10 @@ int			check_syntax(t_info *token);
 int			get_pipe_count(t_info *token);
 int			validate_quote_all(t_info *token);
 
+/*syntax_utils.c*/
+int			vaildate_type(t_info *head);
+
 /*shell_utils*/
-void		print_error(char *errmsg, int errnum);
 int			ft_arrlen(char **arr);
 int			ft_strchr_int(const char *s, char c);
 char		*ft_strjoin_free(char *s1, char const *s2);
@@ -152,15 +161,17 @@ int			size_envp(t_envp *lst);
 void		delete_envp_all(t_envp **envp);
 char		**envp_to_arr(t_envp *head);
 char		**dup_envp(t_envp *head);
+char		*find_envp(t_envp *envp, char *key);
 
 /*builtin*/
 int			is_builtin(t_info *cmd);
 int			builtin(t_info *cmd, t_envp *head, pid_t pid);
-void		ft_pwd(void);
+void		ft_pwd(t_envp *envp);
 void		ft_env(t_info *cmd, t_envp *head);
 void		ft_export(t_info *arg, t_envp *head);
 void		ft_unset(t_info *arg, t_envp **envp);
 int			validate_key(char *str);
+void		delete_envp(t_info *arg_tmp, t_envp **envp);
 void		ft_cd(t_info *arg, t_envp *envp);
 void		ft_echo(t_info *arg);
 void		ft_exit(t_info *arg);
@@ -173,7 +184,10 @@ void		wait_handler(int signum);
 /*err_print.c*/
 void		common_errno(char *cmd, int res, char *next_arg, int fd);
 int			envp_errno(char *err_value, int fd);
-void		cd_errno(char *err_value, int fd);
+void		cd_errno(char *err_value, int res);
 void		exit_errno(int arg_status, char *cmd, int fd);
+
+/*err_print_utils.c*/
+void		bulga(char *next_arg, int fd);
 
 #endif

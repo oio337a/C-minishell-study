@@ -6,43 +6,59 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:06 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:38:19 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 22:03:44 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**set_path(t_envp *envp)
-{
-	int		i;
-	char	*path;
-	t_envp	*envp_tmp;
+int	g_last_exit_code;
 
-	envp_tmp = envp;
-	i = 0;
-	while (ft_strncmp("PATH", envp_tmp->key, 4))
-		envp_tmp = envp_tmp->next;
-	path = envp_tmp->value;
+char	**set_path(char *cmd, t_envp *envp)
+{
+	char	*path;
+
+	path = find_envp(envp, "PATH");
+	if (!path)
+	{
+		common_errno(cmd, 2, NULL, STDOUT_FILENO);
+		return (NULL);
+	}
 	return (ft_split(path, ':'));
 }
 
-char	*get_cmd(char *cmd, t_envp *envp)
+static char	*is_folder(char *cmd, char **path)
+{
+	int	i;
+
+	i = -1;
+	while (path[++i])
+	{
+		if (!ft_strncmp(cmd, path[i], ft_strlen(cmd)))
+			return (NULL);
+	}
+	return (cmd);
+}
+
+static void	setting_cmd(char *cmd, char **envp_in_list)
+{
+	if (!is_folder(cmd, envp_in_list))
+	{
+		common_errno(cmd, 21, NULL, STDOUT_FILENO);
+		g_last_exit_code = 126;
+		return ;
+	}
+}
+
+static char	*return_cmd(char **envp, char *cmd_path)
 {
 	int		i;
-	char	*cmd_path;
 	char	*tmp;
-	char	**envp_in_list;
 
-	if (!ft_strlen(cmd))
-		common_errno(cmd, 127, NULL, STDOUT_FILENO);
-	envp_in_list = set_path(envp);
-	if (access(cmd, X_OK) != -1)
-		return (cmd);
-	cmd_path = ft_strjoin("/", cmd);
 	i = -1;
-	while (envp_in_list[++i])
+	while (envp[++i])
 	{
-		tmp = ft_strjoin(envp_in_list[i], cmd_path);
+		tmp = ft_strjoin(envp[i], cmd_path);
 		if (access(tmp, X_OK) != -1)
 		{
 			free(cmd_path);
@@ -50,6 +66,33 @@ char	*get_cmd(char *cmd, t_envp *envp)
 		}
 		free(tmp);
 	}
-	common_errno(cmd, 127, NULL, STDOUT_FILENO);
 	return (NULL);
+}
+
+char	*get_cmd(char *cmd, t_envp *envp)
+{
+	char	*cmd_path;
+	char	*tmp;
+	char	**envp_in_list;
+
+	if (!ft_strlen(cmd))
+		common_errno(cmd, 127, NULL, STDOUT_FILENO);
+	envp_in_list = set_path(cmd, envp);
+	setting_cmd(cmd, envp_in_list);
+	if (access(cmd, X_OK) != -1)
+		return (cmd);
+	else if (!ft_strncmp("/", cmd, 1))
+	{
+		common_errno(cmd, 2, NULL, STDOUT_FILENO);
+		g_last_exit_code = 127;
+		return (NULL);
+	}
+	cmd_path = ft_strjoin("/", cmd);
+	tmp = return_cmd(envp_in_list, cmd_path);
+	if (!tmp)
+	{
+		common_errno(cmd, 127, NULL, STDOUT_FILENO);
+		return (NULL);
+	}
+	return (tmp);
 }

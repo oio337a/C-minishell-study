@@ -6,25 +6,11 @@
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:35:12 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 21:18:33 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	is_dollar(char *token)
-{
-	int	i;
-
-	i = 0;
-	while (token[i])
-	{
-		if (token[i] == '$' || token[i] == '\0')
-			break ;
-		i++;
-	}
-	return (i);
-}
 
 static char	*find_value(char *dollar, t_envp *envp, int *idx)
 {
@@ -36,7 +22,7 @@ static char	*find_value(char *dollar, t_envp *envp, int *idx)
 	while (dollar[i] && (ft_isalnum(dollar[i]) || dollar[i] == '_'))
 		i++;
 	key = ft_substr(dollar, 1, i - 1);
-	*idx += (ft_strlen(key) + 1);
+	*idx += ft_strlen(key);
 	free(key);
 	head = envp;
 	while (head != NULL)
@@ -71,16 +57,36 @@ static int	check_edges(char next, char **str, int *i)
 	return (1);
 }
 
-static int	set_sub(char *str, char **ret)
+static void	quote_flag(int *flag, char c)
 {
-	int		i;
-	char	*sub;
+	if (c == '\"' && *flag == 1)
+		*flag = 2;
+	else if (c == '\"' && *flag == 2)
+		*flag = 1;
+	if (c == '\'' && *flag == 1)
+		*flag = 0;
+	else if (c == '\'' && *flag == 0)
+		*flag = 1;
+}
 
-	sub = ft_substr((str), 0, is_dollar(str));
-	*ret = ft_strjoin_free(*ret, sub);
-	i = is_dollar(str);
-	free(sub);
-	return (i);
+static char	*ft_strappend_free(char *str, char c)
+{
+	char	*ret;
+	int		len;
+	int		i;
+
+	i = 0;
+	len = ft_strlen(str);
+	ret = ft_safe_malloc(len + 2);
+	while (i < len)
+	{
+		ret[i] = str[i];
+		i++;
+	}
+	ret[len] = c;
+	ret[len + 1] = '\0';
+	free(str);
+	return (ret);
 }
 
 char	*parse_dollar(char *str, t_envp *head)
@@ -88,12 +94,15 @@ char	*parse_dollar(char *str, t_envp *head)
 	char	*ret;
 	char	*value;
 	int		i;
+	int		flag;
 
 	i = 0;
+	flag = 1;
 	ret = ft_strdup("");
 	while (str[i])
 	{
-		if (str[i] == '$')
+		quote_flag(&flag, str[i]);
+		if (str[i] == '$' && flag >= 1)
 		{
 			if (check_edges(str[i + 1], &ret, &i))
 				continue ;
@@ -102,7 +111,8 @@ char	*parse_dollar(char *str, t_envp *head)
 			free(value);
 		}
 		else
-			i += set_sub(str + i, &ret);
+			ret = ft_strappend_free(ret, str[i]);
+		i++;
 	}
 	return (ret);
 }

@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   err_print_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 17:29:56 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 21:16:44 by yongmipa         ###   ########seoul.kr  */
+/*   Created: 2023/03/21 20:51:01 by yongmipa          #+#    #+#             */
+/*   Updated: 2023/03/21 20:54:35 by yongmipa         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
 int	g_last_exit_code;
 
-void	ft_pwd(t_envp *envp)
+void	bulga(char *next_arg, int fd)
 {
-	char	*path;
-	char	*pwd;
-
-	path = find_envp(envp, "PWD");
-	if (path)
-		pwd = ft_strdup(path);
-	else
-		pwd = getcwd(NULL, 0);
-	if (!pwd)
-	{
-		g_last_exit_code = 1;
-		return ;
-	}
-	printf("%s\n", pwd);
-	free(pwd);
-	g_last_exit_code = 0;
-	return ;
+	ft_putstr_fd(next_arg, fd);
+	ft_putstr_fd(strerror(errno), fd);
+	ft_putstr_fd("\n", fd);
+	g_last_exit_code = 1;
 }
