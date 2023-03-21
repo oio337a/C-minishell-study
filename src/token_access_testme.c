@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_access.c                                     :+:      :+:    :+:   */
+/*   token_access_testme.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 15:40:39 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/21 15:44:53 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_info	*get_token(t_info **token, t_envp *envp, int fd, int *flag)
 		if ((*token)->type == REDIR_IN)
 		{
 			type_redir_in(token, fd);
-			continue ;
+			// continue ;
 		}
 		if ((*token)->type == REDIR_OUT)
 		{
@@ -33,12 +33,12 @@ t_info	*get_token(t_info **token, t_envp *envp, int fd, int *flag)
 			if (!(*token)->next)
 				break ;
 			(*token) = (*token)->next;
-			continue ;
+			// continue ;
 		}
 		if ((*token)->type == HEREDOC_IN)
 		{
 			type_heredoc_in(token, fd, envp);
-			continue ;
+			// continue ;
 		}
 		if ((*token)->type == HEREDOC_OUT)
 		{
@@ -47,7 +47,7 @@ t_info	*get_token(t_info **token, t_envp *envp, int fd, int *flag)
 			if (!(*token)->next)
 				break ;
 			(*token) = (*token)->next;
-			continue ;
+			// continue ;
 		}
 		if ((*token)->type == PIPE)
 		{
@@ -55,7 +55,8 @@ t_info	*get_token(t_info **token, t_envp *envp, int fd, int *flag)
 			break ;
 		}
 		insert_list(new, (*token)->cmd, (*token)->type);
-		(*token) = (*token)->next;
+		if ((*token)->type == WORD)
+			(*token) = (*token)->next;
 	}
 	return (new);
 }

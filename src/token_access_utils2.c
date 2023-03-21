@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_access_utils2.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 20:40:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 22:33:57 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 15:36:50 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	type_redir_in(t_info **token, int fd)
 	if (open_fd == -1)
 	{
 		common_errno((*token)->cmd, 2, NULL, fd);
-		exit(127);
+		exit(1);
 	}
 	(dup2(open_fd, STDIN_FILENO), close(open_fd));
 	(*token) = (*token)->next;
@@ -46,7 +46,7 @@ void	type_heredoc_in(t_info **token, int fd, t_envp *envp)
 	set_signal(HEREDOC);
 	(*token) = (*token)->next;
 	here_doc((*token)->cmd, envp, fd);
-	(*token) = (*token)->next;	
+	(*token) = (*token)->next;
 }
 
 void	type_heredoc_out(t_info **token, int fd)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 21:57:48 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 15:12:47 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int			get_heredoc_pipe(t_info *token, int cnt);
 void		execve_token(t_info *token, t_envp *env, pid_t pid, int fd);
 
 /*token_access.c*/
-t_info		*get_token(t_info **token, t_envp *envp, int fd);
+t_info		*get_token(t_info **token, t_envp *envp, int fd, int *flag);
 void		pipex(t_info *token, t_envp *env);
 void		type_redir_in(t_info **token, int fd);
 void		type_redir_out(t_info **token, int fd);

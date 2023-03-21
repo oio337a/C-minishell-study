@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/20 20:59:48 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 15:23:59 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ static void	redir_check(t_info *info, char **line)
 	{
 		if (*(*line + 1) == '>')
 			type = HEREDOC_OUT;
+		if (*(*line + 1) == '|')
+			type = WORD;
 		temp = ft_substr(*line, 0, 2);
 		insert_list(info, temp, type);
 		free(temp);

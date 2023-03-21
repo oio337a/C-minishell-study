@@ -135,3 +135,23 @@ execve_token(t_info *token, t_envp *env, pid_t pid)
 - // 프로그램 시작할 때 oldpwd값 받아온다는 이슈
 - cd "" 시 아무 동작 x여야 하는데, cd $[아무말]과 동일하게 취급해서 홈으로 이동하는 이슈
 - exit 뒤에 있는 리다이렉션을 REDIR가 아닌 옵션으로 인식하는 이 슈
+
+### heredoc
+진짜 bash에서는 
+cat << test | cat << a  실행 시
+파이프 뒤 (마지막)인 a의 것만 실행한다
+
+minishell에서는 모두 출력해내는 오류
+
+heredoc 실행 시, cat(execve)를 탄 결과 출력값이 파이프 뒤의 입력값이 되어야 한다 -> 자연스럽게 파이프 뒤의 heredoc에 입력된 값은 아니니까, 소멸된다. 다음 파이프에 쓰여있는거지 히어독에 입력한 적은 없음
+
+혹은 강제 종료?를 하면 안되겟다.. redir out 처리도 고려해야됨엥 되는거 아니냐
+파이프 하나 단독시행 후 redir out이 있으면 만들고, 없으면 그냥 죽어 어차피 주소값으로 넘어가면서 파이프 하나만큼의 값만 시행한다 아 시발 시그널이랑 last exit code
+
+## test 해봐야 함
+1. export a="ls -al" 하나의 word
+    -> ls -al  이차원 배열, ls / -al / NULL 하나로 들어가야되는데
+ - builtin 한번 타고 나서 execve로 값을 보내도록 다시 get_cmd, env
+
+
+2. echo "''$PWD'''qwere"qwqwer$P$P$PWD"'$PWD'"

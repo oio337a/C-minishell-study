@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:05:00 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/20 20:33:32 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/21 15:25:25 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,17 @@ int	check_syntax(t_info *token)
 	}
 	while (head)
 	{
-		if ((head->type == PIPE && ((head->next) == NULL)))
+		if (!ft_strcmp("||", head->cmd))
+		{
+			syntax_errno("|", STDOUT_FILENO);
+			return (0);
+		}
+		else if ((head->type == PIPE && ((head->next) == NULL)))
+		{
+			syntax_errno("|", STDOUT_FILENO);
+			return (0);
+		}
+		else if (head->type == PIPE && (head->next->type != WORD))
 		{
 			syntax_errno("|", STDOUT_FILENO);
 			return (0);
