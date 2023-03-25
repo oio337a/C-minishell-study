@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/24 19:01:54 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/25 17:21:42 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_pipe
 	char	**filename;
 	int		stdout_back;
 	int		stdin_back;
+	int		*doc_cnt;
 }	t_pipe;
 
 void		execute(char *str, t_info *info, t_envp *envp_head);
@@ -161,4 +162,5 @@ void		exit_errno(int arg_status, char *cmd);
 void		bulga(char *next_arg, int fd);
 void		get_heredoc_file(t_info *token, t_envp *env, t_pipe *var);
 char		**file_name(t_info *token);
+int			*process_heredoc_cnt(t_info *token, int total_pipe);
 #endif

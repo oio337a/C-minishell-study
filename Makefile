@@ -6,7 +6,7 @@
 #    By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/24 17:04:01 by suhwpark         ###   ########.fr        #
+#    Updated: 2023/03/25 17:28:34 by suhwpark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ INCS		= -I includes
 SRC			=	list_utils.c path_utils.c main.c delete_quote.c tokenize.c \
 				tokenize_utils.c envp_utils.c token_access_utils.c err_print_utils.c \
 				init_envp.c shell_utils.c err_print.c dollar.c find_dollar.c token_access_utils2.c token_access_utils3.c\
-				token_access.c syntax.c syntax_utils.c delete_quote_util.c heredoc.c signal.c heredoc_set.c
+				token_access.c syntax.c syntax_utils.c delete_quote_util.c heredoc.c signal.c heredoc_utils.c heredoc_utils2.c
 BUILTIN		=	ft_export.c ft_unset.c ft_builtin.c ft_cd.c ft_echo.c ft_env.c \
 				ft_exit.c ft_pwd.c
 

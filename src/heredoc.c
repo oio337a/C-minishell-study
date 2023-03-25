@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/24 18:07:36 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/25 18:10:25 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	here_doc(char *limiter, t_envp *envp, char *filename)
 		free(line);
 		free(ret);
 	}
-	// fd = open(".here_doc", O_RDONLY);
+	fd = open(".here_doc", O_RDONLY);
+	close(fd);
 	// after_here_doc(fd, origin_fd);
 }

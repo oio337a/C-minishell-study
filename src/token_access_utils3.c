@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 11:23:05 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/24 18:08:20 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/25 17:47:29 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_pipe	*get_pipe_info(t_info *token)
 	var->flag = 0;
 	var->status = 0;
 	var->filename = file_name(token);
+	var->doc_cnt = process_heredoc_cnt(token, var->total_pipe);
 	return (var);
 }
 

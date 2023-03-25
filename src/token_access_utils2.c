@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 20:40:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/24 19:24:52 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/25 18:15:17 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,21 @@ int	type_redir_out(t_info **token)
 int	type_heredoc_in(t_info **token, t_pipe *var, t_envp *envp, int i)
 {
 	int	open_fd;
-    
+	int	c;
+	int	idx;
+	int	idx2;
+
+	idx = 0;
+	idx2 = 0;
+	c = 0;
+	while (idx2 < i)
+	{
+		idx += var->doc_cnt[idx2];
+		idx2++;
+	}
 	(*token) = (*token)->next;
-	/*
-		cat << a << b << c | 
-		cat << a << a << b |
-		cat << a << a << v |
-		파이프 갯수 만큼 동적할당 
-		int a = (int *)malloc(sizeof())
-	*/
-	open_fd = open(var->filename[i], O_RDONLY);
+	// if ()
+	// 	open_fd = open(var->filename[idx], O_RDONLY); // 뒤에 << 없으면 var->doc_cnt[i] dup 해서 연결 ㅅ ㅂ
 	if (open_fd == -1)
 	{
 		common_errno((*token)->cmd, 2);

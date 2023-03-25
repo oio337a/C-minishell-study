@@ -6,11 +6,12 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/24 18:55:22 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/25 18:07:56 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
 static void	ft_free_heredoc(char **p)
 {
 	int	i;
@@ -98,6 +99,10 @@ void	pipex(t_info *token, t_envp *env)
 
 	head = token;
 	var = get_pipe_info(head);
+	// for(int i = 0; i < 2; i++)
+	// 	printf("%d\n", var->doc_cnt[i]);
+	// printf("%d\n", var->total_pipe);
+	// exit(1);
 	if (list_count_heredoc(head))
 		get_heredoc_file(head, env, var);
 	if (var->total_pipe == 1 && is_builtin(head))
@@ -108,6 +113,7 @@ void	pipex(t_info *token, t_envp *env)
 	}
 	let_go(head, var, env);
 	ft_free_heredoc(var->filename);
+	free(var->doc_cnt);
 	free(var);
 	dup2(var->stdin_back, STDIN_FILENO);
 	dup2(var->stdout_back, STDOUT_FILENO);
