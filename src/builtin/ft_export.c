@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:43 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 20:18:46 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:51:30 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	add_envp(char *argv, t_envp *head)
 	if (!head || !argv)
 		return (0);
 	if (!check_argv(argv))
-		return (envp_errno(argv, STDOUT_FILENO));
+		return (envp_errno(argv));
 	i = ft_strchr_int(argv, '=');
 	plus = ft_strchr_int(argv, '+');
 	if (i == -1)

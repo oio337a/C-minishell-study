@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 16:39:55 by yongmipa          #+#    #+#             */
-/*   Updated: 2022/07/16 18:47:24 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/22 18:12:05 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

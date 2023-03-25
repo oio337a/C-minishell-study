@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 17:26:40 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 18:06:55 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_last_exit_code;
+int	g_last_exit_code = 0;
 
 static void	show_naki(void)
 {
@@ -35,17 +35,40 @@ static void	show_naki(void)
 
 void	execute(char *str, t_info *info, t_envp *envp_head)
 {
-	str_tokenize(info, str);
+	char	*parsed;
+
+	parsed = parse_dollar(str, envp_head);
+	str_tokenize(info, parsed);
 	if (validate_quote_all(info))
 	{
-		find_dollar(info, envp_head);
 		clear_quote_in_token(info);
 		if (check_syntax(info))
 			pipex(info, envp_head);
 	}
 	else
-		common_errno(info->cmd, 1, NULL, STDOUT_FILENO);
+		common_errno(info->cmd, 1);
 	list_delete(&info);
+	free(parsed);
+}
+
+void	check_leak(void)
+{
+	system("leaks --list -- minishell");
+}
+
+static int	init_main(int ac, char **av)
+{
+	if (ac != 1 && av)
+		return (0);
+	set_signal(GENERAL);
+	show_naki();
+	return (1);
+}
+
+static void	continue_free(char *str, t_info *info)
+{
+	free(str);
+	free(info);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -54,23 +77,34 @@ int	main(int ac, char **av, char **envp)
 	t_info	*info;
 	t_envp	*envp_head;
 
-	if (ac != 1 && av)
+	if (!init_main(ac, av))
 		return (0);
-	set_signal(GENERAL);
 	envp_head = set_envp(envp);
-	show_naki();
+	dup2(STDIN_FILENO, STDIN);
+	dup2(STDOUT_FILENO, STDOUT);
 	while (1)
 	{
 		info = init_list();
 		str = readline(PROMPT_COLOR "Nakishell$: " COMMAND_COLOR);
 		if (!str)
-			exit(0);
+			ctrl_d();
 		if (*str == '\0' || !modu_spacebar_ya(str))
+		{
+			continue_free(str, info);
 			continue ;
+		}
 		add_history(str);
 		execute(str, info, envp_head);
+		// check_leak();
+		if (str != NULL)
+			free(str);
 		unlink(".here_doc");
 	}
 	delete_envp_all(&envp_head);
 	return (0);
 }
+
+
+// pipe 병렬처리
+// waitpid, fd값 전체적으로 손보기
+// ecdas | echo a

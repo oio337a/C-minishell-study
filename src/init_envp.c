@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_envp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:37 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 22:50:59 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/22 18:12:29 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,7 @@ t_envp	*set_envp(char **envp)
 		free(value);
 		i++;
 	}
+	value = find_envp(head, "HOME");
+	insert_envp(head, "OLDPWD", value);
 	return (head);
 }

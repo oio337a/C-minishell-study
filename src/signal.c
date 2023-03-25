@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:30 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 22:30:09 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:01:49 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_last_exit_code;
+void	ctrl_d(void)
+{
+	write(1, "exit\n", 5);
+	exit(0);
+}
 
 void	handler(int signum)
 {

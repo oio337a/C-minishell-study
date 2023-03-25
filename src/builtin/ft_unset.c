@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:32 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 21:32:12 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:51:38 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	ft_unset(t_info *arg, t_envp **envp)
 		if (!validate_key(arg_tmp->cmd))
 		{
 			i = 1;
-			envp_errno(arg_tmp->cmd, STDOUT_FILENO);
+			envp_errno(arg_tmp->cmd);
 			arg_tmp = arg_tmp->next;
 			continue ;
 		}

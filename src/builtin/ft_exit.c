@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 16:37:32 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:53:15 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	g_last_exit_code;
-
-static int	check_sec(t_info *arg)
+static int	check_sec(t_info *arg) // exit a
 {
 	t_info	*temp;
 	int		digit_idx;
@@ -28,7 +26,8 @@ static int	check_sec(t_info *arg)
 	check = ft_atoi(&temp->cmd[digit_idx]);
 	if (check <= 0)
 	{
-		digit_idx++;
+		if (temp->cmd[0] == '-')
+			digit_idx++;
 		check *= -1;
 	}
 	while (check > 0)
@@ -62,7 +61,7 @@ static void	one_arg(int check_arg, t_info *arg)
 		exit(g_last_exit_code);
 	}
 	else
-		exit_errno(check_arg, (arg->next)->cmd, 255);
+		exit_errno(check_arg, (arg->next)->cmd);
 }
 
 void	ft_exit(t_info *arg)
@@ -73,17 +72,14 @@ void	ft_exit(t_info *arg)
 	arg_size = list_get_size(arg);
 	write(1, "exit\n", 5);
 	if (arg_size == 1)
-	{
-		g_last_exit_code = 0;
 		exit(g_last_exit_code);
-	}
 	check_arg = check_sec(arg);
 	if (arg_size >= 3)
 	{
 		if (check_arg)
-			exit_errno(check_arg, arg->cmd, STDOUT_FILENO);
+			exit_errno(check_arg, arg->cmd);
 		else
-			exit_errno(check_arg, (arg->next)->cmd, STDOUT_FILENO);
+			exit_errno(check_arg, (arg->next)->cmd);
 	}
 	else
 		one_arg(check_arg, arg);

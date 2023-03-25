@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:05:00 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/21 20:13:08 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 18:00:59 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ int	validate_quote_all(t_info *token)
 	return (1);
 }
 
-void	syntax_errno(char *cmd, int fd)
+void	syntax_errno(char *cmd)
 {
 	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
-	ft_putstr_fd("Nakishell: ", fd);
-	ft_putstr_fd("syntax error near unexpected token `", fd);
-	ft_putstr_fd(cmd, fd);
-	ft_putstr_fd("'\n", fd);
+	ft_putstr_fd("Nakishell: ", STDERR);
+	ft_putstr_fd("syntax error near unexpected token `", STDERR);
+	ft_putstr_fd(cmd, STDERR);
+	ft_putstr_fd("'\n", STDERR);
 	g_last_exit_code = 258;
 }
 
@@ -43,7 +43,7 @@ int	check_syntax(t_info *token)
 	head = token;
 	if (head->type == PIPE)
 	{
-		syntax_errno((head->cmd), STDOUT_FILENO);
+		syntax_errno((head->cmd));
 		return (0);
 	}
 	while (head)

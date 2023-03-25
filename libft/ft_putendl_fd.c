@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 19:09:58 by yongmipa          #+#    #+#             */
-/*   Updated: 2022/07/16 20:08:08 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/22 18:11:58 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

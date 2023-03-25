@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:56 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 21:16:44 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:01:22 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	g_last_exit_code;
 
 void	ft_pwd(t_envp *envp)
 {

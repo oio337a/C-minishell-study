@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:01:16 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 19:55:06 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:01:37 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	g_last_exit_code;
 
 int	is_builtin(t_info *cmd)
 {

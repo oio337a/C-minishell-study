@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_dollar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/21 21:04:10 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/23 22:59:57 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	check_quote_couple(char *token)
 	}
 	return (1);
 }
-
+/*
 void	find_dollar(t_info *token, t_envp *_env)
 {
 	t_info	*head;
@@ -53,4 +53,22 @@ void	find_dollar(t_info *token, t_envp *_env)
 		free(tmp);
 		head = head->next;
 	}
+}
+*/
+void	next_dollar(char next, char **str, int *i)
+{
+	char	*value;
+
+	if (next == '$')
+	{
+		value = ft_itoa(getpid());
+		*i += 2;
+	}
+	else
+	{
+		value = ft_itoa(g_last_exit_code);
+		*i += 2;
+	}
+	*str = ft_strjoin_free(*str, value);
+	free(value);
 }

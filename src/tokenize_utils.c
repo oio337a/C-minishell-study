@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:59:28 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 21:00:29 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 16:50:04 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	is_whitespace(char line)
-{
-	if (line != 32 && !(line >= 9 && line <= 13))
-		return (1);
-	return (0);
-}
 
 int	modu_spacebar_ya(char *line)
 {
@@ -28,6 +21,15 @@ int	modu_spacebar_ya(char *line)
 		line++;
 	}
 	return (0);
+}
+
+static void	go_after_quote(char **line, char *tmp, char *bulk, t_info *info)
+{
+	bulk = get_after_quote(*line, tmp);
+	*line += (ft_strlen(bulk) - ft_strlen(tmp));
+	insert_list(info, bulk, WORD);
+	free(bulk);
+	free(tmp);
 }
 
 void	quote_process(t_info *info, char **line)
@@ -51,11 +53,11 @@ void	quote_process(t_info *info, char **line)
 	tmp = bulk;
 	if (**line != ' ')
 	{
-		bulk = get_after_quote(*line, tmp);
-		*line += (ft_strlen(bulk) - ft_strlen(tmp));
+		go_after_quote(line, tmp, bulk, info);
+		return ;
 	}
 	insert_list(info, bulk, WORD);
-	free(tmp);
+	free(bulk);
 }
 
 int	reminder_in_quote(char quote, int i, char *line)

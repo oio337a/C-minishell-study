@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 15:37:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 21:18:33 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:01:18 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,26 @@ static char	*find_value(char *dollar, t_envp *envp, int *idx)
 		i++;
 	key = ft_substr(dollar, 1, i - 1);
 	*idx += ft_strlen(key);
-	free(key);
 	head = envp;
 	while (head != NULL)
 	{
 		if (!ft_strcmp(key, head->key))
+		{
+			free(key);
 			return (ft_strdup(head->value));
+		}
 		head = head->next;
 	}
+	free(key);
 	return (ft_strdup(""));
 }
 
 static int	check_edges(char next, char **str, int *i)
 {
-	char	*pid;
-
 	if (ft_isdigit(next))
 		*i += 2;
-	else if (next == '$')
-	{
-		pid = ft_itoa(getpid());
-		*str = ft_strjoin_free(*str, pid);
-		*i += 2;
-		free(pid);
-	}
+	else if (next == '$' || next == '?')
+		next_dollar(next, str, i);
 	else if ((!ft_isalnum(next) && next != '_') || next == '\0')
 	{
 		*str = ft_strjoin_free(*str, "$");

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:00:06 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 22:03:44 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 18:06:49 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	g_last_exit_code;
 
 char	**set_path(char *cmd, t_envp *envp)
 {
@@ -21,7 +19,7 @@ char	**set_path(char *cmd, t_envp *envp)
 	path = find_envp(envp, "PATH");
 	if (!path)
 	{
-		common_errno(cmd, 2, NULL, STDOUT_FILENO);
+		common_errno(cmd, 2);
 		return (NULL);
 	}
 	return (ft_split(path, ':'));
@@ -40,14 +38,18 @@ static char	*is_folder(char *cmd, char **path)
 	return (cmd);
 }
 
-static void	setting_cmd(char *cmd, char **envp_in_list)
+static char	**setting_cmd(char *cmd, t_envp *envp)
 {
+	char	**envp_in_list;
+
+	envp_in_list = set_path(cmd, envp);
 	if (!is_folder(cmd, envp_in_list))
 	{
-		common_errno(cmd, 21, NULL, STDOUT_FILENO);
+		common_errno(cmd, 21);
 		g_last_exit_code = 126;
-		return ;
+		return (NULL);
 	}
+	return (envp_in_list);
 }
 
 static char	*return_cmd(char **envp, char *cmd_path)
@@ -71,27 +73,27 @@ static char	*return_cmd(char **envp, char *cmd_path)
 
 char	*get_cmd(char *cmd, t_envp *envp)
 {
-	char	*cmd_path;
 	char	*tmp;
 	char	**envp_in_list;
 
 	if (!ft_strlen(cmd))
-		common_errno(cmd, 127, NULL, STDOUT_FILENO);
-	envp_in_list = set_path(cmd, envp);
-	setting_cmd(cmd, envp_in_list);
+	{
+		common_errno(cmd, 127);
+		return (NULL);
+	}
+	envp_in_list = setting_cmd(cmd, envp);
 	if (access(cmd, X_OK) != -1)
 		return (cmd);
 	else if (!ft_strncmp("/", cmd, 1))
 	{
-		common_errno(cmd, 2, NULL, STDOUT_FILENO);
+		common_errno(cmd, 2);
 		g_last_exit_code = 127;
 		return (NULL);
 	}
-	cmd_path = ft_strjoin("/", cmd);
-	tmp = return_cmd(envp_in_list, cmd_path);
+	tmp = return_cmd(envp_in_list, ft_strjoin("/", cmd));
 	if (!tmp)
 	{
-		common_errno(cmd, 127, NULL, STDOUT_FILENO);
+		common_errno(cmd, 127);
 		return (NULL);
 	}
 	return (tmp);

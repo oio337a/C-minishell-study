@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:33:38 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 21:18:14 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/23 22:32:27 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,11 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 	ft_strlcat(str + s1_len, s2, s2_len + 1);
 	free(s1);
 	return (str);
+}
+
+int	is_whitespace(char line)
+{
+	if (line != 32 && !(line >= 9 && line <= 13))
+		return (1);
+	return (0);
 }

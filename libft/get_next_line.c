@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 17:12:03 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/13 17:31:24 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/22 18:12:14 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

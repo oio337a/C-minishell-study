@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/21 20:53:43 by yongmipa         ###   ########seoul.kr   #
+#    Updated: 2023/03/24 17:04:01 by suhwpark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,8 @@ INCS		= -I includes
 
 SRC			=	list_utils.c path_utils.c main.c delete_quote.c tokenize.c \
 				tokenize_utils.c envp_utils.c token_access_utils.c err_print_utils.c \
-				init_envp.c shell_utils.c err_print.c dollar.c find_dollar.c token_access_utils2.c \
-				token_access.c syntax.c syntax_utils.c delete_quote_util.c heredoc.c signal.c
+				init_envp.c shell_utils.c err_print.c dollar.c find_dollar.c token_access_utils2.c token_access_utils3.c\
+				token_access.c syntax.c syntax_utils.c delete_quote_util.c heredoc.c signal.c heredoc_set.c
 BUILTIN		=	ft_export.c ft_unset.c ft_builtin.c ft_cd.c ft_echo.c ft_env.c \
 				ft_exit.c ft_pwd.c
 
@@ -45,13 +45,13 @@ BUILTINS	=	$(addprefix $(BUILTINS_DIR), $(BUILTIN))
 OBJS		=	$(SRCS:.c=.o) $(BUILTINS:.c=.o)
 
 %.o : %.c
-	$(CC) $(CFLAGS) $(RFLAGS) $(LFLAGS) $(IFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(IFLAGS) -c $< -o $@
 
 all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make -C $(LIB_DIR)
-	$(CC) $(CFLAGS) $(RFLAGS) $(LFLAGS) $(IFLAGS) -o $(NAME) $(OBJS) $(LIB_NAME)
+	$(CC) $(CFLAGS) $(RFLAGS) $(LFLAGS) -o $(NAME) $(OBJS) $(LIB_NAME)
 
 clean :
 	make -C $(LIB_DIR) clean

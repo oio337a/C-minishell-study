@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   err_print_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 20:51:01 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 20:54:35 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:02:07 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	g_last_exit_code;
 
 void	bulga(char *next_arg, int fd)
 {

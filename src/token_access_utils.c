@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token_access_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 20:39:57 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/21 20:57:21 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:01:45 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	g_last_exit_code;
 
 void	move_heredoc(t_info **token, int pipe)
 {

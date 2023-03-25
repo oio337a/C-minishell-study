@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete_quote_util.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 18:02:24 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 20:20:15 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/22 18:12:25 by sohyupar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,6 @@ int	find_next_quote(char *line, char quote, int quote_idx)
 	return (-1);
 }
 
-int	*count_q(char *munja)
-{
-	int	*q;
-	int	i;
-
-	q = (int *)malloc(sizeof(int) * 2);
-	i = -1;
-	q[0] = 0;
-	q[1] = 0;
-	while (munja[++i])
-	{
-		if (munja[i] == '\"')
-			q[1]++;
-		else if (munja[i] == '\'')
-			q[0]++;
-	}
-	return (q);
-}
-
 int	here_quote(char *line)
 {
 	int	len;
@@ -62,17 +43,13 @@ int	here_quote(char *line)
 char	*get_full_token(t_info *cmd)
 {
 	t_info	*head;
-	char	*tmp;
 	char	*full_token;
 
 	head = cmd;
-	full_token = ft_strjoin("", head->cmd);
-	head = head->next;
+	full_token = ft_strdup("");
 	while (head != NULL)
 	{
-		tmp = full_token;
-		full_token = ft_strjoin(full_token, head->cmd);
-		free(tmp);
+		full_token = ft_strjoin_free(full_token, head->cmd);
 		head = head->next;
 	}
 	list_delete(&cmd);

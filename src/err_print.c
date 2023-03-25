@@ -3,94 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   err_print.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/21 22:46:08 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 19:17:56 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_last_exit_code;
-
-static void	common_errnos(char *cmd, int res, int fd, int type)
+static void	common_errnos(char *cmd, int res, int type)
 {
 	if (type != 3)
-		ft_putstr_fd("Nakishell: ", fd);
-	ft_putstr_fd(cmd, fd);
+		ft_putstr_fd("Nakishell: ", STDERR);
+	ft_putstr_fd(cmd, STDERR);
 	if (type == 1)
-		ft_putstr_fd(": command not found", fd);
+		ft_putstr_fd(": command not found", STDERR);
 	else if (type == 2)
 	{
-		ft_putstr_fd(": ", fd);
-		ft_putstr_fd(strerror(res), fd);
+		ft_putstr_fd(": ", STDERR);
+		ft_putstr_fd(strerror(res), STDERR);
 	}
-	ft_putstr_fd("\n", fd);
+	ft_putstr_fd("\n", STDERR);
 	g_last_exit_code = 127;
 }
 
-void	common_errno(char *cmd, int res, char *next_arg, int fd)
+void	common_errno(char *cmd, int res)
 {
-	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	ft_putstr_fd(ERROR_COLOR, STDERR);
 	if (res == 127)
+		common_errnos(cmd, res, 1);
+	else
 	{
-		if (!ft_strncmp(cmd, "$?", 2))
-		{
-			printf("Nakishell: %d%s: command not found\n", \
-			g_last_exit_code, (cmd + 2));
-			g_last_exit_code = 127;
-			return ;
-		}
-		common_errnos(cmd, res, fd, 1);
-		return ;
-	}
-	if (next_arg == NULL)
-	{
-		common_errnos(cmd, res, fd, 2);
+		common_errnos(cmd, res, 2);
 		g_last_exit_code = 1;
 	}
-	else
-		bulga(next_arg, fd);
+	ft_putstr_fd(COMMAND_COLOR, STDERR);
 }
 
-int	envp_errno(char *err_value, int fd)
+int	envp_errno(char *err_value)
 {
-	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
-	ft_putstr_fd("Nakishell$: export: `", fd);
-	ft_putstr_fd(err_value, fd);
-	ft_putstr_fd("': not a valid identifier\n", fd);
+	ft_putstr_fd(ERROR_COLOR, STDERR);
+	ft_putstr_fd("Nakishell$: export: `", STDERR);
+	ft_putstr_fd(err_value, STDERR);
+	ft_putstr_fd("': not a valid identifier\n", STDERR);
 	g_last_exit_code = 1;
 	return (0);
 }
 
 void	cd_errno(char *err_value, int res)
 {
-	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
-	ft_putstr_fd("Nakishell$: cd: ", STDOUT_FILENO);
-	ft_putstr_fd(err_value, STDOUT_FILENO);
+	ft_putstr_fd(ERROR_COLOR, STDERR);
+	ft_putstr_fd("Nakishell$: cd: ", STDERR);
+	ft_putstr_fd(err_value, STDERR);
 	if (res == 1)
-		ft_putstr_fd(": No such directory\n", STDOUT_FILENO);
+		ft_putstr_fd(": No such directory\n", STDERR);
 	else if (res == 2)
-		ft_putstr_fd(": not set\n", STDOUT_FILENO);
+		ft_putstr_fd(": not set\n", STDERR);
 	g_last_exit_code = 1;
 }
 
-void	exit_errno(int arg_status, char *cmd, int fd)
+void	exit_errno(int arg_status, char *cmd)
 {
-	ft_putstr_fd(ERROR_COLOR, STDIN_FILENO);
+	ft_putstr_fd(ERROR_COLOR, STDERR);
 	if (arg_status != 0)
 	{
-		ft_putstr_fd("Nakishell$: ", fd);
-		ft_putstr_fd(cmd, fd);
-		ft_putstr_fd(": too many arguments\n", fd);
+		ft_putstr_fd("Nakishell$: ", STDERR);
+		ft_putstr_fd(cmd, STDERR);
+		ft_putstr_fd(": too many arguments\n", STDERR);
 		g_last_exit_code = 1;
 	}
 	else
 	{
-		ft_putstr_fd("Nakishell$: exit: ", fd);
-		ft_putstr_fd(cmd, fd);
-		ft_putstr_fd(": numeric argument required\n", fd);
+		ft_putstr_fd("Nakishell$: exit: ", STDERR);
+		ft_putstr_fd(cmd, STDERR);
+		ft_putstr_fd(": numeric argument required\n", STDERR);
 		g_last_exit_code = 255;
 		exit(g_last_exit_code);
 	}

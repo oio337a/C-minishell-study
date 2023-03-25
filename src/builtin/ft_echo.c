@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yongmipa <yongmipa@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:19 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/20 17:27:58 by yongmipa         ###   ########seoul.kr  */
+/*   Updated: 2023/03/24 17:01:32 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	g_last_exit_code;
 
 static int	find_option(t_info *arg)
 {
@@ -41,13 +39,9 @@ static void	ft_pcmd(t_info *temp)
 	while (temp)
 	{
 		if (temp->type == WORD)
-		{
-			if (!ft_strncmp(temp->cmd, "$?", 2))
-				printf("%i%s", g_last_exit_code, (temp->cmd + 2));
-			else
-				printf("%s", temp->cmd);
-			printf(" ");
-		}
+			ft_putstr_fd(temp->cmd, STDOUT_FILENO);
+		if (temp->next)
+			write(STDOUT_FILENO, " ", 1);
 		temp = temp->next;
 	}
 	g_last_exit_code = 0;
