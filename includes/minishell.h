@@ -163,4 +163,5 @@ void		bulga(char *next_arg, int fd);
 void		get_heredoc_file(t_info *token, t_envp *env, t_pipe *var);
 char		**file_name(t_info *token);
 int			*process_heredoc_cnt(t_info *token, int total_pipe);
+int			check_heredoc(t_info *token);
 #endif

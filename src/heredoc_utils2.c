@@ -12,19 +12,33 @@
 
 #include "../includes/minishell.h"
 
-static int	each_heredoc_cnt(t_info	**token)
-{
-	t_info	*head;
-	int		cnt;
+// static int	each_heredoc_cnt(t_info	**token)
+// {
+// 	int		cnt;
 
-	head = *token;
+// 	cnt = 0;
+// 	while ((*token))
+// 	{
+// 		if ((*token)->type == HEREDOC_IN)
+// 			cnt++;
+// 		if ((*token)->type == PIPE)
+// 			break ;
+// 		(*token) = (*token)->next;
+// 	}
+// 	return (cnt);
+// }
+
+int	check_heredoc(t_info *token)
+{
+	t_info *head;
+	int cnt;
+
 	cnt = 0;
+	head = token;
 	while (head)
 	{
 		if (head->type == HEREDOC_IN)
 			cnt++;
-		if (head->type == PIPE)
-			break ;
 		head = head->next;
 	}
 	return (cnt);
@@ -32,15 +46,27 @@ static int	each_heredoc_cnt(t_info	**token)
 
 int	*process_heredoc_cnt(t_info *token, int total_pipe)
 {
+	t_info	*head;
 	int	*cnt;
 	int	i;
+	int	here;
 
 	i = 0;
+	head = token;
+	here = 0;
 	cnt = (int *)malloc(sizeof(int) * total_pipe);
-	while (i < total_pipe)
+	while (head)
 	{
-		cnt[i] = each_heredoc_cnt(&token);
-		i++;
+		if (head->type == HEREDOC_IN)
+			here++;
+		if (head->type == PIPE)
+		{
+			cnt[i] = here;
+			here = 0;
+			i++;
+		}
+		head = head->next;
 	}
+	cnt[i] = here;
 	return (cnt);
 }

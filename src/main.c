@@ -60,7 +60,7 @@ static int	init_main(int ac, char **av)
 {
 	if (ac != 1 && av)
 		return (0);
-	set_signal(GENERAL);
+	// set_signal(GENERAL);
 	show_naki();
 	return (1);
 }

@@ -46,27 +46,27 @@ int	type_redir_out(t_info **token)
 int	type_heredoc_in(t_info **token, t_pipe *var, t_envp *envp, int i)
 {
 	int	open_fd;
-	int	c;
-	int	idx;
-	int	idx2;
+	int	len;
+	int	cnt;
 
-	idx = 0;
-	idx2 = 0;
-	c = 0;
-	while (idx2 < i)
+	len = 0;
+	cnt = 0;
+	while (len <= i)
 	{
-		idx += var->doc_cnt[idx2];
-		idx2++;
+		cnt += var->doc_cnt[len];
+		len++;
 	}
 	(*token) = (*token)->next;
-	// if ()
-	// 	open_fd = open(var->filename[idx], O_RDONLY); // 뒤에 << 없으면 var->doc_cnt[i] dup 해서 연결 ㅅ ㅂ
-	if (open_fd == -1)
+	if (!check_heredoc(*token))
 	{
-		common_errno((*token)->cmd, 2);
-		exit(1);
+		open_fd = open(var->filename[cnt - 1], O_RDONLY); // 뒤에 << 없으면 var->doc_cnt[i] dup 해서 연결 ㅅ ㅂ
+		if (open_fd == -1)
+		{
+			common_errno((*token)->cmd, 2);
+			exit(1);
+		}
+		(dup2(open_fd, STDIN_FILENO), close(open_fd));
 	}
-	(dup2(open_fd, STDIN_FILENO), close(open_fd));
 	(*token) = (*token)->next;
 	return (0);
 }

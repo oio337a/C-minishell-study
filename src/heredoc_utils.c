@@ -59,7 +59,7 @@ void	get_heredoc_file(t_info *token, t_envp *env, t_pipe *var)
 	if (pid == 0)
 	{
 		i = 0;
-		set_signal(HEREDOC);
+		// set_signal(HEREDOC);
 		while (token)
 		{
 			if (token->type == HEREDOC_IN)

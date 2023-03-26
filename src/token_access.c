@@ -30,7 +30,7 @@ static void	child_process(t_info *head, t_envp *env, t_pipe *var, int i)
 {
 	t_info	*splited_token;
 
-	set_signal(CHILD);
+	// set_signal(CHILD);
 	if (head->type == PIPE)
 		head = head->next;
 	splited_token = get_token(&head, env, var, i);
@@ -47,7 +47,7 @@ static void	child_process(t_info *head, t_envp *env, t_pipe *var, int i)
 
 static int	parent_process(t_pipe *var, pid_t pid)
 {
-	set_signal(WAITING);
+	// set_signal(WAITING);
 	dup2(var->fd[0], STDIN_FILENO);
 	(close(var->fd[0]), close(var->fd[1]));
 	return (1);
@@ -89,7 +89,7 @@ static void	let_go(t_info *head, t_pipe *var, t_envp *env)
 	}
 	else
 		g_last_exit_code = var->status >> 8;
-	set_signal(GENERAL);
+	// set_signal(GENERAL);
 }
 
 void	pipex(t_info *token, t_envp *env)
@@ -99,10 +99,6 @@ void	pipex(t_info *token, t_envp *env)
 
 	head = token;
 	var = get_pipe_info(head);
-	// for(int i = 0; i < 2; i++)
-	// 	printf("%d\n", var->doc_cnt[i]);
-	// printf("%d\n", var->total_pipe);
-	// exit(1);
 	if (list_count_heredoc(head))
 		get_heredoc_file(head, env, var);
 	if (var->total_pipe == 1 && is_builtin(head))
