@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 17:06:57 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/24 19:17:56 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 22:38:59 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ static void	common_errnos(char *cmd, int res, int type)
 
 void	common_errno(char *cmd, int res)
 {
+	if (!cmd)
+	{
+		g_last_exit_code = 0;
+		return ;
+	}
 	ft_putstr_fd(ERROR_COLOR, STDERR);
 	if (res == 127)
 		common_errnos(cmd, res, 1);

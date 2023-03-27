@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 15:05:00 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/24 18:00:59 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 22:36:15 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	validate_quote_all(t_info *token)
 	head = token;
 	while (head)
 	{
-		if (!check_quote_couple(head->cmd))
+		if (!head->cmd || !check_quote_couple(head->cmd))
 			return (0);
 		head = head->next;
 	}
