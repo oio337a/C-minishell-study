@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/25 17:21:42 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:30:59 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_pipe
 	int		stdout_back;
 	int		stdin_back;
 	int		*doc_cnt;
+	int		here_doc_sig;
 }	t_pipe;
 
 void		execute(char *str, t_info *info, t_envp *envp_head);

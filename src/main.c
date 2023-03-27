@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/24 18:06:55 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 13:56:47 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	init_main(int ac, char **av)
 {
 	if (ac != 1 && av)
 		return (0);
-	// set_signal(GENERAL);
+	set_signal(GENERAL);
 	show_naki();
 	return (1);
 }

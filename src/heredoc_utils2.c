@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 16:53:45 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/25 17:21:21 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:14:19 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@
 
 int	check_heredoc(t_info *token)
 {
-	t_info *head;
-	int cnt;
+	t_info	*head;
+	int		cnt;
 
 	cnt = 0;
 	head = token;
-	while (head)
+	while (head && head->type != PIPE)
 	{
 		if (head->type == HEREDOC_IN)
 			cnt++;
@@ -47,9 +47,9 @@ int	check_heredoc(t_info *token)
 int	*process_heredoc_cnt(t_info *token, int total_pipe)
 {
 	t_info	*head;
-	int	*cnt;
-	int	i;
-	int	here;
+	int		*cnt;
+	int		i;
+	int		here;
 
 	i = 0;
 	head = token;

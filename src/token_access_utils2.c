@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 20:40:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/25 18:15:17 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:10:56 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	type_heredoc_in(t_info **token, t_pipe *var, t_envp *envp, int i)
 	(*token) = (*token)->next;
 	if (!check_heredoc(*token))
 	{
-		open_fd = open(var->filename[cnt - 1], O_RDONLY); // 뒤에 << 없으면 var->doc_cnt[i] dup 해서 연결 ㅅ ㅂ
+		open_fd = open(var->filename[cnt - 1], O_RDONLY);
 		if (open_fd == -1)
 		{
 			common_errno((*token)->cmd, 2);

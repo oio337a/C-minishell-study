@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc_set.c                                      :+:      :+:    :+:   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 16:49:35 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/25 16:49:50 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:31:19 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,13 @@ void	get_heredoc_file(t_info *token, t_envp *env, t_pipe *var)
 {
 	int		i;
 	pid_t	pid;
+	int		status;
 
 	pid = fork();
 	if (pid == 0)
 	{
 		i = 0;
-		// set_signal(HEREDOC);
+		set_signal(HEREDOC);
 		while (token)
 		{
 			if (token->type == HEREDOC_IN)
@@ -71,6 +72,12 @@ void	get_heredoc_file(t_info *token, t_envp *env, t_pipe *var)
 		}
 		exit(g_last_exit_code);
 	}
-	else
-		waitpid(pid, &i, 0);
+	// else
+	// {
+	while (wait(&status) != -1)
+		;
+		// waitpid(pid, &status, 0);
+	if (status == 2 || status == 3)
+		var->here_doc_sig = 1;
+	// }
 }

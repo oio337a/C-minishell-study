@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 11:23:05 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/25 17:47:29 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:31:37 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ t_pipe	*get_pipe_info(t_info *token)
 	var->status = 0;
 	var->filename = file_name(token);
 	var->doc_cnt = process_heredoc_cnt(token, var->total_pipe);
+	var->here_doc_sig = 0;
 	return (var);
 }
 
 static int	check_in_out_dir(t_info **token, t_envp *envp, t_pipe *var, int i)
 {
+	// write(var->stdout_back, ft_itoa((*token)->type), 1);
 	if ((*token)->type == REDIR_IN)
 		return (type_redir_in(token));
 	else if ((*token)->type == HEREDOC_IN)

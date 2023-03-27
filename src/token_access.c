@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/25 18:07:56 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:33:38 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	child_process(t_info *head, t_envp *env, t_pipe *var, int i)
 {
 	t_info	*splited_token;
 
-	// set_signal(CHILD);
+	set_signal(CHILD);
 	if (head->type == PIPE)
 		head = head->next;
 	splited_token = get_token(&head, env, var, i);
@@ -47,7 +47,7 @@ static void	child_process(t_info *head, t_envp *env, t_pipe *var, int i)
 
 static int	parent_process(t_pipe *var, pid_t pid)
 {
-	// set_signal(WAITING);
+	set_signal(WAITING);
 	dup2(var->fd[0], STDIN_FILENO);
 	(close(var->fd[0]), close(var->fd[1]));
 	return (1);
@@ -66,7 +66,11 @@ static void	let_go(t_info *head, t_pipe *var, t_envp *env)
 			syntax_errno("|");
 		var->pid = fork();
 		if (var->pid == 0)
+		{
+			if (var->here_doc_sig == 1)
+				exit(1);
 			child_process(head, env, var, i);
+		}
 		else
 			if (!parent_process(var, var->pid))
 				break ;
@@ -89,7 +93,7 @@ static void	let_go(t_info *head, t_pipe *var, t_envp *env)
 	}
 	else
 		g_last_exit_code = var->status >> 8;
-	// set_signal(GENERAL);
+	set_signal(GENERAL);
 }
 
 void	pipex(t_info *token, t_envp *env)
