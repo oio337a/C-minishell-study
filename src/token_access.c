@@ -6,13 +6,13 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 15:12:12 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:30:41 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	ft_free_var(t_pipe *var) 
+static void	ft_free_var(t_pipe *var)
 {
 	int	i;
 
