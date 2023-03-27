@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 13:56:47 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:09:59 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	execute(char *str, t_info *info, t_envp *envp_head)
 {
 	char	*parsed;
 
+	add_history(str);
 	parsed = parse_dollar(str, envp_head);
 	str_tokenize(info, parsed);
 	if (validate_quote_all(info))
@@ -49,11 +50,6 @@ void	execute(char *str, t_info *info, t_envp *envp_head)
 		common_errno(info->cmd, 1);
 	list_delete(&info);
 	free(parsed);
-}
-
-void	check_leak(void)
-{
-	system("leaks --list -- minishell");
 }
 
 static int	init_main(int ac, char **av)
@@ -93,18 +89,8 @@ int	main(int ac, char **av, char **envp)
 			continue_free(str, info);
 			continue ;
 		}
-		add_history(str);
 		execute(str, info, envp_head);
-		// check_leak();
-		if (str != NULL)
-			free(str);
-		unlink(".here_doc");
+		free(str);
 	}
-	delete_envp_all(&envp_head);
 	return (0);
 }
-
-
-// pipe 병렬처리
-// waitpid, fd값 전체적으로 손보기
-// ecdas | echo a

@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 20:40:42 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 14:10:56 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:07:22 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	type_redir_out(t_info **token)
 	return (1);
 }
 
-int	type_heredoc_in(t_info **token, t_pipe *var, t_envp *envp, int i)
+int	type_heredoc_in(t_info **token, t_pipe *var, int i)
 {
 	int	open_fd;
 	int	len;

@@ -6,13 +6,13 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/24 17:53:15 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:39:50 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	check_sec(t_info *arg) // exit a
+static int	check_sec(t_info *arg)
 {
 	t_info	*temp;
 	int		digit_idx;

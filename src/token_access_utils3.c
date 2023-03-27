@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 11:23:05 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/27 14:31:37 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:09:03 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	access_builtin(t_info *head, t_envp *env, t_pipe *var)
 {
 	t_info	*splited_var;
 
-	splited_var = get_token(&head, env, var, 0);
+	splited_var = get_token(&head, var, 0);
 	builtin(splited_var, env, 42);
 	dup2(var->stdin_back, STDIN_FILENO);
 	dup2(var->stdout_back, STDOUT_FILENO);
@@ -43,13 +43,12 @@ t_pipe	*get_pipe_info(t_info *token)
 	return (var);
 }
 
-static int	check_in_out_dir(t_info **token, t_envp *envp, t_pipe *var, int i)
+static int	check_in_out_dir(t_info **token, t_pipe *var, int i)
 {
-	// write(var->stdout_back, ft_itoa((*token)->type), 1);
 	if ((*token)->type == REDIR_IN)
 		return (type_redir_in(token));
 	else if ((*token)->type == HEREDOC_IN)
-		return (type_heredoc_in(token, var, envp, i));
+		return (type_heredoc_in(token, var, i));
 	else if ((*token)->type == REDIR_OUT)
 		return (type_redir_out(token));
 	else if ((*token)->type == HEREDOC_OUT)
@@ -57,7 +56,7 @@ static int	check_in_out_dir(t_info **token, t_envp *envp, t_pipe *var, int i)
 	return (42);
 }
 
-t_info	*get_token(t_info **token, t_envp *envp, t_pipe *var, int i)
+t_info	*get_token(t_info **token, t_pipe *var, int i)
 {
 	t_info	*new;
 	int		dir;
@@ -65,7 +64,7 @@ t_info	*get_token(t_info **token, t_envp *envp, t_pipe *var, int i)
 	new = init_list();
 	while (*token && (*token)->type != PIPE)
 	{
-		dir = check_in_out_dir(token, envp, var, i);
+		dir = check_in_out_dir(token, var, i);
 		if (!dir)
 			continue ;
 		else if (dir == 1)
@@ -80,4 +79,25 @@ t_info	*get_token(t_info **token, t_envp *envp, t_pipe *var, int i)
 		(*token) = (*token)->next;
 	}
 	return (new);
+}
+
+void	wait_process(t_pipe *var)
+{
+	while (wait(&var->status) != -1)
+		;
+	if (var->status == 2)
+	{
+		if (!var->heredoc_pos)
+			g_last_exit_code = 130;
+		else
+			g_last_exit_code = 1;
+	}
+	else if (var->status == 3)
+	{
+		if (!var->heredoc_pos)
+			write(1, "Quit : 3\n", 9);
+		g_last_exit_code = 131;
+	}
+	else
+		g_last_exit_code = var->status >> 8;
 }

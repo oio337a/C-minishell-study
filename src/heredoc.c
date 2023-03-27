@@ -6,23 +6,11 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:03:40 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/25 18:10:25 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:41:19 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// static void	after_here_doc(int fd, int origin_fd)
-// {
-// 	if (fd == -1)
-// 	{
-// 		unlink(".here_doc");
-// 		common_errno("fd", 2);
-// 	}
-// 	dup2(fd, STDIN_FILENO);
-// 	close(fd);
-// 	unlink(".here_doc");
-// }
 
 void	here_doc(char *limiter, t_envp *envp, char *filename)
 {
@@ -50,5 +38,4 @@ void	here_doc(char *limiter, t_envp *envp, char *filename)
 	}
 	fd = open(".here_doc", O_RDONLY);
 	close(fd);
-	// after_here_doc(fd, origin_fd);
 }

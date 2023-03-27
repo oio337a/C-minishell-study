@@ -6,24 +6,22 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 14:33:38 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:09:11 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	ft_free_heredoc(char **p)
+static void	ft_free_var(t_pipe *var) 
 {
 	int	i;
 
 	i = 0;
-	while (p[i])
-	{
-		free(p[i]);
-		unlink(p[i]);
-		i++;
-	}
-	free(p);
+	while (var->filename[i])
+		free(var->filename[i++]);
+	free(var->filename);
+	free(var->doc_cnt);
+	free(var);
 }
 
 static void	child_process(t_info *head, t_envp *env, t_pipe *var, int i)
@@ -33,7 +31,7 @@ static void	child_process(t_info *head, t_envp *env, t_pipe *var, int i)
 	set_signal(CHILD);
 	if (head->type == PIPE)
 		head = head->next;
-	splited_token = get_token(&head, env, var, i);
+	splited_token = get_token(&head, var, i);
 	if (i == var->total_pipe - 1)
 		(dup2(STDOUT_FILENO, var->fd[1]), close(var->fd[1]));
 	if (!var->flag)
@@ -45,7 +43,7 @@ static void	child_process(t_info *head, t_envp *env, t_pipe *var, int i)
 	list_delete(&splited_token);
 }
 
-static int	parent_process(t_pipe *var, pid_t pid)
+static int	parent_process(t_pipe *var)
 {
 	set_signal(WAITING);
 	dup2(var->fd[0], STDIN_FILENO);
@@ -72,27 +70,11 @@ static void	let_go(t_info *head, t_pipe *var, t_envp *env)
 			child_process(head, env, var, i);
 		}
 		else
-			if (!parent_process(var, var->pid))
+			if (!parent_process(var))
 				break ;
 		i++;
 	}
-	while (wait(&var->status) != -1)
-		;
-	if (var->status == 2)
-	{
-		if (!var->heredoc_pos)
-			g_last_exit_code = 130;
-		else
-			g_last_exit_code = 1;
-	}
-	else if (var->status == 3)
-	{
-		if (!var->heredoc_pos)
-			write(1, "Quit : 3\n", 9);
-		g_last_exit_code = 131;
-	}
-	else
-		g_last_exit_code = var->status >> 8;
+	wait_process(var);
 	set_signal(GENERAL);
 }
 
@@ -108,13 +90,11 @@ void	pipex(t_info *token, t_envp *env)
 	if (var->total_pipe == 1 && is_builtin(head))
 	{
 		access_builtin(head, env, var);
-		free(var);
+		ft_free_var(var);
 		return ;
 	}
 	let_go(head, var, env);
-	ft_free_heredoc(var->filename);
-	free(var->doc_cnt);
-	free(var);
+	ft_free_var(var);
 	dup2(var->stdin_back, STDIN_FILENO);
 	dup2(var->stdout_back, STDOUT_FILENO);
 }

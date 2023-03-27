@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_dollar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 15:00:43 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/23 22:59:57 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:41:03 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,7 @@ int	check_quote_couple(char *token)
 	}
 	return (1);
 }
-/*
-void	find_dollar(t_info *token, t_envp *_env)
-{
-	t_info	*head;
-	char	*tmp;
 
-	head = token;
-	while (head)
-	{
-		tmp = head->cmd;
-		head->cmd = parse_dollar(head->cmd, _env);
-		free(tmp);
-		head = head->next;
-	}
-}
-*/
 void	next_dollar(char next, char **str, int *i)
 {
 	char	*value;

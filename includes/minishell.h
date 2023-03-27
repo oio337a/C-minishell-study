@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 14:30:59 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:08:55 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
+
 extern int	g_last_exit_code;
 
 typedef enum e_signal
@@ -108,11 +109,11 @@ void		move_list(t_info **token);
 int			list_count_heredoc(t_info *token);
 int			get_heredoc_pipe(t_info *token, int cnt);
 void		execve_token(t_info *token, t_envp *env, pid_t pid);
-t_info		*get_token(t_info **token, t_envp *envp, t_pipe *var, int i);
+t_info		*get_token(t_info **token, t_pipe *var, int i);
 void		pipex(t_info *token, t_envp *env);
 int			type_redir_in(t_info **token);
 int			type_redir_out(t_info **token);
-int			type_heredoc_in(t_info **token, t_pipe *var, t_envp *envp, int i);
+int			type_heredoc_in(t_info **token, t_pipe *var, int i);
 int			type_heredoc_out(t_info **token);
 void		access_builtin(t_info *head, t_envp *env, t_pipe *var);
 t_pipe		*get_pipe_info(t_info *token);
@@ -165,4 +166,5 @@ void		get_heredoc_file(t_info *token, t_envp *env, t_pipe *var);
 char		**file_name(t_info *token);
 int			*process_heredoc_cnt(t_info *token, int total_pipe);
 int			check_heredoc(t_info *token);
+void		wait_process(t_pipe *var);
 #endif

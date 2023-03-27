@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/25 16:49:35 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/27 14:31:19 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 14:43:57 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,17 @@ void	get_heredoc_file(t_info *token, t_envp *env, t_pipe *var)
 		while (token)
 		{
 			if (token->type == HEREDOC_IN)
-			{
-				here_doc(token->next->cmd, env, var->filename[i]);
-				i++;
-			}
+				here_doc(token->next->cmd, env, var->filename[i++]);
 			token = token->next;
 		}
 		exit(g_last_exit_code);
 	}
-	// else
-	// {
-	while (wait(&status) != -1)
-		;
-		// waitpid(pid, &status, 0);
-	if (status == 2 || status == 3)
-		var->here_doc_sig = 1;
-	// }
+	else
+	{
+		set_signal(WAITING);
+		waitpid(pid, &status, 0);
+		if (status == 2)
+			var->here_doc_sig = 1;
+	}
+	set_signal(GENERAL);
 }
