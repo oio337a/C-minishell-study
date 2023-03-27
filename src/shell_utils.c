@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:33:38 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 14:40:15 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 16:07:25 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 	size_t	s1_len;
 	size_t	s2_len;
 
+	if (!s1 && !s2)
+		return (ft_strdup(""));
+	else if (!s1)
+		return (ft_strdup(s2));
+	else if (!s2)
+		return (ft_strdup(s1));
 	s1_len = ft_strlen(s1);
 	s2_len = ft_strlen(s2);
 	str = (char *)malloc(s1_len + s2_len + 1);

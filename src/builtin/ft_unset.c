@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:29:32 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/24 17:51:38 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 21:06:21 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ int	validate_key(char *str)
 	return (1);
 }
 
-static void	free_envp(t_envp *envp)
+static void	free_envp(t_envp **envp)
 {
-	free(envp->key);
-	free(envp->value);
-	free(envp);
+	free((*envp)->key);
+	free((*envp)->value);
+	free((*envp));
 }
 
 void	delete_envp(t_info *arg_tmp, t_envp **envp)
@@ -47,7 +47,8 @@ void	delete_envp(t_info *arg_tmp, t_envp **envp)
 	if (!ft_strcmp(arg_tmp->cmd, tmp->key))
 	{
 		*envp = (*envp)->next;
-		free_envp(tmp);
+		free_envp(&tmp);
+		return ;
 	}
 	while (tmp->next != NULL)
 	{
@@ -56,7 +57,7 @@ void	delete_envp(t_info *arg_tmp, t_envp **envp)
 			before = tmp;
 			curr = tmp->next;
 			before->next = curr->next;
-			free_envp(curr);
+			free_envp(&curr);
 		}
 		else
 			tmp = tmp->next;

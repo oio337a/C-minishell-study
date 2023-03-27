@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 14:25:48 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 15:09:59 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 21:06:48 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ static void	show_naki(void)
 	close(fd);
 }
 
-void	execute(char *str, t_info *info, t_envp *envp_head)
+void	execute(char *str, t_info *info, t_envp **envp_head)
 {
 	char	*parsed;
 
 	add_history(str);
-	parsed = parse_dollar(str, envp_head);
+	parsed = parse_dollar(str, *envp_head);
 	str_tokenize(info, parsed);
 	if (validate_quote_all(info))
 	{
@@ -89,7 +89,7 @@ int	main(int ac, char **av, char **envp)
 			continue_free(str, info);
 			continue ;
 		}
-		execute(str, info, envp_head);
+		execute(str, info, &envp_head);
 		free(str);
 	}
 	return (0);

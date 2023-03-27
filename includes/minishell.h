@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 15:08:55 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 21:04:10 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_pipe
 	int		here_doc_sig;
 }	t_pipe;
 
-void		execute(char *str, t_info *info, t_envp *envp_head);
+void		execute(char *str, t_info *info, t_envp **envp_head);
 char		*quote_bulk(char *line, char c);
 char		*get_after_quote(char *line, char *bulk);
 void		str_tokenize(t_info *info, char *line);
@@ -108,14 +108,14 @@ void		move_heredoc(t_info **token, int pipe);
 void		move_list(t_info **token);
 int			list_count_heredoc(t_info *token);
 int			get_heredoc_pipe(t_info *token, int cnt);
-void		execve_token(t_info *token, t_envp *env, pid_t pid);
+void		execve_token(t_info *token, t_envp **env, pid_t pid);
 t_info		*get_token(t_info **token, t_pipe *var, int i);
-void		pipex(t_info *token, t_envp *env);
+void		pipex(t_info *token, t_envp **env);
 int			type_redir_in(t_info **token);
 int			type_redir_out(t_info **token);
 int			type_heredoc_in(t_info **token, t_pipe *var, int i);
 int			type_heredoc_out(t_info **token);
-void		access_builtin(t_info *head, t_envp *env, t_pipe *var);
+void		access_builtin(t_info *head, t_envp **env, t_pipe *var);
 t_pipe		*get_pipe_info(t_info *token);
 void		here_doc(char *limiter, t_envp *envp, char *filename);
 char		**set_path(char *cmd, t_envp *envp);
@@ -143,7 +143,7 @@ char		**envp_to_arr(t_envp *head);
 char		**dup_envp(t_envp *head);
 char		*find_envp(t_envp *envp, char *key);
 int			is_builtin(t_info *cmd);
-int			builtin(t_info *cmd, t_envp *head, pid_t pid);
+int			builtin(t_info *cmd, t_envp **head, pid_t pid);
 void		ft_pwd(t_envp *envp);
 void		ft_env(t_info *cmd, t_envp *head);
 void		ft_export(t_info *arg, t_envp *head);

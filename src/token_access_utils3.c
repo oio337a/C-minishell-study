@@ -6,13 +6,13 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 11:23:05 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/27 15:09:03 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 20:57:59 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	access_builtin(t_info *head, t_envp *env, t_pipe *var)
+void	access_builtin(t_info *head, t_envp **env, t_pipe *var)
 {
 	t_info	*splited_var;
 

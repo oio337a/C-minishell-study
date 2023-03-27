@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 15:30:41 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 21:04:53 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	ft_free_var(t_pipe *var)
 	free(var);
 }
 
-static void	child_process(t_info *head, t_envp *env, t_pipe *var, int i)
+static void	child_process(t_info *head, t_envp **env, t_pipe *var, int i)
 {
 	t_info	*splited_token;
 
@@ -54,7 +54,7 @@ static int	parent_process(t_pipe *var)
 	return (1);
 }
 
-static void	let_go(t_info *head, t_pipe *var, t_envp *env)
+static void	let_go(t_info *head, t_pipe *var, t_envp **env)
 {
 	int	i;
 
@@ -81,7 +81,7 @@ static void	let_go(t_info *head, t_pipe *var, t_envp *env)
 	set_signal(GENERAL);
 }
 
-void	pipex(t_info *token, t_envp *env)
+void	pipex(t_info *token, t_envp **env)
 {
 	t_info	*head;
 	t_pipe	*var;
@@ -89,7 +89,7 @@ void	pipex(t_info *token, t_envp *env)
 	head = token;
 	var = get_pipe_info(head);
 	if (list_count_heredoc(head))
-		get_heredoc_file(head, env, var);
+		get_heredoc_file(head, *env, var);
 	if (var->total_pipe == 1 && is_builtin(head))
 	{
 		access_builtin(head, env, var);
