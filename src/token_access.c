@@ -6,7 +6,7 @@
 /*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 15:09:11 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/27 15:12:12 by suhwpark         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ static void	ft_free_var(t_pipe *var)
 
 	i = 0;
 	while (var->filename[i])
+	{
+		unlink(var->filename[i]);
 		free(var->filename[i++]);
+	}
 	free(var->filename);
 	free(var->doc_cnt);
 	free(var);
