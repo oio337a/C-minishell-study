@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_access.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 15:05:20 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 21:04:53 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/28 11:07:26 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	pipex(t_info *token, t_envp **env)
 		return ;
 	}
 	let_go(head, var, env);
-	ft_free_var(var);
 	dup2(var->stdin_back, STDIN_FILENO);
 	dup2(var->stdout_back, STDOUT_FILENO);
+	ft_free_var(var);
 }

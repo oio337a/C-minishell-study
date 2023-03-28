@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 16:32:13 by suhwpark          #+#    #+#             */
-/*   Updated: 2023/03/22 22:10:37 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:35:31 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*quote_bulk(char *line, char c)
 		bulk = ft_strdup("");
 		return (bulk);
 	}
-	while (line[i] != c)
+	while (line[i] && line[i] != c)
 		i++;
 	bulk = ft_substr(line, 0, i + 1);
 	return (bulk);
@@ -34,11 +34,18 @@ char	*get_after_quote(char *line, char *bulk)
 	char	*tmp;
 	char	*real_bulk;
 	int		i;
+	int		linelen;
 
+	linelen = ft_strlen(line);
 	i = 0;
-	while (line[i] && is_whitespace(line[i]))
+	while (is_not_whitespace(line[i]))
 	{
 		i = reminder_in_quote(line[i], i, line);
+		if (i >= linelen)
+		{
+			i = linelen;
+			break ;
+		}
 		i++;
 	}
 	tmp = ft_substr(line, 0, i);

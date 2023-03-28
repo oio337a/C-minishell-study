@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:35 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 14:39:50 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:22:35 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	ft_exit(t_info *arg)
 	int	arg_size;
 
 	arg_size = list_get_size(arg);
-	write(1, "exit\n", 5);
+	write(2, "exit\n", 5);
 	if (arg_size == 1)
 		exit(g_last_exit_code);
 	check_arg = check_sec(arg);

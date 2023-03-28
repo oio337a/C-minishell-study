@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 20:59:28 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 22:03:03 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:35:04 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ void	quote_process(t_info *info, char **line)
 	if (!ft_strlen(bulk))
 	{
 		*line += 2;
-		while (**line == '\"' && **line != '\0' && **line != ' ')
+		while ((*line)[0] && (*line)[0] == '\"')
 		{
-			if (**(line + 1) != '\"')
+			if ((*line)[1] != '\"')
 				break ;
 			*line += 2;
 		}
@@ -51,7 +51,7 @@ void	quote_process(t_info *info, char **line)
 	else
 		*line += ft_strlen(bulk);
 	tmp = bulk;
-	if (**line != ' ')
+	if ((*line)[0] && (*line)[0] != ' ')
 	{
 		go_after_quote(line, tmp, bulk, info);
 		return ;
@@ -65,14 +65,14 @@ int	reminder_in_quote(char quote, int i, char *line)
 	if (quote == '\"')
 	{
 		if (find_next_quote(line, '\"', i) == -1)
-			i++;
+			;
 		else
 			i = find_next_quote(line, '\"', i);
 	}
 	else if (quote == '\'')
 	{
 		if (find_next_quote(line, '\'', i) == -1)
-			i++;
+			;
 		else
 			i = find_next_quote(line, '\'', i);
 	}
@@ -85,7 +85,7 @@ void	ft_remainder(t_info *info, char **line)
 	int		i;
 
 	i = 0;
-	while ((*line)[i] && is_whitespace((*line)[i]) && (*line)[i] != '>'
+	while ((*line)[i] && is_not_whitespace((*line)[i]) && (*line)[i] != '>'
 		&& (*line)[i] != '<' && (*line)[i] != '|')
 		i = reminder_in_quote((*line)[i], i, *line) + 1;
 	tmp = ft_substr(*line, 0, i);

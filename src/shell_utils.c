@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 14:33:38 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 22:28:58 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/28 11:44:04 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*ft_strjoin_free(char *s1, char const *s2)
 	return (str);
 }
 
-int	is_whitespace(char line)
+int	is_not_whitespace(char line)
 {
 	if (line != 32 && !(line >= 9 && line <= 13))
 		return (1);

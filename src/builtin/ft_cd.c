@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sohyupar <sohyupar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 17:30:09 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/22 18:12:21 by sohyupar         ###   ########.fr       */
+/*   Updated: 2023/03/28 13:27:02 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	ft_cd(t_info *arg, t_envp *envp)
 	t_info	*tmp;
 
 	tmp = arg;
-	old_pwd = getcwd(NULL, 0);
 	if (tmp->next == NULL || ft_strcmp(tmp->next->cmd, "~") == 0 || \
 	ft_strcmp(tmp->next->cmd, "") == 0)
 	{
@@ -68,6 +67,7 @@ void	ft_cd(t_info *arg, t_envp *envp)
 		path = tmp->next->cmd;
 	if (!path)
 		return ;
+	old_pwd = getcwd(NULL, 0);
 	if (chdir(path) == 0)
 		set_newpwd(envp, old_pwd);
 	else

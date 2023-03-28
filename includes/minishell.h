@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+        */
+/*   By: naki <naki@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:59:07 by yongmipa          #+#    #+#             */
-/*   Updated: 2023/03/27 21:13:52 by suhwpark         ###   ########.fr       */
+/*   Updated: 2023/03/28 11:44:04 by naki             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int			find_next_quote(char *line, char quote, int quote_idx);
 int			here_quote(char *line);
 char		*get_full_token(t_info *cmd);
 int			is_quote(char *s);
-int			is_whitespace(char line);
+int			is_not_whitespace(char line);
 int			modu_spacebar_ya(char *line);
 void		quote_process(t_info *info, char **line);
 void		ft_remainder(t_info *info, char **line);
