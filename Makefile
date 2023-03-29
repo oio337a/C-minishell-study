@@ -6,14 +6,14 @@
 #    By: suhwpark <suhwpark@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/02 14:25:53 by yongmipa          #+#    #+#              #
-#    Updated: 2023/03/28 13:38:45 by suhwpark         ###   ########.fr        #
+#    Updated: 2023/03/29 17:07:18 by suhwpark         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minishell
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Wextra -g -fsanitize=address 
+CFLAGS		= -Wall -Wextra -Wextra
 RFLAGS		= -lreadline
 LFLAGS		= -L${HOME}/.brew/opt/readline/lib
 IFLAGS		= -I${HOME}/.brew/opt/readline/include
@@ -65,4 +65,4 @@ re :
 	make fclean
 	make all
 
-PHONY	: all bonus clean fclean re
+PHONY	: all clean fclean re
